@@ -1,0 +1,11 @@
+*.out
+*.o
+*.dep
+tags
+*.swp
+*.nfs
+.DS_Store
+obj
+real
+container
+container_real
