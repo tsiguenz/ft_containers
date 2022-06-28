@@ -6,17 +6,19 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 10:48:08 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/06/20 18:27:56 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/06/28 15:15:22 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 
+#include <Iterators.hpp>
 namespace ft {
 	template < class T, class Allocator = std::allocator<T> >
 	class vector {
 		public:
+		// Types :
 
 		// Object managment
 
@@ -37,7 +39,7 @@ namespace ft {
 
 			// Iterators
 
-			//std::iterator<T>.pointer	begin() { return this->c; }
+			RandomAccessIterator<T>	begin() { return this->c; }
 
 			// Element acces TODO test element acces
 
