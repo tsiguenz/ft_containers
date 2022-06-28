@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/28 11:46:21 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/06/28 15:35:39 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/06/28 17:59:41 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,41 +34,40 @@ namespace ft {
 			~RandomAccessIterator() { }
 
 		// Operators
-			RandomAccessIterator&	operator=(RandomAccessIterator<T> const& it){
+			RandomAccessIterator<T>&	operator=(RandomAccessIterator<T> const& it){
 				this->ptr = it.ptr;
 				return *this;
 			}
-			RandomAccessIterator&	operator++(){
+			RandomAccessIterator<T>&	operator++(){
 				this->ptr++;
 				return *this;
 			}
-			RandomAccessIterator&	operator++(int){
-				RandomAccessIterator	tmp(*this);
-				tmp++;
+			RandomAccessIterator<T>	operator++(int) {
+				RandomAccessIterator<T>	tmp = *this;
+				++(*this);
 				return tmp;
 			}
-			RandomAccessIterator&	operator--() {
+			RandomAccessIterator<T>&	operator--() {
 				this->ptr--;
 				return *this;
 			}
-			RandomAccessIterator&	operator--(int){
-				RandomAccessIterator<T>	tmp(*this);
-				tmp--;
+			RandomAccessIterator<T>	operator--(int) {
+				RandomAccessIterator<T>	tmp = *this;
+				--(*this);
 				return tmp;
 			}
-			RandomAccessIterator&	operator+(difference_type const& n){
-				this->ptr + n;
-				return *this;
+			RandomAccessIterator<T>&	operator+(difference_type const& n) {
+				return this->ptr + n;
 			}
-			RandomAccessIterator&	operator+=(difference_type const& n){
+			RandomAccessIterator<T>&	operator+=(difference_type const& n) {
 				this->ptr += n;
 				return *this;
 			}
-			RandomAccessIterator&	operator-(difference_type const& n){
-				this->ptr - n;
-				return *this;
+			RandomAccessIterator<T>&	operator-(difference_type const& n) {
+				RandomAccessIterator<T>	tmp(*this);
+				return this->ptr - n;
 			}
-			RandomAccessIterator&	operator-=(difference_type const& n){
+			RandomAccessIterator<T>&	operator-=(difference_type const& n) {
 				this->ptr -= n;
 				return *this;
 			}

@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 10:48:08 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/06/28 15:15:22 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/06/28 19:27:34 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,25 @@ namespace ft {
 	class vector {
 		public:
 		// Types :
+			typedef struct	RandomAccessIterator<T> iterator;
 
 		// Object managment
 
-			vector(): c(), size() { }
-			vector(size_t const& size): size(size) { c = allocator.allocate(size); }
+			vector(): c(0), size(0) { }
+
+			vector(size_t const& size): size(size) {
+				this->c = allocator.allocate(this->size);
+				for (size_t i = 0; i < this->size; i++)
+					allocator.construct(this->c + i, 0);
+			}
+
 			vector(vector const& rhs) { *this = rhs; }
-			~vector() { allocator.deallocate(c, this->size); }
+
+			~vector() {
+				allocator.deallocate(c, this->size);
+				for (size_t i = 0; i < this->size; i++)
+					allocator.destroy(this->c + i);
+			}
 
 		// Operator overload
 
@@ -39,7 +51,8 @@ namespace ft {
 
 			// Iterators
 
-			RandomAccessIterator<T>	begin() { return this->c; }
+			iterator	begin() { return this->c; }
+			iterator	end() { return this->c + size; }
 
 			// Element acces TODO test element acces
 
@@ -49,8 +62,8 @@ namespace ft {
 					throw std::out_of_range("Vector::Out of range");
 				return (*this)[pos];
 			}
-			T&	front() { return (*this)[0]; }//TODO replace with iterators
-			T&	back() { return (*this)[this->size - 1]; }//TODO replace with iterators
+			T&	front() { return *(this->begin()); }
+			T&	back() { return *(this->end() - 1); }//TODO test operators
 			T*	data() { return this->c; }
 
 		protected:
