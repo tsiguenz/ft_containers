@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/28 11:46:21 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/06/28 17:59:41 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/06/28 21:35:25 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,15 +56,14 @@ namespace ft {
 				--(*this);
 				return tmp;
 			}
-			RandomAccessIterator<T>&	operator+(difference_type const& n) {
+			RandomAccessIterator<T>	operator+(difference_type const& n) {
 				return this->ptr + n;
 			}
 			RandomAccessIterator<T>&	operator+=(difference_type const& n) {
 				this->ptr += n;
 				return *this;
 			}
-			RandomAccessIterator<T>&	operator-(difference_type const& n) {
-				RandomAccessIterator<T>	tmp(*this);
+			RandomAccessIterator<T>	operator-(difference_type const& n) {
 				return this->ptr - n;
 			}
 			RandomAccessIterator<T>&	operator-=(difference_type const& n) {
