@@ -6,18 +6,19 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 10:53:55 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/06/28 18:42:43 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/06/29 12:39:46 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
 #include <vector>
 #include <vector.hpp>
-#include <test.hpp>
-
+#include <vector_test.hpp>
+#include <utils_test.hpp>
 
 int	main() {
 
+	std::cout << VECTOR_ASCII << std::endl;
 	//tests_numeric<short>();
 	tests_numeric<int>();
 	//tests_numeric<float>();

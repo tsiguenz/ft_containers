@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 10:48:08 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/06/28 21:33:55 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/06/29 12:02:33 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,18 @@ namespace ft {
 	class vector {
 		public:
 		// Types :
-			typedef struct	RandomAccessIterator<T> iterator;
-
+			typedef T	value_type;
+			typedef Allocator	allocator_type;
+			typedef typename std::allocator_traits<Allocator>::pointer	pointer;
+			typedef typename std::allocator_traits<Allocator>::const_pointer	const_pointer;
+			typedef value_type&	reference;
+			typedef const value_type&	const_reference;
+			typedef size_t	size_type;
+			typedef ptrdiff_t	difference_type;
+			typedef struct	RandomAccessIterator<T>	iterator;
+			typedef struct	RandomAccessIterator<const T>	const_iterator;
+			typedef std::reverse_iterator<iterator>	reverse_iterator;
+			typedef std::reverse_iterator<const iterator>	const_reverse_iterator;
 		// Object managment
 
 			vector(): c(0), size(0) { }

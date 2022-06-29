@@ -1,36 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test.hpp                                           :+:      :+:    :+:   */
+/*   vector_test.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 17:14:11 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/06/28 21:32:42 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/06/29 12:37:40 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TEST_HPP
-# define TEST_HPP
+#ifndef TEST_VECTOR_HPP
+# define TEST_VECTOR_HPP
 
-#define DEFAULT "\e[0m"
-#define RED "\e[31m"
-#define GREEN "\e[32m"
-
-template<typename T>
-void	assertEq(std::string str, T a, T b) {
-	if (str.empty() == 0)
-		std::cout << str << " : " << std::endl;
-	if (a != b)
-		std::cout << RED << "NOT EQUAL";
-	else
-		std::cout << GREEN << "EQUAL    ";
-	std::cout << " : a = " << a << " b = " << b << DEFAULT << std::endl;
-
-}
+#include <utils_test.hpp>
 
 template<typename T>
 void	tests_numeric() {
+
 #ifdef REAL
 	namespace ft = std;
 #endif
@@ -61,7 +48,7 @@ void	tests_numeric() {
 		assertEq("[] operator", ftV[0], stdV[0]);
 		assertEq("[] operator on uninitialise value", ftV[1], stdV[1]);
 	}
-	std::cout << "----------  Iterators tests : ----------" << std::endl;
+	std::cout << "----------  RandomAccessIterator tests : ----------" << std::endl;
 	{
 		ft::vector<T>	ftV(10);
 		std::vector<T>	stdV(10);
@@ -82,9 +69,12 @@ void	tests_numeric() {
 		//		ftIt = ftV.end() - 1;
 		//		std::cout << *stdIt << std::endl;
 		//		std::cout << *ftIt << std::endl;
-		assertEq("front", ftV.front(), stdV.front());
-		assertEq("back", ftV.back(), stdV.back());
 	}
+//	std::cout << "----------  Member functions tests : ----------" << std::endl;
+//	{
+//		assertEq("front", ftV.front(), stdV.front());
+//		assertEq("back", ftV.back(), stdV.back());
+//	}
 }
 
-#endif
+#endif // /TEST_VECTOR_HPP
