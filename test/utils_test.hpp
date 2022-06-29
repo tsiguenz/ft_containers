@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 12:36:10 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/06/29 12:37:52 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/06/29 19:06:10 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@
 
 template<typename T>
 void	assertEq(std::string str, T a, T b) {
-	if (str.empty() == 0)
-		std::cout << str << " : " << std::endl;
-	if (a != b)
-		std::cout << RED << "NOT EQUAL";
+	bool	isEq = (a == b);
+
+	if (isEq)
+		std::cout << GREEN << "[OK] " << str;
 	else
-		std::cout << GREEN << "EQUAL    ";
+		std::cout << RED << "[KO] " << str;
 	std::cout << " : a = " << a << " b = " << b << DEFAULT << std::endl;
 
 }
