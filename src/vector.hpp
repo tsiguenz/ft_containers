@@ -6,31 +6,33 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 10:48:08 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/06/29 12:02:33 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/06/30 18:29:49 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 
-#include <Iterators.hpp>
+#include <RandomAccessIterator.hpp>
 namespace ft {
 	template < class T, class Allocator = std::allocator<T> >
 	class vector {
 		public:
 		// Types :
-			typedef T	value_type;
-			typedef Allocator	allocator_type;
-			typedef typename std::allocator_traits<Allocator>::pointer	pointer;
-			typedef typename std::allocator_traits<Allocator>::const_pointer	const_pointer;
-			typedef value_type&	reference;
-			typedef const value_type&	const_reference;
-			typedef size_t	size_type;
-			typedef ptrdiff_t	difference_type;
-			typedef struct	RandomAccessIterator<T>	iterator;
-			typedef struct	RandomAccessIterator<const T>	const_iterator;
-			typedef std::reverse_iterator<iterator>	reverse_iterator;
-			typedef std::reverse_iterator<const iterator>	const_reverse_iterator;
+			typedef std::allocator_traits<Allocator>			allocator_traits;
+			typedef T											value_type;
+			typedef Allocator									allocator_type;
+			typedef typename allocator_traits::pointer			pointer;
+			typedef typename allocator_traits::const_pointer	const_pointer;
+			typedef value_type&									reference;
+			typedef const value_type&							const_reference;
+			typedef size_t										size_type;
+			typedef ptrdiff_t									difference_type;
+			typedef RandomAccessIterator<T>						iterator;
+			typedef RandomAccessIterator<T const>				const_iterator;
+			typedef std::reverse_iterator<T>					reverse_iterator;
+			typedef std::reverse_iterator<const T>				const_reverse_iterator;
+
 		// Object managment
 
 			vector(): c(0), size(0) { }
@@ -63,6 +65,8 @@ namespace ft {
 
 			iterator	begin() { return this->c; }
 			iterator	end() { return this->c + size; }
+			const_iterator	begin() const { return this->c; }
+			const_iterator	end() const { return this->c + size; }
 
 			// Element acces TODO test element acces
 
@@ -77,7 +81,7 @@ namespace ft {
 			T*	data() { return this->c; }
 
 		protected:
-			T*			c;
+			pointer		c;
 			size_t		size;
 			Allocator	allocator;
 

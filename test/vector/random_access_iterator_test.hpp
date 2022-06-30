@@ -6,15 +6,18 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 19:09:13 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/06/29 19:14:46 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/06/30 18:36:32 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RANDOM_ACCESS_ITERATOR_TEST_HPP
 # define RANDOM_ACCESS_ITERATOR_TEST_HPP
 
-template<typename T>
-void	RandomAccessIteratorTest() {
+template<typename T, typename ftIterator, typename stdIterator>
+void	randomAccessIteratorTest() {
+#ifdef REAL
+	namespace ft = std;
+#endif
 	std::cout << "----------  RandomAccessIterator class : ----------" << std::endl;
 	ft::vector<T>	ftV(10);
 	std::vector<T>	stdV(10);
@@ -22,8 +25,9 @@ void	RandomAccessIteratorTest() {
 		ftV[i] = (i + 1) * 10;
 		stdV[i] = (i + 1) * 10;
 	}
-	typename ft::vector<T>::iterator	ftIt = ftV.begin();
-	typename std::vector<T>::iterator	stdIt = stdV.begin();
+	ftIterator	ftIt = ftV.begin();
+	stdIterator	stdIt = stdV.begin();
+	std::cout << *ftIt << std::endl;
 	assertEq("Compare iterator value returned by begin()", *ftIt, *stdIt);
 	assertEq("Compare iterator value returned by end() -1", *(ftV.end() - 1), *(stdV.end() - 1));
 	assertEq("*(it++)", *(ftIt++), *(stdIt++));
@@ -36,14 +40,12 @@ void	RandomAccessIteratorTest() {
 	assertEq("*(it + 2)", *(ftIt + 2), *(stdIt + 2));
 	assertEq("*(it -= 1)", *(ftIt -= 1), *(stdIt -= 1));
 	assertEq("*(it - 2)", *(ftIt - 2), *(stdIt - 2));
-	typename ft::vector<T>::iterator	tmpFtIt(ftIt);
-	typename std::vector<T>::iterator	tmpStdIt(stdIt);
-	assertEq("it == tmpIt and copy constructor", ftIt == tmpFtIt, stdIt == tmpStdIt);
-	assertEq("it + 1 == tmpIt", ftIt + 1 == tmpFtIt, stdIt + 1 == tmpStdIt);
-	assertEq("it != tmpIt", ftIt != tmpFtIt, stdIt != tmpStdIt);
-	assertEq("it + 1 != tmpIt", ftIt + 1 != tmpFtIt, stdIt + 1 != tmpStdIt);
+	ftIterator	tmpFtIt(ftIt);
+	stdIterator	tmpStdIt(stdIt);
 	for (int i = -1; i < 2; i++) {
 		std::cout << "i = " << i << std::endl;
+		assertEq("it + i == tmpIt and copy constructor", ftIt + i == tmpFtIt, stdIt + i == tmpStdIt);
+		assertEq("it + i != tmpIt", ftIt + i != tmpFtIt, stdIt + i != tmpStdIt);
 		assertEq("*(it + i)", *(ftIt + i), *(stdIt + i));
 		assertEq("it + i < tmpIt", ftIt + i < tmpFtIt, stdIt + i < tmpStdIt);
 		assertEq("it + i <= tmpIt", ftIt + i <= tmpFtIt, stdIt + i <= tmpStdIt);
