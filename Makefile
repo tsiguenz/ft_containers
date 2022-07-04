@@ -6,7 +6,7 @@
 #    By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/20 10:45:57 by tsiguenz          #+#    #+#              #
-#    Updated: 2022/06/29 19:19:39 by tsiguenz         ###   ########.fr        #
+#    Updated: 2022/07/04 12:15:34 by tsiguenz         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = container
 NAME_REAL = $(NAME)_real
 
 CC = c++
-FLAGS = -Wall -Wextra -Werror -std=c++98
+FLAGS = -g3 -Wall -Wextra -Werror -std=c++98
 FLAGS_REAL = -D REAL
 
 SRC_PATH = src/

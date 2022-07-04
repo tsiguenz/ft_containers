@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 10:48:08 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/06/30 18:29:49 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/07/04 17:48:22 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,79 +14,132 @@
 # define VECTOR_HPP
 
 #include <RandomAccessIterator.hpp>
+#include <ReverseIterator.hpp>
+
 namespace ft {
 	template < class T, class Allocator = std::allocator<T> >
 	class vector {
 		public:
 		// Types :
-			typedef std::allocator_traits<Allocator>			allocator_traits;
+
 			typedef T											value_type;
 			typedef Allocator									allocator_type;
-			typedef typename allocator_traits::pointer			pointer;
-			typedef typename allocator_traits::const_pointer	const_pointer;
+			typedef value_type* 								pointer;
+			typedef value_type const							const_pointer;
 			typedef value_type&									reference;
 			typedef const value_type&							const_reference;
 			typedef size_t										size_type;
-			typedef ptrdiff_t									difference_type;
+			typedef std::ptrdiff_t								difference_type;
 			typedef RandomAccessIterator<T>						iterator;
-			typedef RandomAccessIterator<T const>				const_iterator;
-			typedef std::reverse_iterator<T>					reverse_iterator;
-			typedef std::reverse_iterator<const T>				const_reverse_iterator;
+			typedef RandomAccessIterator<const T>				const_iterator;
+			typedef ReverseIterator<T>							reverse_iterator;
+			typedef ReverseIterator<const T>					const_reverse_iterator;
 
 		// Object managment
 
-			vector(): c(0), size(0) { }
+			// Default
+			explicit vector(allocator_type const& alloc = allocator_type())
+				: _c(0), _size(0), _allocator(alloc) { }
 
-			vector(size_t const& size): size(size) {
-				this->c = allocator.allocate(this->size);
-				for (size_t i = 0; i < this->size; i++)
-					allocator.construct(this->c + i, 0);
+			// Fill
+			explicit vector(size_type count,
+							T const& value = T(),
+							Allocator const& alloc = Allocator()) {
+				this->_allocator = alloc;
+				this->assign(count, value);
 			}
 
+			// Range
+			template<class InputIterator>
+				vector (InputIterator first, InputIterator last,
+						allocator_type const& alloc = allocator_type()) {
+				this->_allocator = alloc;
+				this->_size = distance(first, last);
+				this->_c = this->_allocator.allocate(this->_size);
+				for (size_type i = 0; first < last; first++) {
+					this->_allocator.construct(this->_c + i, first);
+					i++;
+				}
+			}
+
+			// Copy
 			vector(vector const& rhs) { *this = rhs; }
 
-			~vector() {
-				allocator.deallocate(c, this->size);
-				for (size_t i = 0; i < this->size; i++)
-					allocator.destroy(this->c + i);
-			}
+			// Destruct
+			~vector() { this->clear(); }
 
-		// Operator overload
+		// Operators
 
 			vector&	operator=(vector const& rhs) {
-				//TODO implement copy operator
+				this->clear();
+				this->_allocator = rhs._allocator;
+				this->_size = rhs._size;
+				this->c = this->_allocator.allocate(this->_size);
+				for (size_type i = 0; i < rhs._size; i++)
+					this->_allocator.construct(this->_c + i, rhs._c[i]);
 				return rhs;
 			}
-			T&	operator[](size_t const& pos) { return this->c[pos]; }
+			T&	operator[](size_type const& pos) { return this->_c[pos]; }
 
 		// Member functions
 
 			// Iterators
 
-			iterator	begin() { return this->c; }
-			iterator	end() { return this->c + size; }
-			const_iterator	begin() const { return this->c; }
-			const_iterator	end() const { return this->c + size; }
+			iterator				begin() { return this->_c; }
+			iterator				end() { return this->_c + this->_size; }
+			const_iterator			begin() const { return this->_c; }
+			const_iterator			end() const { return this->_c + this->_size; }
+			reverse_iterator		rbegin() { return this->_c + (this->_size - 1); }
+			reverse_iterator		rend() { return this->_c - 1; }
+			const_reverse_iterator	rbegin() const { return this->_c + (this->_size - 1); }
+			const_reverse_iterator	rend() const { return this->_c; }
 
-			// Element acces TODO test element acces
+			// Element acces
 
-			// need the same exception message ?
-			T&	at(size_t pos) {
-				if (pos < 0 || pos >= size)
+			// TODO need the same exception message ?
+			T&	at(size_type pos) {
+				if (pos < 0 || pos >= this->_size)
 					throw std::out_of_range("Vector::Out of range");
 				return (*this)[pos];
 			}
 			T&	front() { return *(this->begin()); }
-			T&	back() { return *(this->end() - 1); }//TODO test operators
-			T*	data() { return this->c; }
+			T&	back() { return *(this->end() - 1); }
+			T*	data() { return this->_c; }
+
+			// Others
+
+			size_type	size() { return this->_size; }
+			void	clear() {
+				this->_allocator.deallocate(this->_c, this->_size);
+				for (size_type i = 0; i < this->_size; i++)
+					this->_allocator.destroy(this->_c + i);
+				this->_size = 0;
+			}
+
+			bool	empty() { return !this->_size; }
+
+			void	assign(size_type count, T const& value) {
+				this->_size = count;
+				this->_c = this->_allocator.allocate(count);
+				for (size_type i = 0; i < count; i++)
+					this->_allocator.construct(this->_c + i, value);
+			}
 
 		protected:
-			pointer		c;
-			size_t		size;
-			Allocator	allocator;
+			pointer		_c;
+			size_type	_size;
+			Allocator	_allocator;
 
 		private:
+			template<typename InputIterator>
+			size_type	distance(InputIterator it, InputIterator ite) {
+				size_type	res = 0;
 
+				for (;it != ite; it++) {
+					res++;
+				}
+				return res;
+			}
 	};
 }
 

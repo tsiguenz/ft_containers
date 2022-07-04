@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/28 11:46:21 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/06/30 18:35:21 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/07/04 17:36:08 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,20 +26,21 @@ namespace ft {
 				typedef typename std::iterator_traits<T*>::iterator_category	iterator_category;
 
 			private:
-				pointer	_ptr;
+				T*	_ptr;
 
 			public:
 				// Object managment
 				RandomAccessIterator(): _ptr() { };
-				RandomAccessIterator(T pointer): _ptr(pointer) { }
-
+				RandomAccessIterator(pointer ptr): _ptr(ptr) { }
 				template<typename U>
-					RandomAccessIterator(U pointer): _ptr(&(*pointer)) { }
-
-				RandomAccessIterator(RandomAccessIterator const& it) { *this = it; }
+					RandomAccessIterator(U ptr): _ptr(&*ptr) { }
+				RandomAccessIterator(RandomAccessIterator<T> const& it) { *this = it; }
 				~RandomAccessIterator() { }
 
 				// Operators
+				operator RandomAccessIterator<T const>() const {
+					return RandomAccessIterator<T const>(this->_ptr);
+				}
 				RandomAccessIterator<T>&	operator=(RandomAccessIterator<T> const& it){
 					this->_ptr = it._ptr;
 					return *this;
@@ -50,7 +51,7 @@ namespace ft {
 				}
 				RandomAccessIterator<T>	operator++(int) {
 					RandomAccessIterator<T>	tmp = *this;
-					++(*this);
+					this->_ptr++;
 					return tmp;
 				}
 				RandomAccessIterator<T>&	operator--() {
@@ -59,7 +60,7 @@ namespace ft {
 				}
 				RandomAccessIterator<T>	operator--(int) {
 					RandomAccessIterator<T>	tmp = *this;
-					--(*this);
+					this->_ptr--;
 					return tmp;
 				}
 				RandomAccessIterator<T>	operator+(difference_type const& n) {

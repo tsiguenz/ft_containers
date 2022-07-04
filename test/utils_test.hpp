@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 12:36:10 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/06/30 16:11:17 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/07/04 11:28:17 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@ void	assertEq(std::string str, T a, T b) {
 	bool	isEq = (a == b);
 
 	if (isEq)
-		std::cout << GREEN << "[OK] " << str;
+		std::cout << GREEN << "[OK] ";
 	else
-		std::cout << RED << "[KO] " << str;
-	std::cout << " : a = " << a << " b = " << b << DEFAULT << std::endl;
+		std::cout << RED << "[KO] ";
+	std::cout << str << " : a = " << a << " b = " << b << DEFAULT << std::endl;
 
 }
 

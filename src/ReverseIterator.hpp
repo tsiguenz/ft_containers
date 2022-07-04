@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/28 11:46:21 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/06/30 17:50:17 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/07/04 16:58:50 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,76 +26,75 @@ namespace ft {
 				typedef typename std::iterator_traits<T*>::iterator_category	iterator_category;
 
 			private:
-				pointer	_ptr;
+				T*	_ptr;
 
 			public:
 				// Object managment
-				RandomAccessIterator(): _ptr() { };
-				RandomAccessIterator(T* pointer): _ptr(pointer) { }
-
-				template<typename U>
-					RandomAccessIterator(U pointer): _ptr(&(*pointer)) { }
-
-				RandomAccessIterator(RandomAccessIterator const& it) { *this = it; }
-				~RandomAccessIterator() { }
+				ReverseIterator(): _ptr() { };
+				ReverseIterator(pointer ptr): _ptr(ptr) { }
+				ReverseIterator(ReverseIterator<T> const& it) { *this = it; }
+				~ReverseIterator() { }
 
 				// Operators
-				RandomAccessIterator<T>&	operator=(RandomAccessIterator<T> const& it){
+				operator ReverseIterator<T const>() {
+					return ReverseIterator<T const>(this->_ptr);
+				}
+				ReverseIterator<T>&	operator=(ReverseIterator<T> const& it){
 					this->_ptr = it._ptr;
 					return *this;
 				}
-				RandomAccessIterator<T>&	operator++(){
-					this->_ptr++;
-					return *this;
-				}
-				RandomAccessIterator<T>	operator++(int) {
-					RandomAccessIterator<T>	tmp = *this;
-					++(*this);
-					return tmp;
-				}
-				RandomAccessIterator<T>&	operator--() {
+				ReverseIterator<T>&	operator++(){
 					this->_ptr--;
 					return *this;
 				}
-				RandomAccessIterator<T>	operator--(int) {
-					RandomAccessIterator<T>	tmp = *this;
-					--(*this);
+				ReverseIterator<T>	operator++(int) {
+					ReverseIterator<T>	tmp = *this;
+					this->_ptr--;
 					return tmp;
 				}
-				RandomAccessIterator<T>	operator+(difference_type const& n) {
-					return this->_ptr + n;
-				}
-				RandomAccessIterator<T>&	operator+=(difference_type const& n) {
-					this->_ptr += n;
+				ReverseIterator<T>&	operator--() {
+					this->_ptr++;
 					return *this;
 				}
-				RandomAccessIterator<T>	operator-(difference_type const& n) {
+				ReverseIterator<T>	operator--(int) {
+					ReverseIterator<T>	tmp = *this;
+					this->_ptr++;
+					return tmp;
+				}
+				ReverseIterator<T>	operator+(difference_type const& n) {
 					return this->_ptr - n;
 				}
-				RandomAccessIterator<T>&	operator-=(difference_type const& n) {
+				ReverseIterator<T>&	operator+=(difference_type const& n) {
 					this->_ptr -= n;
+					return *this;
+				}
+				ReverseIterator<T>	operator-(difference_type const& n) {
+					return this->_ptr + n;
+				}
+				ReverseIterator<T>&	operator-=(difference_type const& n) {
+					this->_ptr += n;
 					return *this;
 				}
 				T&	operator*() {
 					return *(this->_ptr);
 				}
-				bool	operator==(RandomAccessIterator<T> const& it) const {
+				bool	operator==(ReverseIterator<T> const& it) const {
 					return this->_ptr == it._ptr;
 				}
-				bool	operator!=(RandomAccessIterator<T> const& it) const {
+				bool	operator!=(ReverseIterator<T> const& it) const {
 					return this->_ptr != it._ptr;
 				}
-				bool	operator<(RandomAccessIterator<T> const& it) const {
-					return this->_ptr < it._ptr;
-				}
-				bool	operator<=(RandomAccessIterator<T> const& it) const {
-					return this->_ptr <= it._ptr;
-				}
-				bool	operator>(RandomAccessIterator<T> const& it) const {
+				bool	operator<(ReverseIterator<T> const& it) const {
 					return this->_ptr > it._ptr;
 				}
-				bool	operator>=(RandomAccessIterator<T> const& it) const {
+				bool	operator<=(ReverseIterator<T> const& it) const {
 					return this->_ptr >= it._ptr;
+				}
+				bool	operator>(ReverseIterator<T> const& it) const {
+					return this->_ptr < it._ptr;
+				}
+				bool	operator>=(ReverseIterator<T> const& it) const {
+					return this->_ptr <= it._ptr;
 				}
 		};
 }
