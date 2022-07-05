@@ -1,35 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   EnableIf.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/20 10:53:55 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/07/05 13:45:11 by tsiguenz         ###   ########.fr       */
+/*   Created: 2022/07/05 13:37:24 by tsiguenz          #+#    #+#             */
+/*   Updated: 2022/07/05 16:34:56 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <iostream>
+#ifndef ENABLE_IF_HPP
+# define ENABLE_IF_HPP
 
-// mandatory
-#include <vector>
-#include <vector.hpp>
-#include <vector>
-#include <EnableIf.hpp>
+namespace ft {
+	template<bool, typename T = void>
+		struct	enable_if { };
 
-// test
-#include <vector_test.hpp>
-#include <utils_test.hpp>
-
-int	main() {
-
-	std::cout << VECTOR_ASCII << std::endl;
-	tests_numeric<int>();
-//	tests_numeric<int const>();
-//	tests_numeric<short>();
-//	tests_numeric<float>();
-//	tests_numeric<double>();
-	return 0;
+	template<typename T>
+		struct	enable_if<true, T> {
+			typedef T	type;
+		};
 }
 
+#endif // ENABLE_IF_HPP

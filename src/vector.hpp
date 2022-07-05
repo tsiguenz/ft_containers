@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 10:48:08 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/07/04 17:48:22 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/07/05 17:01:00 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 #include <RandomAccessIterator.hpp>
 #include <ReverseIterator.hpp>
+#include <EnableIf.hpp>
+#include <TypeTraits.hpp>
 
 namespace ft {
 	template < class T, class Allocator = std::allocator<T> >
@@ -30,16 +32,17 @@ namespace ft {
 			typedef const value_type&							const_reference;
 			typedef size_t										size_type;
 			typedef std::ptrdiff_t								difference_type;
-			typedef RandomAccessIterator<T>						iterator;
-			typedef RandomAccessIterator<const T>				const_iterator;
-			typedef ReverseIterator<T>							reverse_iterator;
-			typedef ReverseIterator<const T>					const_reverse_iterator;
+			typedef ft::RandomAccessIterator<T>					iterator;
+			typedef ft::RandomAccessIterator<const T>			const_iterator;
+			typedef ft::ReverseIterator<T>						reverse_iterator;
+			typedef ft::ReverseIterator<const T>				const_reverse_iterator;
 
 		// Object managment
 
 			// Default
 			explicit vector(allocator_type const& alloc = allocator_type())
-				: _c(0), _size(0), _allocator(alloc) { }
+				: _c(0), _size(0), _allocator(alloc) {
+			}
 
 			// Fill
 			explicit vector(size_type count,
@@ -54,18 +57,15 @@ namespace ft {
 				vector (InputIterator first, InputIterator last,
 						allocator_type const& alloc = allocator_type()) {
 				this->_allocator = alloc;
-				this->_size = distance(first, last);
-				this->_c = this->_allocator.allocate(this->_size);
-				for (size_type i = 0; first < last; first++) {
-					this->_allocator.construct(this->_c + i, first);
-					i++;
-				}
+				this->_size = _distance(first, last);
+				typedef typename	ft::is_integral<InputIterator>::type	_Integral;
+				_range_insert<InputIterator>(first, last, _Integral());
 			}
 
 			// Copy
 			vector(vector const& rhs) { *this = rhs; }
 
-			// Destruct
+			// Destructor
 			~vector() { this->clear(); }
 
 		// Operators
@@ -132,13 +132,29 @@ namespace ft {
 
 		private:
 			template<typename InputIterator>
-			size_type	distance(InputIterator it, InputIterator ite) {
+			size_type	_distance(InputIterator it, InputIterator ite) {
 				size_type	res = 0;
 
 				for (;it != ite; it++) {
 					res++;
 				}
 				return res;
+			}
+
+			// Specialization for integral of _range_insert
+			template<typename _Integral>
+			void	_range_insert(_Integral count, _Integral value, ft::true_type) {
+				this->assign(count, value);
+			}
+
+			// Default function template _range_insert
+			template<typename InputIterator>
+			void	_range_insert(InputIterator first, InputIterator last, ft::false_type) {
+				this->_c = this->_allocator.allocate(this->_size);
+				for (size_type i = 0; first < last; first++) {
+					this->_allocator.construct(this->_c + i, *first);
+					i++;
+				}
 			}
 	};
 }
