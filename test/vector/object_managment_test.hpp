@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 15:00:26 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/07/14 12:02:29 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/07/14 17:43:24 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,18 +32,16 @@ void	objectManagmentTest() {
 		assertEq("Uninitialize value", ftV1[0], stdV1[0]);
 		assertEq("Fill Constructor with initialisation", ftV2.size(), stdV2.size());
 		assertEq("Test value", ftV2[0], stdV2[0]);
-		std::cout << "Modify the value of V2" << std::endl;
 		for (int i = 0; i < 5; i++) {
 			ftV2[i] += (5 * i);
 			stdV2[i] += (5 * i);
 		}
 		ft::vector<T>	ftV3(ftV2.begin(), ftV2.end());
 		std::vector<T>	stdV3(stdV2.begin(), stdV2.end());
-		assertEq("Range Constructor size", ftV3.size(), stdV3.size());
-		for (int i = 0; i < 5; i++) {
-			std::cout << "i = " << i << std::endl;
-			assertEq("Range Constructor v3[i]", ftV3[i], stdV3[i]);
-		}
+		assertEq("Range constructor is equal ?", ftV2 == ftV3, stdV2 == stdV3);
+		ft::vector<T>	ftV4(ftV3);
+		std::vector<T>	stdV4(stdV3);
+		assertEq("Copy constructor is equal ?", ftV4 == ftV3, stdV4 == stdV3);
 	}
 }
 #endif // OBJECT_MANAGMENT_TEST_HPP

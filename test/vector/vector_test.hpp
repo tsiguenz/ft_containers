@@ -6,16 +6,18 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 17:14:11 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/07/14 12:02:56 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/07/14 18:26:34 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TEST_VECTOR_HPP
-# define TEST_VECTOR_HPP
+#ifndef VECTOR_TEST_HPP
+# define VECTOR_TEST_HPP
 
 #include <utils_test.hpp>
 #include <iterator_test.hpp>
 #include <object_managment_test.hpp>
+#include <functions_test.hpp>
+#include <operators_test.hpp>
 
 #define CONST true
 #define NOT_CONST false
@@ -26,12 +28,16 @@ void	tests_numeric() {
 	namespace ft = std;
 #endif
 	std::cout << LINE << std::endl;
-	std::cout 	<< "======================================= " 
-				<< typeid(T).name()
-				<< " ======================================" << std::endl;
+	std::cout << "======================================= " 
+		<< typeid(T).name() << " ======================================" << std::endl;
 
 	std::cout << LINE << std::endl;
+
 	objectManagmentTest<T>();
+// TODO uncomment when push_back is done
+//	operatorsTest<T>();
+
+// iterators tests :
 	{
 		ft::vector<T>	ftV(20);
 		std::vector<T>	stdV(20);
@@ -41,30 +47,22 @@ void	tests_numeric() {
 		}
 		std::cout << "----------  RandomAccessIterator class : ----------" << std::endl;
 		iteratorTest<T, typename ft::vector<T>::iterator, 
-						typename std::vector<T>::iterator>
-							(ftV.begin(), stdV.begin());
+			typename std::vector<T>::iterator> (ftV.begin(), stdV.begin());
+
 		std::cout << "----------  ConstRandomAccessIterator class : ----------" << std::endl;
 		iteratorTest<T, typename ft::vector<T>::const_iterator,
-						typename std::vector<T>::const_iterator>
-							(ftV.begin(), stdV.begin());
+			typename std::vector<T>::const_iterator> (ftV.begin(), stdV.begin());
+
 		std::cout << "----------  ReverseIterator class : ----------" << std::endl;
 		iteratorTest<T, typename ft::vector<T>::reverse_iterator,
-						typename std::vector<T>::reverse_iterator>
-							(ftV.rbegin(), stdV.rbegin());
+			typename std::vector<T>::reverse_iterator> (ftV.rbegin(), stdV.rbegin());
+
 		std::cout << "----------  ConstReverseIterator class : ----------" << std::endl;
 		iteratorTest<T, typename ft::vector<T>::const_reverse_iterator,
-						typename std::vector<T>::const_reverse_iterator>
-							(ftV.rbegin(), stdV.rbegin());
+			typename std::vector<T>::const_reverse_iterator> (ftV.rbegin(), stdV.rbegin());
+
 	}
-//	std::cout << "----------  Member functions tests : ----------" << std::endl;
-//	{
-//		assertEq("front", ftV.front(), stdV.front());
-//		assertEq("back", ftV.back(), stdV.back());
-//		stdIt = stdV.end() - 1;
-//		ftIt = ftV.end() - 1;
-//		std::cout << *stdIt << std::endl;
-//		std::cout << *ftIt << std::endl;
-//	}
+	functionsTest<T>();
 }
 
-#endif // TEST_VECTOR_HPP
+#endif // VECTOR_TEST_HPP
