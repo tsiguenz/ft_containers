@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 10:48:08 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/07/05 17:01:00 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/07/14 12:23:02 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,20 +46,19 @@ namespace ft {
 
 			// Fill
 			explicit vector(size_type count,
-							T const& value = T(),
-							Allocator const& alloc = Allocator()) {
-				this->_allocator = alloc;
-				this->assign(count, value);
+				T const& value = T(),
+				Allocator const& alloc = Allocator()) {
+					this->_allocator = alloc;
+					this->assign(count, value);
 			}
 
 			// Range
 			template<class InputIterator>
-				vector (InputIterator first, InputIterator last,
-						allocator_type const& alloc = allocator_type()) {
-				this->_allocator = alloc;
-				this->_size = _distance(first, last);
-				typedef typename	ft::is_integral<InputIterator>::type	_Integral;
-				_range_insert<InputIterator>(first, last, _Integral());
+			vector (InputIterator first, InputIterator last,
+				allocator_type const& alloc = allocator_type()) {
+					this->_allocator = alloc;
+					this->_size = _distance(first, last);
+					_range_insert<InputIterator>(first, last);
 			}
 
 			// Copy
@@ -143,13 +142,15 @@ namespace ft {
 
 			// Specialization for integral of _range_insert
 			template<typename _Integral>
-			void	_range_insert(_Integral count, _Integral value, ft::true_type) {
-				this->assign(count, value);
+			typename ft::enable_if<ft::is_integral<_Integral>::value>::type
+			_range_insert(_Integral count, _Integral value) {
+					this->assign(count, value);
 			}
 
 			// Default function template _range_insert
 			template<typename InputIterator>
-			void	_range_insert(InputIterator first, InputIterator last, ft::false_type) {
+			typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type
+			_range_insert(InputIterator first, InputIterator last) {
 				this->_c = this->_allocator.allocate(this->_size);
 				for (size_type i = 0; first < last; first++) {
 					this->_allocator.construct(this->_c + i, *first);
