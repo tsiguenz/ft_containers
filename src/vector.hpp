@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 10:48:08 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/07/15 12:47:09 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/07/15 14:56:06 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,13 +70,13 @@ namespace ft {
 
 				// Destructor
 				~vector() {
-					_free_all();
+					_freeAll();
 				}
 
 				// Operators
 
 				vector&	operator=(vector const& rhs) {
-					_free_all();
+					_freeAll();
 					this->_allocator = rhs._allocator;
 					this->_size = rhs._size;
 					this->_capacity = rhs._capacity;
@@ -89,7 +89,7 @@ namespace ft {
 				// Member functions
 
 				void	assign(size_type count, const_reference value) {
-					_free_all();
+					_freeAll();
 					this->_size = count;
 					this->_capacity = this->_size;
 					this->_c = this->_allocator.allocate(count);
@@ -100,7 +100,7 @@ namespace ft {
 				template<class InputIt>
 					typename ft::enable_if<!ft::is_integral<InputIt>::value>::type
 					assign(InputIt first, InputIt last) {
-						_free_all();
+						_freeAll();
 						this->_size = distance(first, last);
 						this->_capacity = this->_size;
 						this->_c = this->_allocator.allocate(this->_capacity);
@@ -184,7 +184,7 @@ namespace ft {
 					if (new_cap <= this->_capacity)
 						return ;
 					ft::vector<T>	tmp = *this;
-					_free_all();
+					_freeAll();
 					this->_size = tmp._size;
 					this->_capacity = new_cap;
 					this->_allocator = tmp._allocator;
@@ -213,17 +213,22 @@ namespace ft {
 				}
 
 				iterator	insert(iterator pos, const_reference value) {
-
+					if (this->_size > this->_capacity)
+						this->reserve(_capacity + 1);
+					_move_range(pos, 1);
+					*pos = value;
+					this->_size++;
+					return pos;
 				}
 
-				void	insert(iterator pos, size_type count, const_reference value) {
-
-				}
-
-				template<class InputIt>
-				void	insert(iterator pos, InputIt first, InputIt last) {
-					
-				}
+//				void	insert(iterator pos, size_type count, const_reference value) {
+//
+//				}
+//
+//				template<class InputIt>
+//				void	insert(iterator pos, InputIt first, InputIt last) {
+//					
+//				}
 
 			protected:
 				pointer		_c;
@@ -233,9 +238,20 @@ namespace ft {
 
 			private:
 
-				void	_free_all() {
+				void	_freeAll() {
 					this->clear();
 					this->_allocator.deallocate(this->_c, this->_capacity);
+				}
+
+				template<class Iterator>
+				void	_move_range(Iterator const& from, size_type n) {
+					typename ft::vector<T>::iterator	curr = (this->end() - 1) + n;
+					if (from == this->end())
+						return ;
+					while (curr != from) {
+						*curr = *(curr - n);
+						curr--;
+					}
 				}
 		};
 

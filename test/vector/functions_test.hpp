@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/14 16:49:25 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/07/15 12:19:14 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/07/15 14:48:40 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,21 @@ void	functionsTest() {
 		b.reserve(4);
 		assertEq("reserve do nothing size", a.size(), b.size());
 		assertEq("reserve do nothing capacity", a.capacity(), b.capacity());
+	}
+	// insert
+	{
+		ft::vector<T>	a(3);
+		std::vector<T>	b(3);
+		
+		for (int i = 0; i < 3; i++) {
+			a[i] = i * 10;
+			b[i] = i * 10;
+		//	std::cout << a[i] << std::endl;
+		}
+		a.insert(a.begin() + 1, 42);
+//		for (int i = 0; i < 4; i++) {
+//			std::cout << a[i] << std::endl;
+//		}
 	}
 	//TODO add tests with capacity in others functions
 }
