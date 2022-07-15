@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/14 16:49:25 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/07/15 14:48:40 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/07/15 18:04:45 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,10 @@ void	functionsTest() {
 		std::swap(b1, b2);
 		assertEq("swap compare first element", (a2 == a4), (b2 == b4));
 		assertEq("swap compare second element", (a1 == a3), (b1 == b3));
+		assertEq("size after swap", a1.size(), b1.size());
+		assertEq("size after swap", a2.size(), b2.size());
+		assertEq("capacity after swap", a1.capacity(), b1.capacity());
+		assertEq("capacity after swap", a2.capacity(), b2.capacity());
 	}
 	// assign
 	{
@@ -51,9 +55,11 @@ void	functionsTest() {
 		b1.assign(4, 42);
 		b2.assign(b1.begin() + 1, b1.end() - 1);
 		assertEq("assign first overload compare size", a1.size(), b1.size());
+		assertEq("assign first overload compare capacity", a1.capacity(), b1.capacity());
 		for (int i = 0; i < 4; i++)
 			assertEq("assign first overload compare elements", a1[i], b1[i]);
 		assertEq("assign second overload compare size", a2.size(), b2.size());
+		assertEq("assign second overload compare capacity", a2.capacity(), b2.capacity());
 		for (int i = 0; i < 2; i++)
 			assertEq("assign second overload compare elements", a2[i], b2[i]);
 		a1.assign(2, 12);
@@ -61,9 +67,11 @@ void	functionsTest() {
 		a2.assign(a1.begin() + 1, a1.end());
 		b2.assign(b1.begin() + 1, b1.end());
 		assertEq("assign a second time first overload compare size", a1.size(), b1.size());
+		assertEq("assign a second time first overload compare capacity", a1.capacity(), b1.capacity());
 		for (int i = 0; i < 2; i++)
 			assertEq("assign a second time first overload compare elements", a1[i], b1[i]);
 		assertEq("assign a second time second overload compare size", a2.size(), b2.size());
+		assertEq("assign a second time second overload compare capacity", a2.capacity(), b2.capacity());
 		for (int i = 0; i < 1; i++)
 			assertEq("assign a second time second overload compare elements", a2[i], b2[i]);
 	}
@@ -80,7 +88,7 @@ void	functionsTest() {
 		int	nbException = 0;
 		ft::vector<T>	a(3);
 		std::vector<T>	b(3);
-		
+
 		for (int i = 0; i < 3; i++) {
 			a.at(i) = i * 10;
 			b.at(i) = i * 10;
@@ -105,7 +113,7 @@ void	functionsTest() {
 	{
 		ft::vector<T>	a(3);
 		std::vector<T>	b(3);
-		
+
 		for (int i = 0; i < 3; i++) {
 			a[i] = i * 10;
 			b[i] = i * 10;
@@ -121,7 +129,7 @@ void	functionsTest() {
 	{
 		ft::vector<T>	a(3);
 		std::vector<T>	b(3);
-		
+
 		for (int i = 0; i < 3; i++) {
 			a[i] = i * 10;
 			b[i] = i * 10;
@@ -148,6 +156,9 @@ void	functionsTest() {
 		ft::vector<T>	c(3);
 		std::vector<T>	d(3);
 		assertEq("empty of empty vector", a.empty(), b.empty());
+		a.reserve(10);
+		b.reserve(10);
+		assertEq("empty of empty vector but reserve(10)", a.empty(), b.empty());
 		assertEq("empty of non empty vector", c.empty(), d.empty());
 		assertEq("size of empty vector", a.size(), b.size());
 		assertEq("size of non empty vector", c.size(), d.size());
@@ -166,24 +177,37 @@ void	functionsTest() {
 		assertEq("reserve capacity", a.capacity(), b.capacity());
 		a.reserve(4);
 		b.reserve(4);
-		assertEq("reserve do nothing size", a.size(), b.size());
-		assertEq("reserve do nothing capacity", a.capacity(), b.capacity());
-	}
-	// insert
-	{
-		ft::vector<T>	a(3);
-		std::vector<T>	b(3);
+		assertEq("check size reserve(4) on vector capacity = 5", a.size(), b.size());
+		assertEq("check capacity reserve(4) on vector capacity = 5", a.capacity(), b.capacity());
+		a.reserve(1);
+		b.reserve(1);
+		assertEq("check size reserve(1) on vector capacity = 5", a.size(), b.size());
+		assertEq("check capacity reserve(1) on vector capacity = 5", a.capacity(), b.capacity());
+		a.clear();
+		b.clear();
+		assertEq("check vector is empty after clear", a.empty(), b.empty());
+		assertEq("check vector capacity after clear", a.capacity(), b.capacity());
+		assertEq("check vector size after clear", a.size(), b.size());
 		
-		for (int i = 0; i < 3; i++) {
-			a[i] = i * 10;
-			b[i] = i * 10;
-		//	std::cout << a[i] << std::endl;
-		}
-		a.insert(a.begin() + 1, 42);
+	}
+//	// insert
+//	{
+//		ft::vector<T>	a(3);
+//		std::vector<T>	b(3);
+//
+//		for (int i = 0; i < 3; i++) {
+//			a[i] = i * 10;
+//			b[i] = i * 10;
+//			std::cout << a[i] << std::endl;
+//		}
+//		a.insert(a.begin(), 42);
+//		b.insert(b.begin(), 42);
+//		assertEq("size after first implementation of insert", a.size(), b.size());
+//		assertEq("capacity after first implementation of insert", a.capacity(), b.capacity());
 //		for (int i = 0; i < 4; i++) {
 //			std::cout << a[i] << std::endl;
 //		}
-	}
+//	}
 	//TODO add tests with capacity in others functions
 }
 
