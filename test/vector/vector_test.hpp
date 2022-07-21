@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 17:14:11 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/07/15 17:25:35 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/07/21 11:36:17 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ void	tests_numeric() {
 	std::cout << LINE << std::endl;
 
 	objectManagmentTest<T>();
-// TODO uncomment when push_back is done
-//	operatorsTest<T>();
+
+	operatorsTest<T>();
 
 // iterators tests :
 	{

@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 10:48:08 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/07/15 18:18:07 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/07/21 12:49:59 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,13 +89,13 @@ namespace ft {
 				// Member functions
 
 				void	assign(size_type count, const_reference value) {
-					this->clear();
+					_freeAll();
 					this->_size = count;
 					if (this->_capacity == 0)
 						this->_capacity = count;
 					while (this->_capacity < count)
 						reserve(this->_capacity * 2);
-					this->_c = this->_allocator.allocate(count);
+					this->_c = this->_allocator.allocate(this->_capacity);
 					for (size_type i = 0; i < count; i++)
 						this->_allocator.construct(this->_c + i, value);
 				}
@@ -103,7 +103,7 @@ namespace ft {
 				template<class InputIt>
 					typename ft::enable_if<!ft::is_integral<InputIt>::value>::type
 					assign(InputIt first, InputIt last) {
-						this->clear();
+						_freeAll();
 						this->_size = distance(first, last);
 						if (this->_capacity == 0)
 							this->_capacity = this->_size;
@@ -195,12 +195,10 @@ namespace ft {
 					this->_capacity = new_cap;
 					this->_allocator = tmp._allocator;
 					this->_c = this->_allocator.allocate(this->_capacity);
-					// use insert
+					// TODO use insert
 					for (size_type i = 0; i < this->_size; i++) {
 						this->_allocator.construct(this->_c + i, tmp[i]);
 					}
-					for (size_type i = this->_size; i < this->_capacity; i++)
-						this->_allocator.construct(this->_c + i, 0);
 				}
 
 				size_type	capacity() const { return this->_capacity; }
@@ -208,9 +206,8 @@ namespace ft {
 				// Modifiers
 
 				void	clear() {
-					//TODO do we need this ?
-					//	if (this->_size == 0 || this->_c == NULL)
-					//		return ;
+					if (this->_size == 0 || this->_c == NULL)
+						return ;
 					for (size_type i = 0; i < this->_size; i++)
 						this->_allocator.destroy(this->_c + i);
 					this->_size = 0;
@@ -218,23 +215,54 @@ namespace ft {
 				}
 
 				iterator	insert(iterator pos, const_reference value) {
-					if (this->_size == this->_capacity)
-						this->reserve(this->_capacity * 2);
+					int	index_of_pos = 0;
+
+					if (this->_size == 0) {
+						push_back(value);
+						return this->begin();
+					}
+					for (iterator	it = this->begin(); it != pos; it++)
+						index_of_pos++;
+					reserve(this->_capacity * 2);
+					pos = this->begin() + index_of_pos;
 					_move_range(pos, 1);
 					*pos = value;
 					this->_size++;
-					std::cout << "end of insert" << std::endl;
 					return pos;
 				}
 
-				//				void	insert(iterator pos, size_type count, const_reference value) {
-				//
-				//				}
-				//
-				//				template<class InputIt>
-				//				void	insert(iterator pos, InputIt first, InputIt last) {
-				//					
-				//				}
+				void	insert(iterator pos, size_type count, const_reference value) {
+					int	index_of_pos = 0;
+
+					if (this->_size == 0) {
+						for (size_type i = 0; i < count; i++)
+							push_back(value);
+					}
+					for (iterator	it = this->begin(); it != pos; it++)
+						index_of_pos++;
+					if (this->_capacity < this->_size + count)
+						reserve(this->_capacity + count);
+					pos = this->begin() + index_of_pos;
+					std::cout << index_of_pos << std::endl;
+					_move_range(pos, count);
+					//for (size_type i = 0; i < count; i++)
+					//	*(pos + i) = value;
+					this->_size += count;
+				}
+
+//				template<class InputIt>
+//				void	insert(iterator pos, InputIt first, InputIt last) {
+//					
+//				}
+
+				void	push_back(const_reference value) {
+					if (this->begin() == this->end())
+						reserve(1);
+					if (this->_size == this->_capacity)
+						reserve(this->_capacity * 2);
+					this->_allocator.construct(this->_c + this->_size, value);
+					this->_size++;
+				}
 
 			protected:
 				pointer		_c;
@@ -249,16 +277,16 @@ namespace ft {
 					this->_allocator.deallocate(this->_c, this->_capacity);
 				}
 
-				void	_move_range(iterator from, difference_type n) {
+				void	_move_range(iterator from, size_type n) {
 					iterator	curr = this->end() + n - 1;
+
 					if (from == this->end())
 						return ;
-					while (curr != from) {
-						std::cout << "invalid read " << n << std::endl;
+					std::cout << this->_size << std::endl;
+					for (size_type i = 0; i < this->_size; i++) {
 						*curr = *(curr - n);
 						curr--;
 					}
-					std::cout << "end of _move_range" << std::endl;
 				}
 		};
 

@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/14 16:49:25 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/07/15 18:04:45 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/07/21 12:52:37 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,25 +190,59 @@ void	functionsTest() {
 		assertEq("check vector size after clear", a.size(), b.size());
 		
 	}
-//	// insert
-//	{
-//		ft::vector<T>	a(3);
-//		std::vector<T>	b(3);
-//
-//		for (int i = 0; i < 3; i++) {
-//			a[i] = i * 10;
-//			b[i] = i * 10;
-//			std::cout << a[i] << std::endl;
-//		}
-//		a.insert(a.begin(), 42);
-//		b.insert(b.begin(), 42);
-//		assertEq("size after first implementation of insert", a.size(), b.size());
-//		assertEq("capacity after first implementation of insert", a.capacity(), b.capacity());
-//		for (int i = 0; i < 4; i++) {
-//			std::cout << a[i] << std::endl;
-//		}
-//	}
-	//TODO add tests with capacity in others functions
+	// insert single element
+	{
+		ft::vector<T>	a(2, 5);
+		std::vector<T>	b(2, 5);
+
+		assertEq("insert return value", *a.insert(a.begin(), 42), *b.insert(b.begin(), 42));
+		assertEq("size after insert single element", a.size(), b.size());
+		assertEq("capacity after insert single element", a.capacity(), b.capacity());
+		for (int i = 0; i < 3; i++) {
+			assertEq("data compare after insert", a[i], b[i]);
+		}
+		ft::vector<T>	a1;
+		std::vector<T>	b1;
+
+		assertEq("insert empty vector return value", *a1.insert(a1.begin(), 42), *b1.insert(b1.begin(), 42));
+		assertEq("insert to empty vector", a1[0], b1[0]);
+		assertEq("check size after insert", a1.size(), b1.size());
+		assertEq("check capacity after insert", a1.capacity(), b1.capacity());
+	}
+	// insert fill
+	{
+		ft::vector<T>	a(1, 5);
+		std::vector<T>	b(1, 5);
+
+		a.insert(a.begin(), 2, 42);
+		b.insert(b.begin(), 2, 42);
+		assertEq("size after fill insert", a.size(), b.size());
+		assertEq("capacity after fill insert", a.capacity(), b.capacity());
+		for (int i = 0; i < 3; i++) {
+			assertEq("data compare after insert", a[i], b[i]);
+		}
+
+	}
+	// push_back
+	{
+		ft::vector<T>	a;
+		std::vector<T>	b;
+
+		a.push_back(42);
+		b.push_back(42);
+		assertEq("push back to empty vector", a[0], b[0]);
+		assertEq("check size after push back", a.size(), b.size());
+		assertEq("check capacity after push back", a.capacity(), b.capacity());
+
+		ft::vector<T>	a1(5);
+		std::vector<T>	b1(5);
+
+		a1.push_back(42);
+		b1.push_back(42);
+		assertEq("push back to non empty vector", *(a1.end() - 1), *(b1.end() - 1));
+		assertEq("check size after push back", a1.size(), b1.size());
+		assertEq("check capacity after push back", a1.capacity(), b1.capacity());
+	}
 }
 
 #endif // FUNCTIONS_TEST_HPP
