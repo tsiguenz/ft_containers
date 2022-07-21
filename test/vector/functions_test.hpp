@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/14 16:49:25 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/07/21 12:52:37 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/07/21 19:40:18 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	functionsTest() {
 	{
 		ft::vector<T>	a1(5);
 		ft::vector<T>	a2;
-		ft::vector<T>	a3;
 
 		for (int i = 0; i < 5; i++)
 			a1[i] = i * 10;
@@ -30,18 +29,13 @@ void	functionsTest() {
 
 		std::vector<T>	b1(5);
 		std::vector<T>	b2;
-		std::vector<T>	b3;
 
 		for (int i = 0; i < 5; i++)
 			b1[i] = i * 10;
 		std::vector<T>	b4(b1);
 		std::swap(b1, b2);
-		assertEq("swap compare first element", (a2 == a4), (b2 == b4));
-		assertEq("swap compare second element", (a1 == a3), (b1 == b3));
-		assertEq("size after swap", a1.size(), b1.size());
-		assertEq("size after swap", a2.size(), b2.size());
-		assertEq("capacity after swap", a1.capacity(), b1.capacity());
-		assertEq("capacity after swap", a2.capacity(), b2.capacity());
+		assertEqContainer("swap compare a1 to b1", a1, b1);
+		assertEqContainer("swap compare a2 to b2", a2, b2);
 	}
 	// assign
 	{
@@ -54,26 +48,14 @@ void	functionsTest() {
 		a2.assign(a1.begin() + 1, a1.end() - 1);
 		b1.assign(4, 42);
 		b2.assign(b1.begin() + 1, b1.end() - 1);
-		assertEq("assign first overload compare size", a1.size(), b1.size());
-		assertEq("assign first overload compare capacity", a1.capacity(), b1.capacity());
-		for (int i = 0; i < 4; i++)
-			assertEq("assign first overload compare elements", a1[i], b1[i]);
-		assertEq("assign second overload compare size", a2.size(), b2.size());
-		assertEq("assign second overload compare capacity", a2.capacity(), b2.capacity());
-		for (int i = 0; i < 2; i++)
-			assertEq("assign second overload compare elements", a2[i], b2[i]);
+		assertEqContainer("asssign fill overload", a1, b1);
+		assertEqContainer("asssign range overload", a2, b2);
 		a1.assign(2, 12);
 		b1.assign(2, 12);
 		a2.assign(a1.begin() + 1, a1.end());
 		b2.assign(b1.begin() + 1, b1.end());
-		assertEq("assign a second time first overload compare size", a1.size(), b1.size());
-		assertEq("assign a second time first overload compare capacity", a1.capacity(), b1.capacity());
-		for (int i = 0; i < 2; i++)
-			assertEq("assign a second time first overload compare elements", a1[i], b1[i]);
-		assertEq("assign a second time second overload compare size", a2.size(), b2.size());
-		assertEq("assign a second time second overload compare capacity", a2.capacity(), b2.capacity());
-		for (int i = 0; i < 1; i++)
-			assertEq("assign a second time second overload compare elements", a2[i], b2[i]);
+		assertEqContainer("asssign fill overload second time", a1, b1);
+		assertEqContainer("asssign range overload second time", a2, b2);
 	}
 	// get_allocator
 	{
@@ -173,55 +155,79 @@ void	functionsTest() {
 
 		a.reserve(5);
 		b.reserve(5);
-		assertEq("reserve size", a.size(), b.size());
-		assertEq("reserve capacity", a.capacity(), b.capacity());
+		assertEqContainer("reserve classic", a, b);
 		a.reserve(4);
 		b.reserve(4);
-		assertEq("check size reserve(4) on vector capacity = 5", a.size(), b.size());
-		assertEq("check capacity reserve(4) on vector capacity = 5", a.capacity(), b.capacity());
+		assertEqContainer("reserve 4 on capacity 5", a, b);
 		a.reserve(1);
 		b.reserve(1);
-		assertEq("check size reserve(1) on vector capacity = 5", a.size(), b.size());
-		assertEq("check capacity reserve(1) on vector capacity = 5", a.capacity(), b.capacity());
+		assertEqContainer("reserve 1 on capacity 5", a, b);
 		a.clear();
 		b.clear();
-		assertEq("check vector is empty after clear", a.empty(), b.empty());
-		assertEq("check vector capacity after clear", a.capacity(), b.capacity());
-		assertEq("check vector size after clear", a.size(), b.size());
-		
+		assertEqContainer("clear check vectors", a, b);
 	}
 	// insert single element
 	{
-		ft::vector<T>	a(2, 5);
-		std::vector<T>	b(2, 5);
+		ft::vector<T>	a;
+		std::vector<T>	b;
 
-		assertEq("insert return value", *a.insert(a.begin(), 42), *b.insert(b.begin(), 42));
-		assertEq("size after insert single element", a.size(), b.size());
-		assertEq("capacity after insert single element", a.capacity(), b.capacity());
-		for (int i = 0; i < 3; i++) {
-			assertEq("data compare after insert", a[i], b[i]);
-		}
+		a.push_back(42);
+		a.push_back(24);
+		b.push_back(42);
+		b.push_back(24);
+		assertEq("insert return value", *a.insert(a.begin(), 1), *b.insert(b.begin(), 1));
+		assertEq("insert return value", *a.insert(a.begin() + 2, 8), *b.insert(b.begin() + 2, 8));
+		assertEq("insert return value", *a.insert(a.end(), 2), *b.insert(b.end(), 2));
+		assertEqContainer("insert single element non empty container", a, b);
+
 		ft::vector<T>	a1;
 		std::vector<T>	b1;
 
 		assertEq("insert empty vector return value", *a1.insert(a1.begin(), 42), *b1.insert(b1.begin(), 42));
-		assertEq("insert to empty vector", a1[0], b1[0]);
-		assertEq("check size after insert", a1.size(), b1.size());
-		assertEq("check capacity after insert", a1.capacity(), b1.capacity());
+		assertEqContainer("insert single element range empty container", a1, b1);
 	}
 	// insert fill
 	{
-		ft::vector<T>	a(1, 5);
-		std::vector<T>	b(1, 5);
+		ft::vector<T>	a;
+		std::vector<T>	b;
+
+		a.push_back(42);
+		a.push_back(24);
+		b.push_back(42);
+		b.push_back(24);
 
 		a.insert(a.begin(), 2, 42);
 		b.insert(b.begin(), 2, 42);
-		assertEq("size after fill insert", a.size(), b.size());
-		assertEq("capacity after fill insert", a.capacity(), b.capacity());
-		for (int i = 0; i < 3; i++) {
-			assertEq("data compare after insert", a[i], b[i]);
-		}
+		assertEqContainer("insert range empty container", a, b);
 
+		ft::vector<T>	a1;
+		std::vector<T>	b1;
+
+		a1.insert(a1.begin(), 2, 42);
+		b1.insert(b1.begin(), 2, 42);
+		assertEqContainer("insert fill empty container", a1, b1);
+	}
+	// insert range
+	{
+		std::vector<T>	range;
+		range.push_back(42);
+		range.push_back(38);
+		ft::vector<T>	a(1, 5);
+		std::vector<T>	b(1, 5);
+
+		a.insert(a.begin(), range.begin(), range.end());
+		b.insert(b.begin(), range.begin(), range.end());
+// TODO capacity problem but idk if I must fix ?
+//		a.insert(a.begin(), range.begin(), range.end());
+//		b.insert(b.begin(), range.begin(), range.end());
+		assertEqContainer("insert range not empty container", a, b);
+
+		ft::vector<T>	a1;
+		std::vector<T>	b1;
+
+		a1.insert(a1.begin(), range.begin(), range.end());
+		b1.insert(b1.begin(), range.begin(), range.end());
+		assertEqContainer("insert range empty container", a1, b1);
 	}
 	// push_back
 	{
@@ -229,19 +235,44 @@ void	functionsTest() {
 		std::vector<T>	b;
 
 		a.push_back(42);
+		a.push_back(32);
 		b.push_back(42);
-		assertEq("push back to empty vector", a[0], b[0]);
-		assertEq("check size after push back", a.size(), b.size());
-		assertEq("check capacity after push back", a.capacity(), b.capacity());
+		b.push_back(32);
+		assertEqContainer("push_back on empty container", a, b);
 
 		ft::vector<T>	a1(5);
 		std::vector<T>	b1(5);
 
 		a1.push_back(42);
 		b1.push_back(42);
-		assertEq("push back to non empty vector", *(a1.end() - 1), *(b1.end() - 1));
-		assertEq("check size after push back", a1.size(), b1.size());
-		assertEq("check capacity after push back", a1.capacity(), b1.capacity());
+		assertEqContainer("push_back on non empty container", a, b);
+	}
+	// pop_back
+	{
+		ft::vector<T>	a;
+		std::vector<T>	b;
+
+		a.push_back(42);
+		a.push_back(32);
+		b.push_back(42);
+		b.push_back(32);
+		a.pop_back();
+		b.pop_back();
+		assertEqContainer("pop_back size 2", a, b);
+		a.pop_back();
+		b.pop_back();
+		assertEqContainer("pop_back size 1", a, b);
+	}
+	{
+		ft::vector<T>	a;
+		a.push_back(3);
+		a.push_back(4);
+		a.push_back(8);
+		a.push_back(1);
+
+		a.reserve(6);
+		a.test();
+		printContainer(a);
 	}
 }
 

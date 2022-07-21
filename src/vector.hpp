@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 10:48:08 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/07/21 12:49:59 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/07/21 20:05:23 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ namespace ft {
 					_freeAll();
 					this->_allocator = rhs._allocator;
 					this->_size = rhs._size;
-					this->_capacity = rhs._capacity;
+					this->_capacity = rhs._size;
 					this->_c = this->_allocator.allocate(this->_capacity);
 					for (size_type i = 0; i < rhs._size; i++)
 						this->_allocator.construct(this->_c + i, rhs._c[i]);
@@ -214,16 +214,16 @@ namespace ft {
 					this->_allocator = std::allocator<T>();
 				}
 
+				// single element
 				iterator	insert(iterator pos, const_reference value) {
-					int	index_of_pos = 0;
-
 					if (this->_size == 0) {
 						push_back(value);
 						return this->begin();
 					}
-					for (iterator	it = this->begin(); it != pos; it++)
-						index_of_pos++;
-					reserve(this->_capacity * 2);
+					// need to store this because reserve change the iterators
+					size_type	index_of_pos = _get_index_of_it(pos);
+					if (this->_capacity < this->_size + 1)
+						reserve(this->_capacity * 2);
 					pos = this->begin() + index_of_pos;
 					_move_range(pos, 1);
 					*pos = value;
@@ -231,29 +231,28 @@ namespace ft {
 					return pos;
 				}
 
+				// fill
 				void	insert(iterator pos, size_type count, const_reference value) {
-					int	index_of_pos = 0;
-
-					if (this->_size == 0) {
-						for (size_type i = 0; i < count; i++)
-							push_back(value);
-					}
-					for (iterator	it = this->begin(); it != pos; it++)
-						index_of_pos++;
-					if (this->_capacity < this->_size + count)
-						reserve(this->_capacity + count);
-					pos = this->begin() + index_of_pos;
-					std::cout << index_of_pos << std::endl;
-					_move_range(pos, count);
-					//for (size_type i = 0; i < count; i++)
-					//	*(pos + i) = value;
-					this->_size += count;
+					for (size_type i = 0; i < count; i++)
+						pos = insert(pos, value);
 				}
 
-//				template<class InputIt>
-//				void	insert(iterator pos, InputIt first, InputIt last) {
+				// range
+				template<class InputIt>
+					typename ft::enable_if<!ft::is_integral<InputIt>::value>::type
+					insert(iterator pos, InputIt first, InputIt last) {
+						for (; first != last; last--)
+							pos = insert(pos, *(last - 1));
+					}
+
+//				iterator	erase(iterator position) {
+//					this->_allocator.destroy((this->back()));
+//					this->_size--;
 //					
 //				}
+				void	test() {
+					_move_range(this->begin(), -1);
+				}
 
 				void	push_back(const_reference value) {
 					if (this->begin() == this->end())
@@ -262,6 +261,11 @@ namespace ft {
 						reserve(this->_capacity * 2);
 					this->_allocator.construct(this->_c + this->_size, value);
 					this->_size++;
+				}
+
+				void	pop_back() {
+					this->_allocator.destroy(&(this->back()));
+					this->_size--;
 				}
 
 			protected:
@@ -277,16 +281,26 @@ namespace ft {
 					this->_allocator.deallocate(this->_c, this->_capacity);
 				}
 
-				void	_move_range(iterator from, size_type n) {
+				void	_move_range(iterator const& from, size_type const& n) {
 					iterator	curr = this->end() + n - 1;
 
 					if (from == this->end())
 						return ;
-					std::cout << this->_size << std::endl;
-					for (size_type i = 0; i < this->_size; i++) {
+					for (size_type i = 0; i < this->_size && from != curr; i++) {
 						*curr = *(curr - n);
 						curr--;
 					}
+				}
+
+				size_type	_get_index_of_it(iterator it) {
+					size_type	ret = 0;
+
+					for (iterator curr = this->begin(); curr != it; curr++) {
+						ret++;
+						if (curr == this->end())
+							return 0;
+					}
+					return ret;
 				}
 		};
 
