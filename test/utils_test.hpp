@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 12:36:10 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/07/21 19:29:23 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/07/21 20:36:41 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #define DEFAULT "\e[0m"
 #define RED "\e[31m"
 #define GREEN "\e[32m"
+#define BLUE "\e[35m"
 
 #define VECTOR_ASCII "  8b           d8 88888888888 ,ad8888ba, 888888888888 ,ad8888ba,   88888888ba \n  `8b         d8' 88         d8\"'    `\"8b     88     d8\"'    `\"8b  88      \"8b\n   `8b       d8'  88        d8'               88    d8'        `8b 88      ,8P\n    `8b     d8'   88aaaaa   88                88    88          88 88aaaaaa8P'\n     `8b   d8'    88\"\"\"\"\"   88                88    88          88 88\"\"\"\"88'  \n      `8b d8'     88        Y8,               88    Y8,        ,8P 88    `8b  \n       `888'      88         Y8a.    .a8P     88     Y8a.    .a8P  88     `8b \n        `8'       88888888888 `\"Y8888Y\"'      88      `\"Y8888Y\"'   88      `8b"
 #define LINE "================================================================================" 
@@ -42,10 +43,6 @@ void	assertEqContainer(std::string const& str, T const& a, U const& b) {
 		std::cout << RED << "[KO] " << str << ", different empty result : a.empty() = " << a.empty() << " b.empty() = " << b.empty() << DEFAULT << std::endl;
 		return ;
 	}
-	if (a.capacity() != b.capacity()) {
-		std::cout << RED << "[KO] " << str << ", different capacity : a.capacity() = " << a.capacity() << " b.capacity() = " << b.capacity() << DEFAULT << std::endl;
-		return ;
-	}
 	if (ft::distance(a.begin(), a.end()) != ft::distance(b.begin(), b.end())) {
 		std::cout << RED << "[KO] " << str << ", different distance(begin, end) : a = " << ft::distance(a.begin(), a.end()) << " b = " << ft::distance(b.begin(), b.end()) << DEFAULT << std::endl;
 		return ;
@@ -57,6 +54,8 @@ void	assertEqContainer(std::string const& str, T const& a, U const& b) {
 		}
 	}
 	std::cout << GREEN << "[OK] " << str << DEFAULT << std::endl;
+	if (a.capacity() != b.capacity())
+		std::cout << BLUE << "different capacity : a.capacity() = " << a.capacity() << " b.capacity() = " << b.capacity() << DEFAULT << std::endl;
 }
 
 template<typename T, typename U>

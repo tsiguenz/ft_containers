@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 10:48:08 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/07/21 20:05:23 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/07/21 21:04:55 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ namespace ft {
 					typename ft::enable_if<!ft::is_integral<InputIt>::value>::type
 					assign(InputIt first, InputIt last) {
 						_freeAll();
-						this->_size = distance(first, last);
+						this->_size = ft::distance(first, last);
 						if (this->_capacity == 0)
 							this->_capacity = this->_size;
 						while (this->_capacity < this->_size)
@@ -220,12 +220,13 @@ namespace ft {
 						push_back(value);
 						return this->begin();
 					}
+					size_type	newSize = this->_size + 1;
 					// need to store this because reserve change the iterators
 					size_type	index_of_pos = _get_index_of_it(pos);
-					if (this->_capacity < this->_size + 1)
+					if (this->_capacity < newSize)
 						reserve(this->_capacity * 2);
 					pos = this->begin() + index_of_pos;
-					_move_range(pos, 1);
+					_move_range_left(pos, 1);
 					*pos = value;
 					this->_size++;
 					return pos;
@@ -233,16 +234,42 @@ namespace ft {
 
 				// fill
 				void	insert(iterator pos, size_type count, const_reference value) {
+					if (this->_size == 0) {
+						assign(count, value);
+						return ;
+					}
+					size_type	newSize = this->_size + count;
+					// need to store this because reserve change the iterators
+					size_type	index_of_pos = _get_index_of_it(pos);
+					if (this->_capacity < newSize)
+						reserve(this->_capacity * 2);
+					pos = this->begin() + index_of_pos;
+					_move_range_left(pos, count);
 					for (size_type i = 0; i < count; i++)
-						pos = insert(pos, value);
+						*(pos + i) = value;
+					this->_size = newSize;
 				}
 
 				// range
 				template<class InputIt>
 					typename ft::enable_if<!ft::is_integral<InputIt>::value>::type
 					insert(iterator pos, InputIt first, InputIt last) {
-						for (; first != last; last--)
-							pos = insert(pos, *(last - 1));
+					if (this->_size == 0) {
+						assign(first, last);
+						return ;
+					}
+					size_type	newSize = this->_size + ft::distance(first, last);
+					// need to store this because reserve change the iterators
+					size_type	index_of_pos = _get_index_of_it(pos);
+					while (this->_capacity < newSize)
+						reserve(this->_capacity * 2);
+					pos = this->begin() + index_of_pos;
+					_move_range_left(pos, ft::distance(first, last));
+					for (; first != last; first++) {
+						*pos = *first;
+						pos++;
+					}
+					this->_size = newSize;
 					}
 
 //				iterator	erase(iterator position) {
@@ -281,7 +308,7 @@ namespace ft {
 					this->_allocator.deallocate(this->_c, this->_capacity);
 				}
 
-				void	_move_range(iterator const& from, size_type const& n) {
+				void	_move_range_left(iterator const& from, size_type const& n) {
 					iterator	curr = this->end() + n - 1;
 
 					if (from == this->end())
@@ -289,6 +316,14 @@ namespace ft {
 					for (size_type i = 0; i < this->_size && from != curr; i++) {
 						*curr = *(curr - n);
 						curr--;
+					}
+				}
+
+				void	_move_range_right(iterator const& from, size_type const& n) {
+					if (from == this->begin())
+						return ;
+					for (iterator it = this->begin(); it + n != from; it++) {
+						*it = *(it + n);
 					}
 				}
 

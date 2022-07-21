@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/14 16:49:25 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/07/21 19:40:18 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/07/21 21:05:39 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,7 +198,7 @@ void	functionsTest() {
 
 		a.insert(a.begin(), 2, 42);
 		b.insert(b.begin(), 2, 42);
-		assertEqContainer("insert range empty container", a, b);
+		assertEqContainer("insert fill non empty container", a, b);
 
 		ft::vector<T>	a1;
 		std::vector<T>	b1;
@@ -217,9 +217,9 @@ void	functionsTest() {
 
 		a.insert(a.begin(), range.begin(), range.end());
 		b.insert(b.begin(), range.begin(), range.end());
-// TODO capacity problem but idk if I must fix ?
-//		a.insert(a.begin(), range.begin(), range.end());
-//		b.insert(b.begin(), range.begin(), range.end());
+
+		a.insert(a.begin(), range.begin(), range.end());
+		b.insert(b.begin(), range.begin(), range.end());
 		assertEqContainer("insert range not empty container", a, b);
 
 		ft::vector<T>	a1;
@@ -262,17 +262,6 @@ void	functionsTest() {
 		a.pop_back();
 		b.pop_back();
 		assertEqContainer("pop_back size 1", a, b);
-	}
-	{
-		ft::vector<T>	a;
-		a.push_back(3);
-		a.push_back(4);
-		a.push_back(8);
-		a.push_back(1);
-
-		a.reserve(6);
-		a.test();
-		printContainer(a);
 	}
 }
 
