@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 10:48:08 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/07/21 21:04:55 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/07/21 23:18:12 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -272,13 +272,11 @@ namespace ft {
 					this->_size = newSize;
 					}
 
-//				iterator	erase(iterator position) {
-//					this->_allocator.destroy((this->back()));
-//					this->_size--;
-//					
-//				}
-				void	test() {
-					_move_range(this->begin(), -1);
+				iterator	erase(iterator position) {
+					if (position != (this->end() - 1))
+						_move_range_right(position, 1);
+					pop_back();
+					return position;
 				}
 
 				void	push_back(const_reference value) {
@@ -319,12 +317,9 @@ namespace ft {
 					}
 				}
 
-				void	_move_range_right(iterator const& from, size_type const& n) {
-					if (from == this->begin())
-						return ;
-					for (iterator it = this->begin(); it + n != from; it++) {
-						*it = *(it + n);
-					}
+				void	_move_range_right(iterator from, size_type const& n) {
+					for (; from != (this->end() - n); from++)
+						*from = *(from + n);
 				}
 
 				size_type	_get_index_of_it(iterator it) {
