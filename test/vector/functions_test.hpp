@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/14 16:49:25 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/07/21 23:21:29 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/07/25 20:10:14 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -281,6 +281,8 @@ void	functionsTest() {
 		assertEq("erase return value", *a.erase(a.begin() + 2), *b.erase(b.begin() + 2));
 		assertEqContainer("erase size 1", a, b);
 		assertEq("erase return value", *a.erase(a.end() - 1), *b.erase(b.end() - 1));
+		assertEqContainer("erase size 1", a, b);
+		assertEq("erase return value", *a.erase(a.begin()), *b.erase(b.begin()));
 		assertEqContainer("erase size 1", a, b);
 	}
 }

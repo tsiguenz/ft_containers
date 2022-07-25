@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 10:48:08 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/07/21 23:18:12 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/07/25 20:06:46 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,7 +259,7 @@ namespace ft {
 						return ;
 					}
 					size_type	newSize = this->_size + ft::distance(first, last);
-					// need to store this because reserve change the iterators
+					// need to store the index because reserve change the iterators
 					size_type	index_of_pos = _get_index_of_it(pos);
 					while (this->_capacity < newSize)
 						reserve(this->_capacity * 2);
@@ -306,20 +306,20 @@ namespace ft {
 					this->_allocator.deallocate(this->_c, this->_capacity);
 				}
 
-				void	_move_range_left(iterator const& from, size_type const& n) {
-					iterator	curr = this->end() + n - 1;
+				void	_move_range_left(iterator const& from, size_type const& offset) {
+					iterator	curr = this->end() + offset - 1;
 
 					if (from == this->end())
 						return ;
 					for (size_type i = 0; i < this->_size && from != curr; i++) {
-						*curr = *(curr - n);
+						*curr = *(curr - offset);
 						curr--;
 					}
 				}
 
-				void	_move_range_right(iterator from, size_type const& n) {
-					for (; from != (this->end() - n); from++)
-						*from = *(from + n);
+				void	_move_range_right(iterator from, size_type const& offset) {
+					for (; from != (this->end() - offset); from++)
+						*from = *(from + offset);
 				}
 
 				size_type	_get_index_of_it(iterator it) {
