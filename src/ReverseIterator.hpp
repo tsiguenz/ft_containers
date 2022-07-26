@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/28 11:46:21 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/07/14 12:32:41 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/07/26 23:22:33 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,17 @@
 # define REVERSE_ITERATOR_HPP
 
 #include <typeinfo>
+#include <IteratorTraits.hpp>
+
 namespace ft {
 	template < typename T >
 		class ReverseIterator { 
 			public:
 				// Types
-				typedef typename ft::iterator_traits<T*>::difference_type		difference_type;
-				typedef typename ft::iterator_traits<T*>::value_type			value_type;
-				typedef typename ft::iterator_traits<T*>::pointer				pointer;
+				typedef T													iterator_type;
+				typedef typename ft::iterator_traits<T*>::difference_type	difference_type;
+				typedef typename ft::iterator_traits<T*>::value_type		value_type;
+				typedef typename ft::iterator_traits<T*>::pointer			pointer;
 				typedef typename ft::iterator_traits<T*>::reference			reference;
 				typedef typename ft::iterator_traits<T*>::iterator_category	iterator_category;
 
@@ -32,71 +35,136 @@ namespace ft {
 				// Object managment
 				ReverseIterator(): _ptr() { };
 				ReverseIterator(pointer ptr): _ptr(ptr) { }
+				ReverseIterator(RandomAccessIterator<T> it): _ptr(it.base()) { }
 				ReverseIterator(ReverseIterator<T> const& it) { *this = it; }
-				~ReverseIterator() { }
+				virtual ~ReverseIterator() { }
+
+				pointer	base() const { return this->_ptr; }
 
 				// Operators
 				operator ReverseIterator<T const>() {
 					return ReverseIterator<T const>(this->_ptr);
 				}
-				ReverseIterator<T>&	operator=(ReverseIterator<T> const& it){
+
+				ReverseIterator&	operator=(ReverseIterator const& it){
 					this->_ptr = it._ptr;
 					return *this;
 				}
-				ReverseIterator<T>&	operator++(){
+
+				ReverseIterator&	operator++(){
 					this->_ptr--;
 					return *this;
 				}
-				ReverseIterator<T>	operator++(int) {
+
+				ReverseIterator	operator++(int) {
 					ReverseIterator<T>	tmp = *this;
 					this->_ptr--;
 					return tmp;
 				}
-				ReverseIterator<T>&	operator--() {
+
+				ReverseIterator&	operator--() {
 					this->_ptr++;
 					return *this;
 				}
-				ReverseIterator<T>	operator--(int) {
+
+				ReverseIterator	operator--(int) {
 					ReverseIterator<T>	tmp = *this;
 					this->_ptr++;
 					return tmp;
 				}
-				ReverseIterator<T>	operator+(difference_type const& n) {
+
+				ReverseIterator	operator+(difference_type const& n) const {
 					return this->_ptr - n;
 				}
-				ReverseIterator<T>&	operator+=(difference_type const& n) {
+
+				ReverseIterator&	operator+=(difference_type const& n) {
 					this->_ptr -= n;
 					return *this;
 				}
-				ReverseIterator<T>	operator-(difference_type const& n) {
+
+				ReverseIterator	operator-(difference_type const& n) const {
 					return this->_ptr + n;
 				}
-				ReverseIterator<T>&	operator-=(difference_type const& n) {
+
+				ReverseIterator&	operator-=(difference_type const& n) {
 					this->_ptr += n;
 					return *this;
 				}
-				T&	operator*() {
+
+				reference	operator[](difference_type const& n) {
+					return *(this->_ptr + n);
+				}
+
+				reference	operator*() {
 					return *(this->_ptr);
 				}
-				bool	operator==(ReverseIterator<T> const& it) const {
-					return this->_ptr == it._ptr;
-				}
-				bool	operator!=(ReverseIterator<T> const& it) const {
-					return this->_ptr != it._ptr;
-				}
-				bool	operator<(ReverseIterator<T> const& it) const {
-					return this->_ptr > it._ptr;
-				}
-				bool	operator<=(ReverseIterator<T> const& it) const {
-					return this->_ptr >= it._ptr;
-				}
-				bool	operator>(ReverseIterator<T> const& it) const {
-					return this->_ptr < it._ptr;
-				}
-				bool	operator>=(ReverseIterator<T> const& it) const {
-					return this->_ptr <= it._ptr;
+
+				pointer	operator->() {
+					return this->_ptr;
 				}
 		};
+
+	template<typename T, typename U>
+		bool	operator==(ReverseIterator<T> const& it1,
+				ReverseIterator<U> const& it2) {
+			return it1.base() == it2.base();
+		}
+
+	template<typename T, typename U>
+		bool	operator!=(ReverseIterator<T> const& it1,
+				ReverseIterator<U> const& it2) {
+			return it1.base() != it2.base();
+		}
+
+	template<typename T, typename U>
+		bool	operator<(ReverseIterator<T> const& it1,
+				ReverseIterator<U> const& it2) {
+			return it1.base() > it2.base();
+		}
+
+	template<typename T, typename U>
+		bool	operator<=(ReverseIterator<T> const& it1,
+				ReverseIterator<U> const& it2) {
+			return it1.base() >= it2.base();
+		}
+
+	template<typename T, typename U>
+		bool	operator>(ReverseIterator<T> const& it1,
+				ReverseIterator<U> const& it2) {
+			return it1.base() < it2.base();
+		}
+
+	template<typename T, typename U>
+		bool	operator>=(ReverseIterator<T> const& it1,
+				ReverseIterator<U> const& it2) {
+			return it1.base() <= it2.base();
+		}
+
+	template<typename T, typename U>
+		typename ReverseIterator<T>::difference_type
+		operator-(ReverseIterator<T> const& it1, ReverseIterator<U> const& it2) {
+			return it1.base() + it2.base();
+		}
+
+	template<typename T>
+		ReverseIterator<T>
+		operator-(typename ReverseIterator<T>::difference_type n,
+				RandomAccessIterator<T> const& it) {
+			return (it - n);
+		}
+
+	template<typename T, typename U>
+		typename ReverseIterator<T>::difference_type
+		operator+(ReverseIterator<T> const& it1, ReverseIterator<U> const& it2) {
+			return it1.base() - it2.base();
+		}
+
+	template<typename T>
+		ReverseIterator<T>
+		operator+(typename ReverseIterator<T>::difference_type const& n,
+				ReverseIterator<T> const& it) {
+			return (it + n);
+		}
 }
 
 #endif // REVERSE_ITERATOR_HPP
