@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 17:14:11 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/07/21 11:36:17 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/07/26 16:49:18 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ void	tests_numeric() {
 
 	}
 	functionsTest<T>();
-//TODO test with onother allocator
 }
 
 #endif // VECTOR_TEST_HPP

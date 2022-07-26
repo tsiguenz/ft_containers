@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 10:48:08 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/07/25 20:06:46 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/07/26 16:48:50 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ namespace ft {
 	template < class T, class Allocator = std::allocator<T> >
 		class vector {
 			public:
-				// Types :
+				// Types
 
 				typedef T									value_type;
 				typedef Allocator							allocator_type;
@@ -49,7 +49,6 @@ namespace ft {
 						const_reference value = T(),
 						Allocator const& alloc = Allocator())
 					: _c(0), _size(0), _capacity(0), _allocator(alloc) {
-						this->_allocator = alloc;
 						this->assign(count, value);
 					}
 
@@ -59,7 +58,6 @@ namespace ft {
 							InputIterator last,
 							allocator_type const& alloc = allocator_type())
 					: _c(0), _size(0), _capacity(0), _allocator(alloc) {
-						this->_allocator = alloc;
 						assign(first, last);
 					}
 
@@ -211,7 +209,6 @@ namespace ft {
 					for (size_type i = 0; i < this->_size; i++)
 						this->_allocator.destroy(this->_c + i);
 					this->_size = 0;
-					this->_allocator = std::allocator<T>();
 				}
 
 				// single element
@@ -254,22 +251,22 @@ namespace ft {
 				template<class InputIt>
 					typename ft::enable_if<!ft::is_integral<InputIt>::value>::type
 					insert(iterator pos, InputIt first, InputIt last) {
-					if (this->_size == 0) {
-						assign(first, last);
-						return ;
-					}
-					size_type	newSize = this->_size + ft::distance(first, last);
-					// need to store the index because reserve change the iterators
-					size_type	index_of_pos = _get_index_of_it(pos);
-					while (this->_capacity < newSize)
-						reserve(this->_capacity * 2);
-					pos = this->begin() + index_of_pos;
-					_move_range_left(pos, ft::distance(first, last));
-					for (; first != last; first++) {
-						*pos = *first;
-						pos++;
-					}
-					this->_size = newSize;
+						if (this->_size == 0) {
+							assign(first, last);
+							return ;
+						}
+						size_type	newSize = this->_size + ft::distance(first, last);
+						// need to store the index because reserve change the iterators
+						size_type	index_of_pos = _get_index_of_it(pos);
+						while (this->_capacity < newSize)
+							reserve(this->_capacity * 2);
+						pos = this->begin() + index_of_pos;
+						_move_range_left(pos, ft::distance(first, last));
+						for (; first != last; first++) {
+							*pos = *first;
+							pos++;
+						}
+						this->_size = newSize;
 					}
 
 				iterator	erase(iterator position) {
@@ -277,6 +274,18 @@ namespace ft {
 						_move_range_right(position, 1);
 					pop_back();
 					return position;
+				}
+
+				iterator	erase(iterator first, iterator last) {
+					size_type	dist = ft::distance(first, last);
+
+					for (; first != last; first++) {
+						if (first + dist < this->end())
+							*first = *(first + dist);
+					}
+					for (size_type i = 0; i < dist; i++)
+						pop_back();
+					return first - dist;
 				}
 
 				void	push_back(const_reference value) {
@@ -291,6 +300,23 @@ namespace ft {
 				void	pop_back() {
 					this->_allocator.destroy(&(this->back()));
 					this->_size--;
+				}
+
+				void	resize(size_type count, value_type value = value_type()) {
+					if (count <= this->_size) {
+						while (count != this->_size)
+							pop_back();
+						return ;
+					}
+					while (count != this->_size)
+						push_back(value);
+				}
+
+				void	swap(vector& x) {
+					vector<T>	tmp = x;
+
+					x = *this;
+					*this = tmp;
 				}
 
 			protected:

@@ -6,15 +6,14 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/14 16:49:25 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/07/25 20:10:14 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/07/26 16:49:10 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FUNCTIONS_TEST_HPP
 # define FUNCTIONS_TEST_HPP
 
-// TODO functions tests (don't forget swap)
-template<typename T>
+template<class T>
 void	functionsTest() {
 	std::cout << "----------  Functions test : ----------" << std::endl;
 	// swap
@@ -24,7 +23,6 @@ void	functionsTest() {
 
 		for (int i = 0; i < 5; i++)
 			a1[i] = i * 10;
-		ft::vector<T>	a4(a1);
 		ft::swap(a1, a2);
 
 		std::vector<T>	b1(5);
@@ -32,7 +30,6 @@ void	functionsTest() {
 
 		for (int i = 0; i < 5; i++)
 			b1[i] = i * 10;
-		std::vector<T>	b4(b1);
 		std::swap(b1, b2);
 		assertEqContainer("swap compare a1 to b1", a1, b1);
 		assertEqContainer("swap compare a2 to b2", a2, b2);
@@ -229,6 +226,44 @@ void	functionsTest() {
 		b1.insert(b1.begin(), range.begin(), range.end());
 		assertEqContainer("insert range empty container", a1, b1);
 	}
+	// erase
+	{
+		ft::vector<T>	a;
+		std::vector<T>	b;
+
+		a.push_back(42);
+		a.push_back(32);
+		a.push_back(22);
+		a.push_back(12);
+
+		b.push_back(42);
+		b.push_back(32);
+		b.push_back(22);
+		b.push_back(12);
+		assertEq("erase pos return value", *a.erase(a.begin()), *b.erase(b.begin()));
+		assertEqContainer("erase pos size 1", a, b);
+		assertEq("erase pos return value", *a.erase(a.begin() + 2), *b.erase(b.begin() + 2));
+		assertEqContainer("erase pos size 1", a, b);
+		assertEq("erase pos return value", *a.erase(a.end() - 1), *b.erase(b.end() - 1));
+		assertEqContainer("erase pos size 1", a, b);
+		assertEq("erase pos return value", *a.erase(a.begin()), *b.erase(b.begin()));
+		assertEqContainer("erase pos size 1", a, b);
+		a.push_back(5);
+		a.push_back(2);
+		a.push_back(8);
+		a.push_back(6);
+
+		b.push_back(5);
+		b.push_back(2);
+		b.push_back(8);
+		b.push_back(6);
+		assertEq("erase range basic return value", *a.erase(a.begin() + 1, a.begin() + 3), *b.erase(b.begin() + 1, b.begin() + 3));
+		assertEqContainer("erase range basic", a, b);
+		assertEq("erase range begin, end return value", *a.erase(a.begin(), a.end()), *b.erase(b.begin(), b.end()));
+		assertEqContainer("erase range begin, end", a, b);
+		assertEq("erase empty range return value", *a.erase(a.begin() + 1, a.begin() + 1), *b.erase(b.begin() + 1, b.begin() + 1));
+		assertEqContainer("erase empty range", a, b);
+	}
 	// push_back
 	{
 		ft::vector<T>	a;
@@ -236,7 +271,9 @@ void	functionsTest() {
 
 		a.push_back(42);
 		a.push_back(32);
+		a.push_back(32);
 		b.push_back(42);
+		b.push_back(32);
 		b.push_back(32);
 		assertEqContainer("push_back on empty container", a, b);
 
@@ -263,27 +300,41 @@ void	functionsTest() {
 		b.pop_back();
 		assertEqContainer("pop_back size 1", a, b);
 	}
-	// erase
+	// resize
 	{
 		ft::vector<T>	a;
 		std::vector<T>	b;
-
 		a.push_back(42);
 		a.push_back(32);
-		a.push_back(22);
-		a.push_back(12);
 		b.push_back(42);
 		b.push_back(32);
-		b.push_back(22);
-		b.push_back(12);
-		assertEq("erase return value", *a.erase(a.begin()), *b.erase(b.begin()));
-		assertEqContainer("erase size 1", a, b);
-		assertEq("erase return value", *a.erase(a.begin() + 2), *b.erase(b.begin() + 2));
-		assertEqContainer("erase size 1", a, b);
-		assertEq("erase return value", *a.erase(a.end() - 1), *b.erase(b.end() - 1));
-		assertEqContainer("erase size 1", a, b);
-		assertEq("erase return value", *a.erase(a.begin()), *b.erase(b.begin()));
-		assertEqContainer("erase size 1", a, b);
+		a.resize(2);
+		b.resize(2);
+		assertEqContainer("resize value equal than size", a, b);
+		a.resize(1);
+		b.resize(1);
+		assertEqContainer("resize value less than size", a, b);
+		a.resize(5);
+		b.resize(5);
+		assertEqContainer("resize value greater than size", a, b);
+	}
+	// swap
+	{
+		ft::vector<T>	a1(5);
+		ft::vector<T>	a2;
+
+		for (int i = 0; i < 5; i++)
+			a1[i] = i * 10;
+		a1.swap(a2);
+
+		std::vector<T>	b1(5);
+		std::vector<T>	b2;
+
+		for (int i = 0; i < 5; i++)
+			b1[i] = i * 10;
+		b1.swap(b2);
+		assertEqContainer("swap compare a1 to b1", a1, b1);
+		assertEqContainer("swap compare a2 to b2", a2, b2);
 	}
 }
 

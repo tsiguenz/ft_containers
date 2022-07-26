@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 12:36:10 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/07/21 20:36:41 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/07/26 13:06:28 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	assertEqContainer(std::string const& str, T const& a, U const& b) {
 
 template<typename T, typename U>
 void	diffContainers(T const& a, U const& b) {
+	std::cout << "---------- Diff Container ----------" << std::endl;
 	for (size_t i = 0; i < a.size(); i++)
 		std::cout << "a[" << i << "] = " << a[i] << " b[" << i << "] = " << b[i] << std::endl;
 	std::cout << "a.size() = " << a.size() << " b.size() = " << b.size() << std::endl;
@@ -69,6 +70,7 @@ void	diffContainers(T const& a, U const& b) {
 
 template<typename T>
 void	printContainer(T const& a) {
+	std::cout << "---------- Print Container ----------" << std::endl;
 	for (size_t i = 0; i < a.size(); i++)
 		std::cout << "a[" << i << "] = " << a[i] << std::endl;
 	std::cout << "a.size() = " << a.size() << std::endl;
