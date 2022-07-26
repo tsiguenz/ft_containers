@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 10:48:08 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/07/26 16:48:50 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/07/26 17:42:47 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,15 +87,9 @@ namespace ft {
 				// Member functions
 
 				void	assign(size_type count, const_reference value) {
-					_freeAll();
-					this->_size = count;
-					if (this->_capacity == 0)
-						this->_capacity = count;
-					while (this->_capacity < count)
-						reserve(this->_capacity * 2);
-					this->_c = this->_allocator.allocate(this->_capacity);
+					clear();
 					for (size_type i = 0; i < count; i++)
-						this->_allocator.construct(this->_c + i, value);
+						push_back(value);
 				}
 
 				template<class InputIt>
@@ -108,7 +102,7 @@ namespace ft {
 						while (this->_capacity < this->_size)
 							reserve(this->_capacity * 2);
 						this->_c = this->_allocator.allocate(this->_capacity);
-						for (size_type i = 0; first < last; first++) {
+						for (size_type i = 0; first != last; first++) {
 							this->_allocator.construct(this->_c + i, *first);
 							i++;
 						}
@@ -328,6 +322,8 @@ namespace ft {
 			private:
 
 				void	_freeAll() {
+					if (this->_capacity == 0)
+						return ;
 					this->clear();
 					this->_allocator.deallocate(this->_c, this->_capacity);
 				}
