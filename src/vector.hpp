@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 10:48:08 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/07/26 20:16:07 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/07/28 11:33:13 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ namespace ft {
 				typedef std::ptrdiff_t						difference_type;
 				typedef ft::RandomAccessIterator<T>			iterator;
 				typedef ft::RandomAccessIterator<const T>	const_iterator;
-				typedef ft::ReverseIterator<T>				reverse_iterator;
-				typedef ft::ReverseIterator<const T>		const_reverse_iterator;
+				typedef ft::ReverseIterator<iterator>		reverse_iterator;
+				typedef ft::ReverseIterator<const_iterator>	const_reverse_iterator;
 
 				// Object managment
 
@@ -49,7 +49,7 @@ namespace ft {
 						const_reference value = T(),
 						Allocator const& alloc = Allocator())
 					: _c(0), _size(0), _capacity(0), _allocator(alloc) {
-						this->assign(count, value);
+						assign(count, value);
 					}
 
 				// Range
@@ -72,7 +72,6 @@ namespace ft {
 				}
 
 				// Operators
-
 				vector&	operator=(vector const& rhs) {
 					_freeAll();
 					this->_allocator = rhs._allocator;
@@ -85,7 +84,6 @@ namespace ft {
 				}
 
 				// Member functions
-
 				void	assign(size_type count, const_reference value) {
 					clear();
 					for (size_type i = 0; i < count; i++)
@@ -110,7 +108,6 @@ namespace ft {
 
 				allocator_type	get_allocator() { return this->_allocator; }
 
-
 				// Element acces
 
 				// TODO need the same exception message ?
@@ -134,13 +131,13 @@ namespace ft {
 					return this->_c[pos];
 				}
 
-				reference	front() { return *(this->begin()); }
+				reference	front() { return *(begin()); }
 
-				const_reference	front() const { return *(this->begin()); }
+				const_reference	front() const { return *(begin()); }
 
-				reference	back() { return *(this->end() - 1); }
+				reference	back() { return *(end() - 1); }
 
-				const_reference	back() const { return *(this->end() - 1); }
+				const_reference	back() const { return *(end() - 1); }
 
 				pointer	data() { return this->_c; }
 
@@ -158,21 +155,17 @@ namespace ft {
 					return this->_c + this->_size;
 				}
 
-				reverse_iterator	rbegin() {
-					return this->_c + (this->_size - 1);
-				}
+				reverse_iterator	rbegin() { return end() - 1; }
 
-				reverse_iterator	rend() { return this->_c - 1; }
+				const_reverse_iterator	rbegin() const { return end() - 1; }
 
-				const_reverse_iterator	rbegin() const {
-					return this->_c + (this->_size - 1);
-				}
+				reverse_iterator	rend() { return begin() - 1; }
 
-				const_reverse_iterator	rend() const { return this->_c; }
+				const_reverse_iterator	rend() const { return begin() -1; }
 
 				// Capacity
 
-				bool	empty() const { return this->begin() == this->end(); }
+				bool	empty() const { return begin() == end(); }
 
 				size_type	size() const { return this->_size; }
 
@@ -196,7 +189,6 @@ namespace ft {
 				size_type	capacity() const { return this->_capacity; }
 
 				// Modifiers
-
 				void	clear() {
 					if (this->_size == 0 || this->_c == NULL)
 						return ;
@@ -264,7 +256,7 @@ namespace ft {
 					}
 
 				iterator	erase(iterator position) {
-					if (position != (this->end() - 1))
+					if (position != (end() - 1))
 						_move_range_right(position, 1);
 					pop_back();
 					return position;
@@ -283,7 +275,7 @@ namespace ft {
 				}
 
 				void	push_back(const_reference value) {
-					if (this->begin() == this->end())
+					if (begin() == end())
 						reserve(1);
 					if (this->_size == this->_capacity)
 						reserve(this->_capacity * 2);
@@ -324,7 +316,7 @@ namespace ft {
 				void	_freeAll() {
 					if (this->_capacity == 0)
 						return ;
-					this->clear();
+					clear();
 					this->_allocator.deallocate(this->_c, this->_capacity);
 				}
 
