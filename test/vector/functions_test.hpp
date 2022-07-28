@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/14 16:49:25 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/07/28 10:08:11 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/07/28 19:05:54 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,8 +142,7 @@ void	functionsTest() {
 		assertEq("size of empty vector", a.size(), b.size());
 		assertEq("size of non empty vector", c.size(), d.size());
 		assertEq("max_size", a.max_size(), b.max_size());
-		assertEq("capacity of empty vector", a.capacity(), b.capacity());
-		assertEq("capacity of non empty vector", c.capacity(), d.capacity());
+		assertEqContainer("compare after reserve", a, b);
 	}
 	// reserve / clear
 	{

@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 10:48:08 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/07/28 11:33:13 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/07/28 19:12:35 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,13 +155,13 @@ namespace ft {
 					return this->_c + this->_size;
 				}
 
-				reverse_iterator	rbegin() { return end() - 1; }
+				reverse_iterator	rbegin() { return end(); }
 
-				const_reverse_iterator	rbegin() const { return end() - 1; }
+				const_reverse_iterator	rbegin() const { return end(); }
 
-				reverse_iterator	rend() { return begin() - 1; }
+				reverse_iterator	rend() { return begin(); }
 
-				const_reverse_iterator	rend() const { return begin() -1; }
+				const_reverse_iterator	rend() const { return begin(); }
 
 				// Capacity
 
@@ -314,8 +314,6 @@ namespace ft {
 			private:
 
 				void	_freeAll() {
-					if (this->_capacity == 0)
-						return ;
 					clear();
 					this->_allocator.deallocate(this->_c, this->_capacity);
 				}
