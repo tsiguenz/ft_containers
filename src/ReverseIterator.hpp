@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/28 11:46:21 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/07/28 18:59:40 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/07/29 15:12:51 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,13 +134,13 @@ namespace ft {
 		typename ReverseIterator<IteratorL>::difference_type
 		operator-(ReverseIterator<IteratorL> const& it1,
 			ReverseIterator<IteratorR> const& it2)
-			{ return it1.base() - it2.base(); }
+			{ return it2.base() - it1.base(); }
 
 	template<typename Iterator>
 		ReverseIterator<Iterator>
 		operator+(typename ReverseIterator<Iterator>::difference_type n,
 		 ReverseIterator<Iterator> const& it)
-		{ return it.base() + n; }
+		{ return it.base() - n; }
 }
 
 #endif // REVERSE_ITERATOR_HPP

@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 10:48:08 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/07/28 19:12:35 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/07/29 14:43:54 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,9 +151,7 @@ namespace ft {
 
 				const_iterator	begin() const { return this->_c; }
 
-				const_iterator	end() const {
-					return this->_c + this->_size;
-				}
+				const_iterator	end() const { return this->_c + this->_size; }
 
 				reverse_iterator	rbegin() { return end(); }
 
@@ -224,7 +222,7 @@ namespace ft {
 					size_type	newSize = this->_size + count;
 					// need to store this because reserve change the iterators
 					size_type	index_of_pos = _get_index_of_it(pos);
-					if (this->_capacity < newSize)
+					while (this->_capacity < newSize)
 						reserve(this->_capacity * 2);
 					pos = this->begin() + index_of_pos;
 					_move_range_left(pos, count);
@@ -265,13 +263,14 @@ namespace ft {
 				iterator	erase(iterator first, iterator last) {
 					size_type	dist = ft::distance(first, last);
 
-					for (; first != last; first++) {
-						if (first + dist < this->end())
-							*first = *(first + dist);
+					if (dist == 0)
+						return last;
+					for (size_type i = 0; (last + i) != this->end(); i++) {
+						*(first + i) = *(last + i);
 					}
 					for (size_type i = 0; i < dist; i++)
 						pop_back();
-					return first - dist;
+					return first;
 				}
 
 				void	push_back(const_reference value) {
