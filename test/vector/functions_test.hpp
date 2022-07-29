@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/14 16:49:25 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/07/29 14:11:26 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/07/29 16:21:57 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -260,10 +260,8 @@ void	functionsTest() {
 		assertEqContainer("erase range basic", a, b);
 		assertEq("erase range begin, end return value", *a.erase(a.begin(), a.end()), *b.erase(b.begin(), b.end()));
 		assertEqContainer("erase range begin, end", a, b);
-		printContainer(a);
 		assertEq("erase empty range return value", *a.erase(a.begin() + 1, a.begin() + 1), *b.erase(b.begin() + 1, b.begin() + 1));
 		assertEqContainer("erase empty range", a, b);
-	// test for debug mli tester
 		ft::vector<std::string>		vct1(10);
 		std::vector<std::string>	vct2(10);
 		for (unsigned long int i = 0; i < vct1.size(); ++i) {
@@ -272,7 +270,6 @@ void	functionsTest() {
 		}
 		vct1.erase(vct1.begin(), vct1.begin() + 3);
 		vct2.erase(vct2.begin(), vct2.begin() + 3);
-		diffContainers(vct1, vct2);
 		assertEqContainer("test", vct1, vct2);
 		
 	}

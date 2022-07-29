@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 10:48:08 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/07/29 14:43:54 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/07/29 16:45:30 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -298,10 +298,18 @@ namespace ft {
 				}
 
 				void	swap(vector& x) {
-					vector<T>	tmp = x;
-
-					x = *this;
-					*this = tmp;
+					pointer		tmp_c = x._c;
+					size_type	tmp_size = x._size;
+					size_type	tmp_capacity = x._capacity;
+					Allocator	tmp_allocator = x._allocator;
+					x._c = this->_c;
+					x._size = this->_size;
+					x._capacity = this->_capacity;
+					x._allocator = this->_allocator;
+					this->_c = tmp_c;
+					this->_size = tmp_size;
+					this->_capacity = tmp_capacity;
+					this->_allocator = tmp_allocator;
 				}
 
 			protected:
@@ -365,28 +373,22 @@ namespace ft {
 
 	template<class T, class Alloc>
 		bool	operator<=(vector<T, Alloc> const& lhs, vector<T, Alloc> const& rhs) {
-			return !ft::lexicographical_compare(rhs.begin(), rhs.end(),
-					lhs.begin(), lhs.end());
+			return !(rhs < lhs);
 		}
 
 	template<class T, class Alloc>
 		bool	operator>(vector<T, Alloc> const& lhs, vector<T, Alloc>const& rhs) {
-			return ft::lexicographical_compare (rhs.begin(), rhs.end(),
-					lhs.begin(), lhs.end());
+			return rhs < lhs;
 		}
 
 	template<class T, class Alloc>
 		bool	operator>=(vector<T, Alloc> const& lhs, vector<T, Alloc> const& rhs) {
-			return !ft::lexicographical_compare(lhs.begin(), lhs.end(),
-					rhs.begin(), rhs.end());
+			return !(lhs < rhs);
 		}
 
 	template<class T, class Alloc>
 		void	swap(vector<T, Alloc>& x, vector<T, Alloc>& y) {
-			vector<T>	tmp = x;
-
-			x = y;
-			y = tmp;
+			x.swap(y);
 		}
 }
 

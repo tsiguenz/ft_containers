@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/28 11:46:21 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/07/28 19:01:56 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/07/29 17:44:17 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ namespace ft {
 	template<typename IteratorL, typename IteratorR>
 		bool	operator!=(RandomAccessIterator<IteratorL> const& it1,
 			RandomAccessIterator<IteratorR> const& it2)
-		{ return it1.base() != it2.base(); }
+		{ return !(it1.base() == it2.base()); }
 
 	template<typename IteratorL, typename IteratorR>
 		bool	operator<(RandomAccessIterator<IteratorL> const& it1,
@@ -109,17 +109,17 @@ namespace ft {
 	template<typename IteratorL, typename IteratorR>
 		bool	operator<=(RandomAccessIterator<IteratorL> const& it1,
 			RandomAccessIterator<IteratorR> const& it2)
-		{ return it1.base() <= it2.base(); }
+		{ return !(it2 < it1); }
 
 	template<typename IteratorL, typename IteratorR>
 		bool	operator>(RandomAccessIterator<IteratorL> const& it1,
 			RandomAccessIterator<IteratorR> const& it2)
-		{ return it1.base() > it2.base(); }
+		{ return it2 < it1; }
 
 	template<typename IteratorL, typename IteratorR>
 		bool	operator>=(RandomAccessIterator<IteratorL> const& it1,
 			RandomAccessIterator<IteratorR> const& it2)
-		{ return it1.base() >= it2.base(); }
+		{ return !(it1 < it2); }
 
 	template<typename IteratorL, typename IteratorR>
 		typename RandomAccessIterator<IteratorL>::difference_type
@@ -130,7 +130,7 @@ namespace ft {
 	template<typename Iterator>
 		RandomAccessIterator<Iterator>
 		operator+(typename RandomAccessIterator<Iterator>::difference_type n,
-		 RandomAccessIterator<Iterator> const& it)
+			RandomAccessIterator<Iterator> const& it)
 		{ return RandomAccessIterator<Iterator>(it.base() + n); }
 }
 
