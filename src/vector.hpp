@@ -6,17 +6,21 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 10:48:08 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/07/29 16:45:30 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/07/29 18:35:55 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 
-#include <RandomAccessIterator.hpp>
-#include <ReverseIterator.hpp>
-#include <Utils.hpp>
-#include <TypeTraits.hpp>
+#include <iterator> // std::random_access_iterator_tag
+#include <memory> // std::allocator
+#include <cstddef> // std::ptrdiff_t
+#include <stdexcept> // std::out_of_range
+#include "RandomAccessIterator.hpp"
+#include "ReverseIterator.hpp"
+#include "Utils.hpp"
+#include "TypeTraits.hpp"
 
 namespace ft {
 	template < class T, class Allocator = std::allocator<T> >

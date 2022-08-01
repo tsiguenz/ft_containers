@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/28 11:46:21 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/07/29 17:44:17 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/07/29 18:23:58 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define RANDOM_ACCESS_ITERATOR_HPP
 
 #include <typeinfo>
-#include <IteratorTraits.hpp>
+#include "IteratorTraits.hpp"
 
 namespace ft {
 	template < typename T >
