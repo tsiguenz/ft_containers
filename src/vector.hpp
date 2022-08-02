@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 10:48:08 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/02 18:42:17 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/08/02 19:55:40 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <iterator> // std::random_access_iterator_tag
 #include <memory> // std::allocator
 #include <cstddef> // std::ptrdiff_t
-#include <stdexcept> // std::out_of_range
+#include <stdexcept> // std::out_of_range and std::length_error
 #include "RandomAccessIterator.hpp"
 #include "ReverseIterator.hpp"
 #include "Utils.hpp"
@@ -45,14 +45,14 @@ namespace ft {
 
 				// Default
 				explicit vector(allocator_type const& alloc = allocator_type())
-					: _c(0), _size(0), _capacity(0), _allocator(alloc) {
+					: _p(0), _size(0), _capacity(0), _allocator(alloc) {
 					}
 
 				// Fill
 				explicit vector(size_type count,
 						const_reference value = T(),
 						Allocator const& alloc = Allocator())
-					: _c(0), _size(0), _capacity(0), _allocator(alloc) {
+					: _p(0), _size(0), _capacity(0), _allocator(alloc) {
 						assign(count, value);
 					}
 
@@ -61,13 +61,13 @@ namespace ft {
 					vector (InputIterator first,
 							InputIterator last,
 							allocator_type const& alloc = allocator_type())
-					: _c(0), _size(0), _capacity(0), _allocator(alloc) {
+					: _p(0), _size(0), _capacity(0), _allocator(alloc) {
 						assign(first, last);
 					}
 
 				// Copy
 				vector(vector const& rhs)
-					: _c(0), _size(0), _capacity(0), _allocator() {
+					: _p(0), _size(0), _capacity(0), _allocator() {
 						*this = rhs; }
 
 				// Destructor
@@ -81,9 +81,9 @@ namespace ft {
 					this->_allocator = rhs._allocator;
 					this->_size = rhs._size;
 					this->_capacity = rhs._size;
-					this->_c = this->_allocator.allocate(this->_capacity);
+					this->_p = this->_allocator.allocate(this->_capacity);
 					for (size_type i = 0; i < rhs._size; i++)
-						this->_allocator.construct(this->_c + i, rhs._c[i]);
+						this->_allocator.construct(this->_p + i, rhs._p[i]);
 					return *this;
 				}
 
@@ -103,9 +103,9 @@ namespace ft {
 							this->_capacity = this->_size;
 						while (this->_capacity < this->_size)
 							reserve(this->_capacity * 2);
-						this->_c = this->_allocator.allocate(this->_capacity);
+						this->_p = this->_allocator.allocate(this->_capacity);
 						for (size_type i = 0; first != last; first++) {
-							this->_allocator.construct(this->_c + i, *first);
+							this->_allocator.construct(this->_p + i, *first);
 							i++;
 						}
 					}
@@ -116,23 +116,23 @@ namespace ft {
 
 				// TODO need the same exception message ?
 				reference	at(size_type pos) {
-					if (pos < 0 || pos >= this->_size)
+					if (pos >= this->_size)
 						throw std::out_of_range("vector::at");
-					return this->_c[pos];
+					return this->_p[pos];
 				}
 
 				const_reference	at(size_type pos) const {
 					if (pos < 0 || pos >= this->_size)
 						throw std::out_of_range("vector::at");
-					return this->_c[pos];
+					return this->_p[pos];
 				}
 
 				reference	operator[](size_type const& pos) {
-					return this->_c[pos];
+					return this->_p[pos];
 				}
 
 				const_reference	operator[](size_type const& pos) const {
-					return this->_c[pos];
+					return this->_p[pos];
 				}
 
 				reference	front() { return *(begin()); }
@@ -143,19 +143,19 @@ namespace ft {
 
 				const_reference	back() const { return *(end() - 1); }
 
-				pointer	data() { return this->_c; }
+				pointer	data() { return this->_p; }
 
-				const_pointer	data() const { return this->_c; }
+				const_pointer	data() const { return this->_p; }
 
 				// Iterators
 
-				iterator	begin() { return this->_c; }
+				iterator	begin() { return this->_p; }
 
-				iterator	end() { return this->_c + this->_size; }
+				iterator	end() { return this->_p + this->_size; }
 
-				const_iterator	begin() const { return this->_c; }
+				const_iterator	begin() const { return this->_p; }
 
-				const_iterator	end() const { return this->_c + this->_size; }
+				const_iterator	end() const { return this->_p + this->_size; }
 
 				reverse_iterator	rbegin() { return end(); }
 
@@ -183,9 +183,9 @@ namespace ft {
 					this->_size = tmp._size;
 					this->_capacity = new_cap;
 					this->_allocator = tmp._allocator;
-					this->_c = this->_allocator.allocate(this->_capacity);
+					this->_p = this->_allocator.allocate(this->_capacity);
 					for (size_type i = 0; i < this->_size; i++) {
-						this->_allocator.construct(this->_c + i, tmp[i]);
+						this->_allocator.construct(this->_p + i, tmp[i]);
 					}
 				}
 
@@ -193,10 +193,10 @@ namespace ft {
 
 				// Modifiers
 				void	clear() {
-					if (this->_size == 0 || this->_c == NULL)
+					if (this->_size == 0 || this->_p == NULL)
 						return ;
 					for (size_type i = 0; i < this->_size; i++)
-						this->_allocator.destroy(this->_c + i);
+						this->_allocator.destroy(this->_p + i);
 					this->_size = 0;
 				}
 
@@ -283,7 +283,7 @@ namespace ft {
 						reserve(1);
 					if (this->_size == this->_capacity)
 						reserve(this->_capacity * 2);
-					this->_allocator.construct(this->_c + this->_size, value);
+					this->_allocator.construct(this->_p + this->_size, value);
 					this->_size++;
 				}
 
@@ -303,22 +303,22 @@ namespace ft {
 				}
 
 				void	swap(vector& x) {
-					pointer		tmp_c = x._c;
+					pointer		tmp_p = x._p;
 					size_type	tmp_size = x._size;
 					size_type	tmp_capacity = x._capacity;
 					Allocator	tmp_allocator = x._allocator;
-					x._c = this->_c;
+					x._p = this->_p;
 					x._size = this->_size;
 					x._capacity = this->_capacity;
 					x._allocator = this->_allocator;
-					this->_c = tmp_c;
+					this->_p = tmp_p;
 					this->_size = tmp_size;
 					this->_capacity = tmp_capacity;
 					this->_allocator = tmp_allocator;
 				}
 
-			protected:
-				pointer		_c;
+			private:
+				pointer		_p;
 				size_type	_size;
 				size_type	_capacity;
 				Allocator	_allocator;
@@ -327,7 +327,7 @@ namespace ft {
 
 				void	_freeAll() {
 					clear();
-					this->_allocator.deallocate(this->_c, this->_capacity);
+					this->_allocator.deallocate(this->_p, this->_capacity);
 				}
 
 				void	_move_range_left(iterator const& from, size_type const& offset) {
