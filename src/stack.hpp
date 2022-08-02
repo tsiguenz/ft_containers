@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/02 19:19:56 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/02 19:52:03 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/08/03 00:01:35 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,16 @@ namespace ft {
 				typedef typename Container::reference		reference;
 				typedef typename Container::const_reference	const_reference;
 
+				// Object managment
+
+				// Default
+				explicit stack(Container const& cont = Container())
+				: c(cont) { }
+
+				virtual ~stack() { };
+
 			protected:
+
 				container_type	c;
 
 			private:

@@ -6,7 +6,7 @@
 #    By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/20 10:45:57 by tsiguenz          #+#    #+#              #
-#    Updated: 2022/07/29 19:01:11 by tsiguenz         ###   ########.fr        #
+#    Updated: 2022/08/02 23:45:37 by tsiguenz         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ FLAGS_REAL = -D REAL
 SRC_PATH = src/
 OBJ_PATH = obj/
 REAL_PATH = real/
-INC = -Isrc -Itest -Itest/vector
+INC = -Isrc -Itest
 SRC_NAME = main.cpp
 
 OBJ_NAME = $(SRC_NAME:.cpp=.o)

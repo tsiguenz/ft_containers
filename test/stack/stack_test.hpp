@@ -1,26 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   stack_test.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/20 10:53:55 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/02 23:59:47 by tsiguenz         ###   ########.fr       */
+/*   Created: 2022/08/02 23:00:02 by tsiguenz          #+#    #+#             */
+/*   Updated: 2022/08/02 23:49:43 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vector/vector_test.hpp"
-#include "stack/stack_test.hpp"
-#include "utils_test.hpp"
+#ifndef STACK_TEST_HPP
+# define STACK_TEST_HPP
 
-int	main() {
+# define TESTED_NAMESPACE ft
+# define TESTED_TYPE	T
+# include <stack>
 
-	std::cout << RED << VECTOR_ASCII << LINE << DEFAULT << std::endl;
-	vector_test();
-	std::cout << RED << STACK_ASCII << LINE << DEFAULT << std::endl;
-	stack_test();
-//	std::cout << RED << MAP_ASCII << LINE << DEFAULT << std::endl;
-	return 0;
+# include <stack.hpp>
+# include <utils_test.hpp>
+
+void	stack_test() {
+# ifdef REAL
+	namespace ft = std;
+# endif
+
+	ft::stack<int>	s;
+
 }
 
+#endif // STACK_TEST_HPP
