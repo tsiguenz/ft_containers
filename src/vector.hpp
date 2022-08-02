@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 10:48:08 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/07/29 18:35:55 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/08/02 18:42:17 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,13 +117,13 @@ namespace ft {
 				// TODO need the same exception message ?
 				reference	at(size_type pos) {
 					if (pos < 0 || pos >= this->_size)
-						throw std::out_of_range("Vector::Out of range");
+						throw std::out_of_range("vector::at");
 					return this->_c[pos];
 				}
 
 				const_reference	at(size_type pos) const {
 					if (pos < 0 || pos >= this->_size)
-						throw std::out_of_range("Vector::Out of range");
+						throw std::out_of_range("vector::at");
 					return this->_c[pos];
 				}
 
@@ -174,6 +174,8 @@ namespace ft {
 				size_type	max_size() const { return this->_allocator.max_size(); }
 
 				void	reserve(size_type new_cap) {
+					if (new_cap > max_size())
+						throw std::length_error("vector::reserve");
 					if (new_cap <= this->_capacity)
 						return ;
 					ft::vector<T>	tmp = *this;
@@ -182,7 +184,6 @@ namespace ft {
 					this->_capacity = new_cap;
 					this->_allocator = tmp._allocator;
 					this->_c = this->_allocator.allocate(this->_capacity);
-					// TODO use insert
 					for (size_type i = 0; i < this->_size; i++) {
 						this->_allocator.construct(this->_c + i, tmp[i]);
 					}

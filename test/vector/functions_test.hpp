@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/14 16:49:25 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/07/29 16:21:57 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/08/02 18:54:37 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,6 +161,12 @@ void	functionsTest() {
 		a.clear();
 		b.clear();
 		assertEqContainer("clear check vectors", a, b);
+
+		int	nbException = 0;
+
+		try { a.reserve(a.max_size() + 1); } catch (std::exception const& e) { nbException++; }
+		try { b.reserve(b.max_size() + 1); } catch (std::exception const& e) { nbException++; }
+		assertEq("reserve exception test", nbException, 2);
 	}
 	// insert single element
 	{
