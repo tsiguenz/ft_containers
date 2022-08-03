@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/14 16:49:25 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/02 18:54:37 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/08/03 14:20:37 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ void	functionsTest() {
 		for (int i = 0; i < 5; i++)
 			b1[i] = i * 10;
 		std::swap(b1, b2);
-		assertEqContainer("swap compare a1 to b1", a1, b1);
-		assertEqContainer("swap compare a2 to b2", a2, b2);
+		assertEqVector("swap compare a1 to b1", a1, b1);
+		assertEqVector("swap compare a2 to b2", a2, b2);
 	}
 	// assign
 	{
@@ -45,14 +45,14 @@ void	functionsTest() {
 		a2.assign(a1.begin() + 1, a1.end() - 1);
 		b1.assign(4, 42);
 		b2.assign(b1.begin() + 1, b1.end() - 1);
-		assertEqContainer("asssign fill overload", a1, b1);
-		assertEqContainer("asssign range overload", a2, b2);
+		assertEqVector("asssign fill overload", a1, b1);
+		assertEqVector("asssign range overload", a2, b2);
 		a1.assign(2, 12);
 		b1.assign(2, 12);
 		a2.assign(a1.begin() + 1, a1.end());
 		b2.assign(b1.begin() + 1, b1.end());
-		assertEqContainer("asssign fill overload second time", a1, b1);
-		assertEqContainer("asssign range overload second time", a2, b2);
+		assertEqVector("asssign fill overload second time", a1, b1);
+		assertEqVector("asssign range overload second time", a2, b2);
 	}
 	// get_allocator
 	{
@@ -142,7 +142,7 @@ void	functionsTest() {
 		assertEq("size of empty vector", a.size(), b.size());
 		assertEq("size of non empty vector", c.size(), d.size());
 		assertEq("max_size", a.max_size(), b.max_size());
-		assertEqContainer("compare after reserve", a, b);
+		assertEqVector("compare after reserve", a, b);
 	}
 	// reserve / clear
 	{
@@ -151,16 +151,16 @@ void	functionsTest() {
 
 		a.reserve(5);
 		b.reserve(5);
-		assertEqContainer("reserve classic", a, b);
+		assertEqVector("reserve classic", a, b);
 		a.reserve(4);
 		b.reserve(4);
-		assertEqContainer("reserve 4 on capacity 5", a, b);
+		assertEqVector("reserve 4 on capacity 5", a, b);
 		a.reserve(1);
 		b.reserve(1);
-		assertEqContainer("reserve 1 on capacity 5", a, b);
+		assertEqVector("reserve 1 on capacity 5", a, b);
 		a.clear();
 		b.clear();
-		assertEqContainer("clear check vectors", a, b);
+		assertEqVector("clear check vectors", a, b);
 
 		int	nbException = 0;
 
@@ -180,13 +180,13 @@ void	functionsTest() {
 		assertEq("insert return value", *a.insert(a.begin(), 1), *b.insert(b.begin(), 1));
 		assertEq("insert return value", *a.insert(a.begin() + 2, 8), *b.insert(b.begin() + 2, 8));
 		assertEq("insert return value", *a.insert(a.end(), 2), *b.insert(b.end(), 2));
-		assertEqContainer("insert single element non empty container", a, b);
+		assertEqVector("insert single element non empty container", a, b);
 
 		ft::vector<T>	a1;
 		std::vector<T>	b1;
 
 		assertEq("insert empty vector return value", *a1.insert(a1.begin(), 42), *b1.insert(b1.begin(), 42));
-		assertEqContainer("insert single element range empty container", a1, b1);
+		assertEqVector("insert single element range empty container", a1, b1);
 	}
 	// insert fill
 	{
@@ -200,14 +200,14 @@ void	functionsTest() {
 
 		a.insert(a.begin(), 2, 42);
 		b.insert(b.begin(), 2, 42);
-		assertEqContainer("insert fill non empty container", a, b);
+		assertEqVector("insert fill non empty container", a, b);
 
 		ft::vector<T>	a1;
 		std::vector<T>	b1;
 
 		a1.insert(a1.begin(), 2, 42);
 		b1.insert(b1.begin(), 2, 42);
-		assertEqContainer("insert fill empty container", a1, b1);
+		assertEqVector("insert fill empty container", a1, b1);
 	}
 	// insert range
 	{
@@ -222,14 +222,14 @@ void	functionsTest() {
 
 		a.insert(a.begin(), range.begin(), range.end());
 		b.insert(b.begin(), range.begin(), range.end());
-		assertEqContainer("insert range not empty container", a, b);
+		assertEqVector("insert range not empty container", a, b);
 
 		ft::vector<T>	a1;
 		std::vector<T>	b1;
 
 		a1.insert(a1.begin(), range.begin(), range.end());
 		b1.insert(b1.begin(), range.begin(), range.end());
-		assertEqContainer("insert range empty container", a1, b1);
+		assertEqVector("insert range empty container", a1, b1);
 	}
 	// erase
 	{
@@ -246,13 +246,13 @@ void	functionsTest() {
 		b.push_back(22);
 		b.push_back(12);
 		assertEq("erase pos return value", *a.erase(a.begin()), *b.erase(b.begin()));
-		assertEqContainer("erase pos size 1", a, b);
+		assertEqVector("erase pos size 1", a, b);
 		assertEq("erase pos return value", *a.erase(a.begin() + 2), *b.erase(b.begin() + 2));
-		assertEqContainer("erase pos size 1", a, b);
+		assertEqVector("erase pos size 1", a, b);
 		assertEq("erase pos return value", *a.erase(a.end() - 1), *b.erase(b.end() - 1));
-		assertEqContainer("erase pos size 1", a, b);
+		assertEqVector("erase pos size 1", a, b);
 		assertEq("erase pos return value", *a.erase(a.begin()), *b.erase(b.begin()));
-		assertEqContainer("erase pos size 1", a, b);
+		assertEqVector("erase pos size 1", a, b);
 		a.push_back(5);
 		a.push_back(2);
 		a.push_back(8);
@@ -263,11 +263,11 @@ void	functionsTest() {
 		b.push_back(8);
 		b.push_back(6);
 		assertEq("erase range basic return value", *a.erase(a.begin() + 1, a.begin() + 3), *b.erase(b.begin() + 1, b.begin() + 3));
-		assertEqContainer("erase range basic", a, b);
+		assertEqVector("erase range basic", a, b);
 		assertEq("erase range begin, end return value", *a.erase(a.begin(), a.end()), *b.erase(b.begin(), b.end()));
-		assertEqContainer("erase range begin, end", a, b);
+		assertEqVector("erase range begin, end", a, b);
 		assertEq("erase empty range return value", *a.erase(a.begin() + 1, a.begin() + 1), *b.erase(b.begin() + 1, b.begin() + 1));
-		assertEqContainer("erase empty range", a, b);
+		assertEqVector("erase empty range", a, b);
 		ft::vector<std::string>		vct1(10);
 		std::vector<std::string>	vct2(10);
 		for (unsigned long int i = 0; i < vct1.size(); ++i) {
@@ -276,7 +276,7 @@ void	functionsTest() {
 		}
 		vct1.erase(vct1.begin(), vct1.begin() + 3);
 		vct2.erase(vct2.begin(), vct2.begin() + 3);
-		assertEqContainer("test", vct1, vct2);
+		assertEqVector("test", vct1, vct2);
 		
 	}
 	// push_back
@@ -290,14 +290,14 @@ void	functionsTest() {
 		b.push_back(42);
 		b.push_back(32);
 		b.push_back(32);
-		assertEqContainer("push_back on empty container", a, b);
+		assertEqVector("push_back on empty container", a, b);
 
 		ft::vector<T>	a1(5);
 		std::vector<T>	b1(5);
 
 		a1.push_back(42);
 		b1.push_back(42);
-		assertEqContainer("push_back on non empty container", a, b);
+		assertEqVector("push_back on non empty container", a, b);
 	}
 	// pop_back
 	{
@@ -310,10 +310,10 @@ void	functionsTest() {
 		b.push_back(32);
 		a.pop_back();
 		b.pop_back();
-		assertEqContainer("pop_back size 2", a, b);
+		assertEqVector("pop_back size 2", a, b);
 		a.pop_back();
 		b.pop_back();
-		assertEqContainer("pop_back size 1", a, b);
+		assertEqVector("pop_back size 1", a, b);
 	}
 	// resize
 	{
@@ -325,13 +325,13 @@ void	functionsTest() {
 		b.push_back(32);
 		a.resize(2);
 		b.resize(2);
-		assertEqContainer("resize value equal than size", a, b);
+		assertEqVector("resize value equal than size", a, b);
 		a.resize(1);
 		b.resize(1);
-		assertEqContainer("resize value less than size", a, b);
+		assertEqVector("resize value less than size", a, b);
 		a.resize(5);
 		b.resize(5);
-		assertEqContainer("resize value greater than size", a, b);
+		assertEqVector("resize value greater than size", a, b);
 	}
 	// swap
 	{
@@ -348,8 +348,8 @@ void	functionsTest() {
 		for (int i = 0; i < 5; i++)
 			b1[i] = i * 10;
 		b1.swap(b2);
-		assertEqContainer("swap compare a1 to b1", a1, b1);
-		assertEqContainer("swap compare a2 to b2", a2, b2);
+		assertEqVector("swap compare a1 to b1", a1, b1);
+		assertEqVector("swap compare a2 to b2", a2, b2);
 	}
 }
 

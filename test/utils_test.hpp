@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 12:36:10 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/02 23:29:38 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/08/03 14:19:11 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	assertEq(std::string str, T a, T b) {
 }
 
 template<typename T, typename U>
-void	assertEqContainer(std::string const& str, T const& a, U const& b) {
+void	assertEqVector(std::string const& str, T const& a, U const& b) {
 	if (a.size() != b.size()) {
 		std::cout << RED << "[KO] " << str << ", different size : a.size() = " << a.size() << " b.size() = " << b.size() << DEFAULT << std::endl;
 		return ;
@@ -63,7 +63,7 @@ void	assertEqContainer(std::string const& str, T const& a, U const& b) {
 }
 
 template<typename T, typename U>
-void	diffContainers(T const& a, U const& b) {
+void	diffVector(T const& a, U const& b) {
 	std::cout << "---------- Diff Container ----------" << std::endl;
 	for (size_t i = 0; i < a.size(); i++)
 		std::cout << "a[" << i << "] = " << a[i] << " b[" << i << "] = " << b[i] << std::endl;
@@ -73,7 +73,7 @@ void	diffContainers(T const& a, U const& b) {
 }
 
 template<typename T>
-void	printContainer(T const& a) {
+void	printVector(T const& a) {
 	std::cout << "---------- Print Container ----------" << std::endl;
 	for (size_t i = 0; i < a.size(); i++)
 		std::cout << "a[" << i << "] = " << a[i] << std::endl;

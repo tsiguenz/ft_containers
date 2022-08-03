@@ -6,15 +6,12 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 17:14:11 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/02 23:54:46 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/08/03 14:53:38 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VECTOR_TEST_HPP
 # define VECTOR_TEST_HPP
-
-# define TESTED_NAMESPACE ft
-# define TESTED_TYPE	T
 
 # include <list>
 # include <vector>

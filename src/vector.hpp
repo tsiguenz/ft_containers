@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 10:48:08 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/02 23:01:25 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/08/03 13:36:38 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,43 +136,60 @@ namespace ft {
 					return this->_p[pos];
 				}
 
-				reference	front() { return *(begin()); }
+				reference	front()
+				{ return *(begin()); }
 
-				const_reference	front() const { return *(begin()); }
+				const_reference	front() const
+				{ return *(begin()); }
 
-				reference	back() { return *(end() - 1); }
+				reference	back()
+				{ return *(end() - 1); }
 
-				const_reference	back() const { return *(end() - 1); }
+				const_reference	back() const
+				{ return *(end() - 1); }
 
-				pointer	data() { return this->_p; }
+				pointer	data()
+				{ return this->_p; }
 
-				const_pointer	data() const { return this->_p; }
+				const_pointer	data() const
+				{ return this->_p; }
 
 				// Iterators
 
-				iterator	begin() { return this->_p; }
+				iterator	begin()
+				{ return this->_p; }
 
-				iterator	end() { return this->_p + this->_size; }
+				iterator	end()
+				{ return this->_p + this->_size; }
 
-				const_iterator	begin() const { return this->_p; }
+				const_iterator	begin() const
+				{ return this->_p; }
 
-				const_iterator	end() const { return this->_p + this->_size; }
+				const_iterator	end() const
+				{ return this->_p + this->_size; }
 
-				reverse_iterator	rbegin() { return end(); }
+				reverse_iterator	rbegin()
+				{ return end(); }
 
-				const_reverse_iterator	rbegin() const { return end(); }
+				const_reverse_iterator	rbegin() const
+				{ return end(); }
 
-				reverse_iterator	rend() { return begin(); }
+				reverse_iterator	rend()
+				{ return begin(); }
 
-				const_reverse_iterator	rend() const { return begin(); }
+				const_reverse_iterator	rend() const
+				{ return begin(); }
 
 				// Capacity
 
-				bool	empty() const { return begin() == end(); }
+				bool	empty() const
+				{ return begin() == end(); }
 
-				size_type	size() const { return this->_size; }
+				size_type	size() const
+				{ return this->_size; }
 
-				size_type	max_size() const { return this->_allocator.max_size(); }
+				size_type	max_size() const
+				{ return this->_allocator.max_size(); }
 
 				void	reserve(size_type new_cap) {
 					if (new_cap > max_size())
@@ -190,7 +207,8 @@ namespace ft {
 					}
 				}
 
-				size_type	capacity() const { return this->_capacity; }
+				size_type	capacity() const
+				{ return this->_capacity; }
 
 				// Modifiers
 				void	clear() {
@@ -326,6 +344,8 @@ namespace ft {
 
 			private:
 
+			// Utils
+
 				void	_freeAll() {
 					clear();
 					this->_allocator.deallocate(this->_p, this->_capacity);
@@ -359,6 +379,8 @@ namespace ft {
 				}
 		};
 
+	// Non member functions
+
 	template<class T, class Alloc>
 		bool	operator==(vector<T, Alloc> const& lhs, vector<T, Alloc> const& rhs) {
 			if (lhs.size() != rhs.size())
@@ -367,9 +389,8 @@ namespace ft {
 		}
 
 	template<class T, class Alloc>
-		bool	operator!=(vector<T, Alloc> const& lhs, vector<T, Alloc> const& rhs) {
-			return !(lhs == rhs);
-		}
+		bool	operator!=(vector<T, Alloc> const& lhs, vector<T, Alloc> const& rhs)
+		{ return !(lhs == rhs); }
 
 	template<class T, class Alloc>
 		bool	operator<(vector<T, Alloc> const& lhs, vector<T, Alloc> const& rhs) {
@@ -378,24 +399,20 @@ namespace ft {
 		}
 
 	template<class T, class Alloc>
-		bool	operator<=(vector<T, Alloc> const& lhs, vector<T, Alloc> const& rhs) {
-			return !(rhs < lhs);
-		}
+		bool	operator<=(vector<T, Alloc> const& lhs, vector<T, Alloc> const& rhs)
+		{ return !(rhs < lhs); }
 
 	template<class T, class Alloc>
-		bool	operator>(vector<T, Alloc> const& lhs, vector<T, Alloc>const& rhs) {
-			return rhs < lhs;
-		}
+		bool	operator>(vector<T, Alloc> const& lhs, vector<T, Alloc>const& rhs)
+		{ return rhs < lhs; }
 
 	template<class T, class Alloc>
-		bool	operator>=(vector<T, Alloc> const& lhs, vector<T, Alloc> const& rhs) {
-			return !(lhs < rhs);
-		}
+		bool	operator>=(vector<T, Alloc> const& lhs, vector<T, Alloc> const& rhs)
+		{ return !(lhs < rhs); }
 
 	template<class T, class Alloc>
-		void	swap(vector<T, Alloc>& x, vector<T, Alloc>& y) {
-			x.swap(y);
-		}
+		void	swap(vector<T, Alloc>& x, vector<T, Alloc>& y)
+		{ x.swap(y); }
 }
 
 #endif
