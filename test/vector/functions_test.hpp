@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/14 16:49:25 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/03 14:20:37 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/08/03 16:22:36 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 
 template<class T>
 void	functionsTest() {
+# ifdef REAL
+	namespace ft = std;
+#endif
 	std::cout << "----------  Functions test : ----------" << std::endl;
 	// swap
 	{

@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 15:00:26 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/03 14:21:05 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/08/03 16:22:54 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 
 template<typename T>
 void	objectManagmentTest() {
+# ifdef REAL
+	namespace ft = std;
+#endif
 	std::cout << "----------  Object managment : ----------" << std::endl;
 	{
 		ft::vector<T>	ftV;

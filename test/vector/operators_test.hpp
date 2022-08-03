@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/14 16:07:55 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/07/14 16:39:03 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/08/03 16:23:02 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 
 template<typename T>
 void	operatorsTest() {
+# ifdef REAL
+	namespace ft = std;
+#endif
 	std::cout << "----------  Operators : ----------" << std::endl;
 	ft::vector<T>	a0, a1, a2, a3, a4, a5;
 

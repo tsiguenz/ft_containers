@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 10:48:08 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/03 13:36:38 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/08/03 19:14:26 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,9 @@ namespace ft {
 						this->_size = ft::distance(first, last);
 						if (this->_capacity == 0)
 							this->_capacity = this->_size;
-						while (this->_capacity < this->_size)
+						while (this->_capacity < this->_size) {
 							reserve(this->_capacity * 2);
+						}
 						this->_p = this->_allocator.allocate(this->_capacity);
 						for (size_type i = 0; first != last; first++) {
 							this->_allocator.construct(this->_p + i, *first);
@@ -115,7 +116,6 @@ namespace ft {
 
 				// Element acces
 
-				// TODO need the same exception message ?
 				reference	at(size_type pos) {
 					if (pos >= this->_size)
 						throw std::out_of_range("vector::at");
@@ -202,9 +202,8 @@ namespace ft {
 					this->_capacity = new_cap;
 					this->_allocator = tmp._allocator;
 					this->_p = this->_allocator.allocate(this->_capacity);
-					for (size_type i = 0; i < this->_size; i++) {
+					for (size_type i = 0; i < this->_size; i++)
 						this->_allocator.construct(this->_p + i, tmp[i]);
-					}
 				}
 
 				size_type	capacity() const
@@ -248,6 +247,8 @@ namespace ft {
 					size_type	index_of_pos = _get_index_of_it(pos);
 					while (this->_capacity < newSize)
 						reserve(this->_capacity * 2);
+					for (size_type i = this->_size; i < this->_size + count; i++)
+						this->_allocator.construct(this->_p + i, value_type());
 					pos = this->begin() + index_of_pos;
 					_move_range_left(pos, count);
 					for (size_type i = 0; i < count; i++)
@@ -263,11 +264,14 @@ namespace ft {
 							assign(first, last);
 							return ;
 						}
-						size_type	newSize = this->_size + ft::distance(first, last);
+						size_type	dist = ft::distance(first, last);
+						size_type	newSize = this->_size + dist;
 						// need to store the index because reserve change the iterators
 						size_type	index_of_pos = _get_index_of_it(pos);
 						while (this->_capacity < newSize)
 							reserve(this->_capacity * 2);
+						for (size_type i = this->_size; i < this->_size + dist; i++)
+							this->_allocator.construct(this->_p + i, value_type());
 						pos = this->begin() + index_of_pos;
 						_move_range_left(pos, ft::distance(first, last));
 						for (; first != last; first++) {
@@ -349,6 +353,7 @@ namespace ft {
 				void	_freeAll() {
 					clear();
 					this->_allocator.deallocate(this->_p, this->_capacity);
+					this->_capacity = 0;
 				}
 
 				void	_move_range_left(iterator const& from, size_type const& offset) {

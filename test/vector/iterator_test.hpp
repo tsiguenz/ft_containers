@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 19:09:13 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/07/28 11:36:31 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/08/03 16:22:47 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 
 template<typename T, typename ftIterator, typename stdIterator>
 void	iteratorTest(ftIterator ftIt, stdIterator stdIt) {
+# ifdef REAL
+	namespace ft = std;
+#endif
 	ftIt += 10;
 	stdIt += 10;
 	assertEq("Compare iterator value returned by begin()", *ftIt, *stdIt);
