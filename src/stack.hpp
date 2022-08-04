@@ -6,14 +6,13 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/02 19:19:56 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/03 16:13:30 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/08/04 13:36:28 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STACK_HPP
 # define STACK_HPP
 
-#include <iostream>
 # include "vector.hpp"
 
 namespace ft {

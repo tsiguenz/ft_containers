@@ -6,24 +6,26 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 12:36:10 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/03 19:08:38 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/08/04 14:08:49 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef UTILS_TEST_HPP
 # define UTILS_TEST_HPP
 
-#define DEFAULT "\e[0m"
-#define RED "\e[31m"
-#define GREEN "\e[32m"
-#define BLUE "\e[35m"
+# include <iostream>
 
-#define LINE "================================================================================" 
-#define VECTOR_ASCII "  8b           d8 88888888888 ,ad8888ba, 888888888888 ,ad8888ba,   88888888ba \n  `8b         d8' 88         d8\"'    `\"8b     88     d8\"'    `\"8b  88      \"8b\n   `8b       d8'  88        d8'               88    d8'        `8b 88      ,8P\n    `8b     d8'   88aaaaa   88                88    88          88 88aaaaaa8P'\n     `8b   d8'    88\"\"\"\"\"   88                88    88          88 88\"\"\"\"88'  \n      `8b d8'     88        Y8,               88    Y8,        ,8P 88    `8b  \n       `888'      88         Y8a.    .a8P     88     Y8a.    .a8P  88     `8b \n        `8'       88888888888 `\"Y8888Y\"'      88      `\"Y8888Y\"'   88      `8b\n"
+# define DEFAULT "\e[0m"
+# define RED "\e[31m"
+# define GREEN "\e[32m"
+# define BLUE "\e[35m"
 
-#define STACK_ASCII "	 .d8888b. 88888888888     d8888  .d8888b.  888    d8P  \n	d88P  Y88b    888        d88888 d88P  Y88b 888   d8P\n	Y88b.         888       d88P888 888    888 888  d8P\n	 \"Y888b.      888      d88P 888 888        888d88K\n	    \"Y88b.    888     d88P  888 888        8888888b\n	      \"888    888    d88P   888 888    888 888  Y88b\n	Y88b  d88P    888   d8888888888 Y88b  d88P 888   Y88b\n	 \"Y8888P\"     888  d88P     888  \"Y8888P\"  888    Y88b\n" 
+# define LINE "================================================================================" 
+# define VECTOR_ASCII "  8b           d8 88888888888 ,ad8888ba, 888888888888 ,ad8888ba,   88888888ba \n  `8b         d8' 88         d8\"'    `\"8b     88     d8\"'    `\"8b  88      \"8b\n   `8b       d8'  88        d8'               88    d8'        `8b 88      ,8P\n    `8b     d8'   88aaaaa   88                88    88          88 88aaaaaa8P'\n     `8b   d8'    88\"\"\"\"\"   88                88    88          88 88\"\"\"\"88'  \n      `8b d8'     88        Y8,               88    Y8,        ,8P 88    `8b  \n       `888'      88         Y8a.    .a8P     88     Y8a.    .a8P  88     `8b \n        `8'       88888888888 `\"Y8888Y\"'      88      `\"Y8888Y\"'   88      `8b\n"
 
-#define MAP_ASCII "		888b     d888        d8888 8888888b.\n		8888b   d8888       d88888 888   Y88b\n		88888b.d88888      d88P888 888    888\n		888Y88888P888     d88P 888 888   d88P\n		888 Y888P 888    d88P  888 8888888P\"\n		888  Y8P  888   d88P   888 888\n		888   \"   888  d8888888888 888\n		888       888 d88P     888 888\n" 
+# define STACK_ASCII "	 .d8888b. 88888888888     d8888  .d8888b.  888    d8P  \n	d88P  Y88b    888        d88888 d88P  Y88b 888   d8P\n	Y88b.         888       d88P888 888    888 888  d8P\n	 \"Y888b.      888      d88P 888 888        888d88K\n	    \"Y88b.    888     d88P  888 888        8888888b\n	      \"888    888    d88P   888 888    888 888  Y88b\n	Y88b  d88P    888   d8888888888 Y88b  d88P 888   Y88b\n	 \"Y8888P\"     888  d88P     888  \"Y8888P\"  888    Y88b\n" 
+
+# define MAP_ASCII "		888b     d888        d8888 8888888b.\n		8888b   d8888       d88888 888   Y88b\n		88888b.d88888      d88P888 888    888\n		888Y88888P888     d88P 888 888   d88P\n		888 Y888P 888    d88P  888 8888888P\"\n		888  Y8P  888   d88P   888 888\n		888   \"   888  d8888888888 888\n		888       888 d88P     888 888\n" 
 
 template<typename T>
 void	assertEq(std::string str, T a, T b) {

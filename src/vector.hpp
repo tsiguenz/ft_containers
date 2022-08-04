@@ -6,14 +6,13 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 10:48:08 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/03 19:14:26 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/08/04 13:36:36 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 
-#include <iostream>
 #include <iterator> // std::random_access_iterator_tag
 #include <memory> // std::allocator
 #include <cstddef> // std::ptrdiff_t

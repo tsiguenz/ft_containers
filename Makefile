@@ -6,7 +6,7 @@
 #    By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/20 10:45:57 by tsiguenz          #+#    #+#              #
-#    Updated: 2022/08/02 23:45:37 by tsiguenz         ###   ########.fr        #
+#    Updated: 2022/08/04 12:56:17 by tsiguenz         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,12 +55,17 @@ real: $(NAME_REAL)
 
 all: $(NAME) real
 
+diff: all
+	./$(NAME) > my_output
+	./$(NAME_REAL) > real_output
+	diff my_output real_output
+
 clean:
 	rm -rf obj
 	rm -rf real
 
 fclean: clean
-	rm -rf $(NAME) $(NAME_REAL)
+	rm -rf $(NAME) $(NAME_REAL) my_output real_output
 
 re: fclean all
 

@@ -9,6 +9,8 @@ obj
 real
 container
 container_real
+my_output
+real_output
 debug
 containers_test
 42TESTERS-CONTAINERS

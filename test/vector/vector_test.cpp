@@ -1,30 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vector_test.hpp                                    :+:      :+:    :+:   */
+/*   vector_test.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 17:14:11 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/03 19:31:07 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/08/04 17:37:05 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef VECTOR_TEST_HPP
-# define VECTOR_TEST_HPP
+#include <list>
+#include <vector>
 
-# include <list>
-# include <vector>
-
-# include "vector.hpp"
-# include "utils_test.hpp"
-# include "vector/iterator_test.hpp"
-# include "vector/object_managment_test.hpp"
-# include "vector/functions_test.hpp"
-# include "vector/operators_test.hpp"
+#include "vector.hpp"
+#include "utils_test.hpp"
+#include "vector/iterator_test.hpp"
+#include "vector/object_managment_test.hpp"
+#include "vector/functions_test.hpp"
+#include "vector/operators_test.hpp"
 
 void	vector_test() {
-# ifdef REAL
+#ifdef REAL
 	namespace ft = std;
 #endif
 	objectManagmentTest<int>();
@@ -55,5 +52,3 @@ void	vector_test() {
 	}
 	functionsTest<int>();
 }
-
-#endif // VECTOR_TEST_HPP

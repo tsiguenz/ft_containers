@@ -6,12 +6,9 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/02 23:00:02 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/03 16:23:41 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/08/04 14:10:30 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#ifndef STACK_TEST_HPP
-# define STACK_TEST_HPP
 
 # include <stack>
 
@@ -63,5 +60,3 @@ void	stack_test() {
 	assertEq("equal when equal", s1 == s2, true);
 	assertEq("non equal when equal", s1 != s2, false);
 }
-
-#endif // STACK_TEST_HPP
