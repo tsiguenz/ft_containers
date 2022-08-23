@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/14 14:09:47 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/07/28 15:24:42 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/08/23 16:40:17 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,14 @@ namespace ft {
 				first2++;
 			}			
 			return (first2 != last2);
+		}
+
+	template<class T>
+		void	swap(T x, T y) {
+			T	tmp = x;
+
+			x = y;
+			y = tmp;
 		}
 }
 

@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 12:36:10 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/04 14:08:49 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/08/23 14:21:44 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	assertEqVector(std::string const& str, T const& a, U const& b) {
 	}
 	std::cout << GREEN << "[OK] " << str << DEFAULT << std::endl;
 	if (a.capacity() != b.capacity())
-		std::cout << BLUE << "different capacity : a.capacity() = " << a.capacity() << " b.capacity() = " << b.capacity() << DEFAULT << std::endl;
+		std::cout << BLUE << "INFO : different capacity : a.capacity() = " << a.capacity() << " b.capacity() = " << b.capacity() << DEFAULT << std::endl;
 }
 
 template<typename T, typename U>
