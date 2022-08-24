@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 17:38:11 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/23 23:34:25 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/08/24 19:01:34 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,20 @@ namespace ft {
 			public:
 
 				typedef Node<T>	node;
-				// constructor
-				RedBlackTree() { root = NULL; }
 
-				node*	getRoot() { return root; }
+				// Constructor
+				RedBlackTree()
+				{ root = NULL; }
+
+				// Destructor
+				~RedBlackTree() {
+					while (root != NULL) {
+						remove(root->data);
+					}
+				}
+
+				node*	getRoot()
+				{ return root; }
 
 				node*	insertHelper(node* root, node* n) {
 					if (root == NULL) {
@@ -63,16 +73,25 @@ namespace ft {
 					root = insertHelper(root, newNode);
 				}
 
-				void	deleteNode(T const& key) {
+				void	remove(T const& key) {
 					node*	curr = searchByKey(key);
 
 					if (curr == NULL)
 						return ;
-					if (curr->left == NULL && curr->right == NULL) {
-						delete curr;
-						curr = NULL;
+					if (curr == root && curr->left == NULL && curr->left == NULL) {
+						delete root;
+						root = NULL;
 						return ;
 					}
+					// Node without child
+					if (curr->left == NULL && curr->right == NULL) {
+						node*	p = curr->parent;
+
+						(p->left == curr) ? p->left = NULL : p->right = NULL;
+						delete curr;
+						return ;
+					}
+					// Node with one child
 					if (curr->left == NULL || curr->right == NULL) {
 						node*	toDel;
 						if (curr->left == NULL)
@@ -81,44 +100,53 @@ namespace ft {
 							toDel = curr->left;
 						curr->data = toDel->data;
 						curr->left = toDel->left;
+						curr->right = toDel->right;
 						delete toDel;
+						return ;
 					}
+					// Node with two child
+					node*	successor = minimum(curr->right);
+					node*	p = successor->parent;
+
+					(p->left == successor) ? p->left = NULL : p->right = NULL;
+					curr->data = successor->data;
+					delete successor;
 				}
 
 				node*	searchByKey(T const& key) {
-					node*	curr = root;
+					node*	curr = this->root;
 
-					while (curr != NULL && curr->data != key) {
-						if (curr->data < key)
-							curr = curr->right;
-						else
-							curr = curr->left;
-					}
+					while (curr != NULL && curr->data != key)
+						curr = (curr->data < key) ? curr->right : curr->left;
 					return curr;
 				}
 
-				node*	minimum() {
-					node*	current = this->root;
+				node*	minimum(node* n) {
+					node*	current = n;
 					while (current->left != NULL)
 						current = current->left;
 					return current;
 				}
 
-				node*	maximum() {
-					node*	current = this->root;
+				node*	minimum()
+				{ return minimum(this->root); }
+
+				node*	maximum(node* n) {
+					node*	current = n;
 					while (current->right != NULL)
 						current = current->right;
 					return current;
 				}
 
-				void inorderHelper(node* root)
-				{
+				node*	maximum()
+				{ return maximum(this->root); }
+
+				void	inorder(node* root) const {
 					if (root == NULL)
 						return;
-
-					inorderHelper(root->left);
+					inorder(root->left);
 					std::cout << root->data << "  ";
-					inorderHelper(root->right);
+					inorder(root->right);
 				}
 		};
 }

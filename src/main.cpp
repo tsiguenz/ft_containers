@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 10:53:55 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/04 16:35:01 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/08/24 15:44:30 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@
 
 int	main() {
 
-	std::cout << RED << VECTOR_ASCII << LINE << DEFAULT << std::endl;
-	vector_test();
-	std::cout << RED << STACK_ASCII << LINE << DEFAULT << std::endl;
-	stack_test();
+//	std::cout << RED << VECTOR_ASCII << LINE << DEFAULT << std::endl;
+//	vector_test();
+//	std::cout << RED << STACK_ASCII << LINE << DEFAULT << std::endl;
+//	stack_test();
 	std::cout << RED << MAP_ASCII << LINE << DEFAULT << std::endl;
 	map_test();
 	return 0;

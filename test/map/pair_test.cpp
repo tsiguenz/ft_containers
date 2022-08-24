@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 14:01:38 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/04 17:52:28 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/08/24 15:45:44 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,29 +32,29 @@ void	pair_test() {
 	assertEq("pair copy constructor second", p3.second, std::string("hello"));
 
 	// operators
-	assertEq("operator== when not equal", p1 == p2, false);
-	assertEq("operator== when equal", p2 == p2, true);
+	assertEq("pair operator== when not equal", p1 == p2, false);
+	assertEq("pair operator== when equal", p2 == p2, true);
 
-	assertEq("operator!= when not equal", p1 != p2, true);
-	assertEq("operator!= when equal", p2 != p2, false);
+	assertEq("pair operator!= when not equal", p1 != p2, true);
+	assertEq("pair operator!= when equal", p2 != p2, false);
 
-	assertEq("operator< when p4 < p2", p4 < p2, true);
-	assertEq("operator< when p2 < p4", p2 < p4, false);
-	assertEq("operator< when p1 < p2", p1 < p2, true);
+	assertEq("pair operator< when p4 < p2", p4 < p2, true);
+	assertEq("pair operator< when p2 < p4", p2 < p4, false);
+	assertEq("pair operator< when p1 < p2", p1 < p2, true);
 
-	assertEq("operator<= when p4 <= p2", p4 <= p2, true);
-	assertEq("operator<= when p2 <= p4", p2 <= p4, false);
-	assertEq("operator<= when p1 <= p2", p1 <= p2, true);
-	assertEq("operator<= when p2 <= p2", p2 <= p2, true);
+	assertEq("pair operator<= when p4 <= p2", p4 <= p2, true);
+	assertEq("pair operator<= when p2 <= p4", p2 <= p4, false);
+	assertEq("pair operator<= when p1 <= p2", p1 <= p2, true);
+	assertEq("pair operator<= when p2 <= p2", p2 <= p2, true);
 
-	assertEq("operator> when p4 > p2", p4 > p2, false);
-	assertEq("operator> when p2 > p4", p2 > p4, true);
-	assertEq("operator> when p1 > p2", p1 > p2, false);
+	assertEq("pair operator> when p4 > p2", p4 > p2, false);
+	assertEq("pair operator> when p2 > p4", p2 > p4, true);
+	assertEq("pair operator> when p1 > p2", p1 > p2, false);
 
-	assertEq("operator>= when p4 >= p2", p4 >= p2, false);
-	assertEq("operator>= when p2 >= p4", p2 >= p4, true);
-	assertEq("operator>= when p1 >= p2", p1 >= p2, false);
-	assertEq("operator>= when p2 >= p2", p2 >= p2, true);
+	assertEq("pair operator>= when p4 >= p2", p4 >= p2, false);
+	assertEq("pair operator>= when p2 >= p4", p2 >= p4, true);
+	assertEq("pair operator>= when p1 >= p2", p1 >= p2, false);
+	assertEq("pair operator>= when p2 >= p2", p2 >= p2, true);
 
 	// make_pair
 
