@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 17:38:11 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/24 19:36:30 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/08/24 21:58:01 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,42 +37,42 @@ namespace ft {
 
 			private:
 
-				Node<T>*	root;
+				Node<T>*	_root;
 
-				node*	insertHelper(node* root, node* n) {
-					if (root == NULL) {
+				node*	insertHelper(node* _root, node* n) {
+					if (_root == NULL) {
 						return n;
 					}
-					if (n->data < root->data) {
-						root->left = insertHelper(root->left, n);
-						root->left->parent = root;
+					if (n->data < _root->data) {
+						_root->left = insertHelper(_root->left, n);
+						_root->left->parent = _root;
 					}
-					else if (n->data > root->data) {
-						root->right = insertHelper(root->right, n);
-						root->right->parent = root;
+					else if (n->data > _root->data) {
+						_root->right = insertHelper(_root->right, n);
+						_root->right->parent = _root;
 					}
-					return root;
+					return _root;
 				}
 
 			public:
 
 				// Constructor
 				AVLTree()
-				{ root = NULL; }
+				{ _root = NULL; }
 
 				// Destructor
 				~AVLTree() {
-					while (root != NULL) {
-						remove(root->data);
+					while (_root != NULL) {
+						remove(_root->data);
 					}
 				}
 
 				node*	getRoot()
-				{ return root; }
+				{ return _root; }
 
 				void	insert(T const& data) {
 					node*	newNode = new node(data);
-					root = insertHelper(root, newNode);
+					_root = insertHelper(_root, newNode);
 				}
 
 				void	remove(T const& key) {
@@ -80,9 +80,9 @@ namespace ft {
 
 					if (curr == NULL)
 						return ;
-					if (curr == root && curr->left == NULL && curr->left == NULL) {
-						delete root;
-						root = NULL;
+					if (curr == _root && curr->left == NULL && curr->left == NULL) {
+						delete _root;
+						_root = NULL;
 						return ;
 					}
 					// Node without child
@@ -116,7 +116,7 @@ namespace ft {
 				}
 
 				node*	searchByKey(T const& key) {
-					node*	curr = this->root;
+					node*	curr = this->_root;
 
 					while (curr != NULL && curr->data != key)
 						curr = (curr->data < key) ? curr->right : curr->left;
@@ -131,7 +131,7 @@ namespace ft {
 				}
 
 				node*	minimum()
-				{ return minimum(this->root); }
+				{ return minimum(this->_root); }
 
 				node*	maximum(node* n) {
 					node*	current = n;
@@ -141,14 +141,14 @@ namespace ft {
 				}
 
 				node*	maximum()
-				{ return maximum(this->root); }
+				{ return maximum(this->_root); }
 
-				void	inorder(node* root) const {
-					if (root == NULL)
+				void	inorder(node* _root) const {
+					if (_root == NULL)
 						return;
-					inorder(root->left);
-					std::cout << root->data << "  ";
-					inorder(root->right);
+					inorder(_root->left);
+					std::cout << _root->data << "  ";
+					inorder(_root->right);
 				}
 		};
 }

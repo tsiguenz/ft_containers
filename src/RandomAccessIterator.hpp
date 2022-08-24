@@ -6,15 +6,15 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/28 11:46:21 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/07/29 18:23:58 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/08/24 21:42:58 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RANDOM_ACCESS_ITERATOR_HPP
 # define RANDOM_ACCESS_ITERATOR_HPP
 
-#include <typeinfo>
-#include "IteratorTraits.hpp"
+# include <typeinfo>
+# include "IteratorTraits.hpp"
 
 namespace ft {
 	template < typename T >
