@@ -6,12 +6,12 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 17:52:09 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/24 19:05:50 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/08/24 19:16:46 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
-#include "RedBlackTree.hpp"
+#include "AVLTree.hpp"
 
 void printBT(const std::string& prefix, const ft::Node<int>* node, bool isLeft) {
 	if (node != NULL)
@@ -36,7 +36,7 @@ void	avl_test() {
 #endif
 #ifndef REAL
 	std::cout << "internal implementation of map can't be tested with real stl" << std::endl;
-	ft::RedBlackTree<int> tree;
+	ft::AVLTree<int> tree;
 	tree.insert(42);
 	tree.insert(4);
 	tree.insert(98);

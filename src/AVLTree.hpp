@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   RedBlackTree.hpp                                   :+:      :+:    :+:   */
+/*   AVLTree.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 17:38:11 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/24 19:01:34 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/08/24 19:36:30 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef REDBLACKTREE_HPP
-# define REDBLACKTREE_HPP
+#ifndef AVLTREE_HPP
+# define AVLTREE_HPP
 
 namespace ft {
 
@@ -30,28 +30,14 @@ namespace ft {
 		};
 
 	template<typename T, class Alloc = std::allocator<T> >
-		class RedBlackTree {
-			private:
-
-				Node<T>*	root;
-
+		class AVLTree {
 			public:
 
 				typedef Node<T>	node;
 
-				// Constructor
-				RedBlackTree()
-				{ root = NULL; }
+			private:
 
-				// Destructor
-				~RedBlackTree() {
-					while (root != NULL) {
-						remove(root->data);
-					}
-				}
-
-				node*	getRoot()
-				{ return root; }
+				Node<T>*	root;
 
 				node*	insertHelper(node* root, node* n) {
 					if (root == NULL) {
@@ -67,6 +53,22 @@ namespace ft {
 					}
 					return root;
 				}
+
+			public:
+
+				// Constructor
+				AVLTree()
+				{ root = NULL; }
+
+				// Destructor
+				~AVLTree() {
+					while (root != NULL) {
+						remove(root->data);
+					}
+				}
+
+				node*	getRoot()
+				{ return root; }
 
 				void	insert(T const& data) {
 					node*	newNode = new node(data);
@@ -151,4 +153,4 @@ namespace ft {
 		};
 }
 
-#endif // REDBLACKTREE_HPP
+#endif // AVLTREE_HPP
