@@ -6,14 +6,14 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 19:09:13 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/03 16:22:47 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/08/26 14:38:20 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ITERATOR_TEST_HPP
 # define ITERATOR_TEST_HPP
 
-template<typename T, typename ftIterator, typename stdIterator>
+template<typename ftIterator, typename stdIterator>
 void	iteratorTest(ftIterator ftIt, stdIterator stdIt) {
 # ifdef REAL
 	namespace ft = std;

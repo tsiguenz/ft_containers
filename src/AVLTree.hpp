@@ -6,12 +6,14 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 17:38:11 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/24 21:58:01 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/08/26 18:55:43 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef AVLTREE_HPP
 # define AVLTREE_HPP
+
+# include "AVLIterator.hpp"
 
 namespace ft {
 
@@ -39,16 +41,16 @@ namespace ft {
 
 				Node<T>*	_root;
 
-				node*	insertHelper(node* _root, node* n) {
+				node*	_insertHelper(node* _root, node* n) {
 					if (_root == NULL) {
 						return n;
 					}
 					if (n->data < _root->data) {
-						_root->left = insertHelper(_root->left, n);
+						_root->left = _insertHelper(_root->left, n);
 						_root->left->parent = _root;
 					}
 					else if (n->data > _root->data) {
-						_root->right = insertHelper(_root->right, n);
+						_root->right = _insertHelper(_root->right, n);
 						_root->right->parent = _root;
 					}
 					return _root;
@@ -72,7 +74,7 @@ namespace ft {
 
 				void	insert(T const& data) {
 					node*	newNode = new node(data);
-					_root = insertHelper(_root, newNode);
+					_root = _insertHelper(_root, newNode);
 				}
 
 				void	remove(T const& key) {

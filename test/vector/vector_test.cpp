@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 17:14:11 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/04 17:37:05 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/08/26 14:44:00 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,19 +35,19 @@ void	vector_test() {
 			stdV[i] = (i + 1) * 10;
 		}
 		std::cout << "----------  RandomAccessIterator class : ----------" << std::endl;
-		iteratorTest<int, ft::vector<int>::iterator, 
+		iteratorTest<ft::vector<int>::iterator, 
 			std::vector<int>::iterator> (ftV.begin(), stdV.begin());
 
 		std::cout << "----------  ConstRandomAccessIterator class : ----------" << std::endl;
-		iteratorTest<int, ft::vector<int>::const_iterator,
+		iteratorTest<ft::vector<int>::const_iterator,
 			std::vector<int>::const_iterator> (ftV.begin(), stdV.begin());
 
 		std::cout << "----------  ReverseIterator class : ----------" << std::endl;
-		iteratorTest<int, ft::vector<int>::reverse_iterator,
+		iteratorTest<ft::vector<int>::reverse_iterator,
 			std::vector<int>::reverse_iterator> (ftV.rbegin(), stdV.rbegin());
 
 		std::cout << "----------  ConstReverseIterator class : ----------" << std::endl;
-		iteratorTest<int, ft::vector<int>::const_reverse_iterator,
+		iteratorTest<ft::vector<int>::const_reverse_iterator,
 			std::vector<int>::const_reverse_iterator> (ftV.rbegin(), stdV.rbegin());
 	}
 	functionsTest<int>();
