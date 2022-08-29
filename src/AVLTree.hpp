@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 17:38:11 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/29 18:03:48 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/08/29 19:09:39 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ namespace ft {
 						_root->right = _insertHelper(_root->right, n);
 						_root->right->parent = _root;
 					}
+					else
+						return n;
 					int	bf = _getBalanceFactor(_root);
 					// Left left case
 					if (bf > 1 && n->data < _root->left->data)
@@ -107,6 +109,62 @@ namespace ft {
 					return _root;
 				}
 
+				node*	_removeHelper(node* root, T const& key) {
+
+					if (root == NULL)
+						return root;
+					if ( key < root->data )
+						root->left = _removeHelper(root->left, key);
+					else if( key > root->data )
+						root->right = _removeHelper(root->right, key);
+					else {
+						// Node with only one child or no child
+						if( (root->left == NULL) || (root->right == NULL) ) {
+							node* temp = root->left ?
+								root->left :
+								root->right;
+							// No child case
+							if (temp == NULL) {
+								temp = root;
+								root = NULL;
+							}
+							else // One child case
+								*root = *temp;
+							delete(temp);
+						}
+						else {
+							// node with two children: Get the inorder
+							// successor (smallest in the right subtree)
+							node* temp = minimum(root->right);
+							root->data = temp->data;
+							root->right = _removeHelper(root->right,
+									temp->data);
+						}
+					}
+					// If the tree had only one node
+					if (root == NULL)
+						return root;
+
+					int	bf = _getBalanceFactor(root);
+					// Left Left Case
+					if (bf > 1 && _getBalanceFactor(root->left) >= 0)
+						return _rightRotate(root);
+					// Left Right Case
+					if (bf > 1 && _getBalanceFactor(root->left) < 0) {
+						root->left = _leftRotate(root->left);
+						return _rightRotate(root);
+					}
+					// Right Right Case
+					if (bf < -1 && _getBalanceFactor(root->right) <= 0)
+						return _leftRotate(root);
+					// Right Left Case
+					if (bf < -1 && _getBalanceFactor(root->right) > 0) {
+						root->right = _rightRotate(root->right);
+						return _leftRotate(root);
+					}
+					return root;
+				}
+
 			public:
 
 				// Constructor
@@ -124,65 +182,15 @@ namespace ft {
 				{ return _root; }
 
 				void	insert(T const& data) {
+					// Duplicates are not allowed
+					if (searchByKey(data) != NULL)
+						return ;
 					node*	newNode = new node(data);
 					_root = _insertHelper(_root, newNode);
 				}
 
-				void	remove(T const& key) {
-					node*	curr = searchByKey(key);
-
-					if (curr == NULL)
-						return ;
-					if (curr == _root && curr->left == NULL && curr->left == NULL) {
-						delete _root;
-						_root = NULL;
-						return ;
-					}
-					// Node without child
-					if (curr->left == NULL && curr->right == NULL) {
-						node*	p = curr->parent;
-
-						(p->left == curr) ? p->left = NULL : p->right = NULL;
-						delete curr;
-						return ;
-					}
-					// Node with one child
-					if (curr->left == NULL || curr->right == NULL) {
-						node*	toDel;
-						if (curr->left == NULL)
-							toDel = curr->right;
-						else 
-							toDel = curr->left;
-						curr->data = toDel->data;
-						curr->left = toDel->left;
-						curr->right = toDel->right;
-						delete toDel;
-						return ;
-					}
-					// Node with two child
-					node*	successor = minimum(curr->right);
-					node*	p = successor->parent;
-					(p->left == successor) ? p->left = NULL : p->right = NULL;
-					curr->data = successor->data;
-					delete successor;
-					// Rebalance
-					int	bf = _getBalanceFactor(_root);
-					// Left left inbalance
-					if (bf == 2 && _getBalanceFactor(_root->left) >= 0)
-						_root = _rightRotate(_root);
-					// Left right inbalance
-					else if (bf == 2 && _getBalanceFactor(_root->left) == -1) {
-						_root->left = _leftRotate(_root->left);
-						_root = _rightRotate(_root);
-					}
-					// Right right inbalance
-					else if (bf == -2 && _getBalanceFactor(_root->right) <= 0)
-						_root = _leftRotate(_root);
-					// Right left inbalance
-					else if (bf == -2 && _getBalanceFactor(_root->right) == 1) {
-						_root->right = _rightRotate(_root->right);
-						_root = _leftRotate(_root);
-					}
+				void	remove(T key) {
+					_root = _removeHelper(_root, key);
 				}
 
 				node*	searchByKey(T const& key) {
