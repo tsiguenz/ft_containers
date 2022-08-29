@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 17:38:11 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/29 19:09:39 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/08/29 23:10:17 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ namespace ft {
 				this->data = data;
 				left = right = parent = NULL;
 			}
-
 		};
 
 	template<typename T, class Alloc = std::allocator<T> >
@@ -40,6 +39,19 @@ namespace ft {
 			private:
 
 				Node<T>*	_root;
+				Alloc		_alloc;
+
+				node*	_createNode(T const& val) {
+					node*	newNode = _alloc.allocate(1);
+
+					_alloc.construct(&newNode->data, val);
+					return newNode;
+				}
+
+				void	_deallocateNode(node* n) {
+					_alloc.destroy(&n->data);
+					_alloc.deallocate(n, 1);
+				}
 
 				int	_getHeight(node* n) {
 					if (n == NULL)
@@ -130,15 +142,15 @@ namespace ft {
 							}
 							else // One child case
 								*root = *temp;
-							delete(temp);
+							_deallocateNode(temp);
 						}
 						else {
 							// node with two children: Get the inorder
 							// successor (smallest in the right subtree)
 							node* temp = minimum(root->right);
-							root->data = temp->data;
-							root->right = _removeHelper(root->right,
-									temp->data);
+							// Destroy and construct for const value
+							_alloc.destroy(&root->data);
+							_alloc.construct(&root->data, temp->data);
 						}
 					}
 					// If the tree had only one node
@@ -169,7 +181,7 @@ namespace ft {
 
 				// Constructor
 				AVLTree()
-				{ _root = NULL; }
+				: _root(NULL), _alloc() { }
 
 				// Destructor
 				~AVLTree() {
@@ -177,6 +189,7 @@ namespace ft {
 						remove(_root->data);
 					}
 				}
+				// TODO implement canonical form
 
 				node*	getRoot()
 				{ return _root; }
@@ -185,7 +198,7 @@ namespace ft {
 					// Duplicates are not allowed
 					if (searchByKey(data) != NULL)
 						return ;
-					node*	newNode = new node(data);
+					node*	newNode = _createNode(data);
 					_root = _insertHelper(_root, newNode);
 				}
 

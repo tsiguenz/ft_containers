@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 21:42:02 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/26 18:12:23 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/08/29 22:26:23 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ namespace ft {
 		class AVLIterator { 
 			public:
 				// Types
-				typedef typename ft::iterator_traits<T*>::difference_type	difference_type;
-				typedef typename ft::iterator_traits<T*>::value_type		value_type;
-				typedef typename ft::iterator_traits<T*>::pointer			pointer;
-				typedef typename ft::iterator_traits<T*>::reference			reference;
-				typedef std::bidirectional_iterator_tag						iterator_category;
+				typedef size_t							difference_type;
+				typedef T								value_type;
+				typedef T*								pointer;
+				typedef T&								reference;
+				typedef std::bidirectional_iterator_tag	iterator_category;
 
 			private:
 				T*	_node;
@@ -35,8 +35,17 @@ namespace ft {
 				AVLIterator()
 				: _node(NULL) { }
 
+				AVLIterator(T* node)
+				: _node(node) { }
+
 				AVLIterator(AVLIterator const& it)
 				: _node(it._node) { }
+
+				reference	operator*() const
+				{ return this->_node->data; }
+
+				pointer	operator->()
+				{ return &_node->data; }
 
 				~AVLIterator() { }
 

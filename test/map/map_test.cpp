@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 16:27:59 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/26 19:09:26 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/08/29 23:06:57 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,15 @@ void	map_test() {
 	pair_test();
 	// iterators tests :
 	{
-		FTMAP	m1;
-		(void) m1;
+//		FTMAP	m1;
 //		STDMAP	m2;
-
-		m1.insert(ft::pair<int, std::string>(1, "hello"));
-		m1.insert(ft::pair<int, std::string>(0, "yo"));
-		m1.insert(ft::pair<int, std::string>(2, "world"));
-		std::cout << m1[1] << std::endl;
+//
+//		m1.insert(ft::pair<int, std::string>(1, "hello"));
+//		m1.insert(ft::pair<int, std::string>(0, "yo"));
+//		m1.insert(ft::pair<int, std::string>(2, "world"));
+//		FTMAP::iterator	it = m1.begin();
+//		std::cout << it->data.second << std::endl;
+//		*it;
 //		m2.insert(std::pair<int, std::string>(1, "hello"));
 //		m2.insert(std::pair<int, std::string>(0, "yo"));
 //		m2.insert(std::pair<int, std::string>(2, "world"));

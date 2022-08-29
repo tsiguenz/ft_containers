@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 13:35:44 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/04 16:17:54 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/08/29 22:42:50 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ namespace ft {
 				~pair() { }
 
 				// Operator
-
 				pair&	operator=(pair const& other) {
 					this->first = other.first;
 					this->second = other.second;
