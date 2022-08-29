@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 17:38:11 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/26 18:55:43 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/08/29 18:03:48 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,40 @@ namespace ft {
 
 				Node<T>*	_root;
 
+				int	_getHeight(node* n) {
+					if (n == NULL)
+						return -1;
+					else {
+						int	lheight = _getHeight(n->left);
+						int	rheight = _getHeight(n->right);
+						return ((lheight > rheight) ? lheight : rheight) + 1;
+					}
+				}
+
+				int	_getBalanceFactor(node* n) {
+					if (n == NULL)
+						return -1;
+					return _getHeight(n->left) - _getHeight(n->right);
+				}
+
+				node*	_rightRotate(node* y) {
+					node*	x = y->left;
+					node*	T2 = x->right;
+
+					x->right = y;
+					y->left = T2;
+					return x;
+				}
+
+				node*	_leftRotate(node* x) {
+					node*	y = x->right;
+					node*	T2 = y->left;
+
+					y->left = x;
+					x->right = T2;
+					return y;
+				}
+
 				node*	_insertHelper(node* _root, node* n) {
 					if (_root == NULL) {
 						return n;
@@ -52,6 +86,23 @@ namespace ft {
 					else if (n->data > _root->data) {
 						_root->right = _insertHelper(_root->right, n);
 						_root->right->parent = _root;
+					}
+					int	bf = _getBalanceFactor(_root);
+					// Left left case
+					if (bf > 1 && n->data < _root->left->data)
+						return _rightRotate(_root);
+					// Right right case
+					if (bf < -1 && n->data > _root->right->data)
+						return _leftRotate(_root);
+					// Left right case
+					if (bf > 1 && n->data > _root->left->data) {
+						_root->left = _leftRotate(_root->left);
+						return _rightRotate(_root);
+					}
+					// Right left case
+					if (bf < -1 && n->data < _root->right->data) {
+						_root->right = _rightRotate(_root->right);
+						return _leftRotate(_root);
 					}
 					return _root;
 				}
@@ -111,10 +162,27 @@ namespace ft {
 					// Node with two child
 					node*	successor = minimum(curr->right);
 					node*	p = successor->parent;
-
 					(p->left == successor) ? p->left = NULL : p->right = NULL;
 					curr->data = successor->data;
 					delete successor;
+					// Rebalance
+					int	bf = _getBalanceFactor(_root);
+					// Left left inbalance
+					if (bf == 2 && _getBalanceFactor(_root->left) >= 0)
+						_root = _rightRotate(_root);
+					// Left right inbalance
+					else if (bf == 2 && _getBalanceFactor(_root->left) == -1) {
+						_root->left = _leftRotate(_root->left);
+						_root = _rightRotate(_root);
+					}
+					// Right right inbalance
+					else if (bf == -2 && _getBalanceFactor(_root->right) <= 0)
+						_root = _leftRotate(_root);
+					// Right left inbalance
+					else if (bf == -2 && _getBalanceFactor(_root->right) == 1) {
+						_root->right = _rightRotate(_root->right);
+						_root = _leftRotate(_root);
+					}
 				}
 
 				node*	searchByKey(T const& key) {
