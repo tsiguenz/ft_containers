@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 17:38:11 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/30 18:44:48 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/08/30 19:30:21 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,14 @@ namespace ft {
 			}
 
 			~Node() { }
+
+			Node&	operator=(Node const& rhs) {
+				this->data = rhs.data;
+				this->left = rhs.left;
+				this->right = rhs.right;
+				this->parent = rhs.parent;
+				return *this;
+			}
 		};
 
 	template<typename T, class Alloc = std::allocator<T> >
@@ -65,7 +73,7 @@ namespace ft {
 					_root = _insertHelper(_root, newNode);
 				}
 
-				void	remove(T key) {
+				void	remove(T const& key) {
 					_root = _removeHelper(_root, key);
 				}
 
@@ -170,6 +178,7 @@ namespace ft {
 						_root->right = _insertHelper(_root->right, n);
 						_root->right->parent = _root;
 					}
+					// Rebalance the tree
 					int	bf = _getBalanceFactor(_root);
 					// Left left case
 					if (bf > 1 && n->data < _root->left->data)
@@ -226,7 +235,7 @@ namespace ft {
 					// If the tree had only one node
 					if (root == NULL)
 						return root;
-
+					// Rebalance the tree
 					int	bf = _getBalanceFactor(root);
 					// Left Left Case
 					if (bf > 1 && _getBalanceFactor(root->left) >= 0)

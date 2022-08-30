@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 17:52:09 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/30 18:39:08 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/08/30 19:21:13 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,10 @@ void	avl_test() {
 		assertEq("search deleted node", (long) tree.searchByKey(ft::pair<int, std::string>(2, "world")), NULL);
 		tree.insert(ft::pair<int, std::string>(2, "WORLD"));
 		assertEq("max value", tree.maximum()->data.second, std::string("WORLD"));
+	}
+	{
+		ft::AVLTree< ft::pair<const int, std::string> >	tree;
+
 	}
 #endif
 }

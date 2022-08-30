@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 16:27:59 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/29 23:06:57 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/08/30 19:20:28 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	map_test() {
 	{
 //		FTMAP	m1;
 //		STDMAP	m2;
-//
+
 //		m1.insert(ft::pair<int, std::string>(1, "hello"));
 //		m1.insert(ft::pair<int, std::string>(0, "yo"));
 //		m1.insert(ft::pair<int, std::string>(2, "world"));
