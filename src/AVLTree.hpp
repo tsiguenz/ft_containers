@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 17:38:11 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/29 23:10:17 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/08/30 16:59:57 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,22 +35,26 @@ namespace ft {
 			public:
 
 				typedef Node<T>	node;
+				typedef typename Alloc::template rebind<node>::other AllocNode;
 
 			private:
 
 				Node<T>*	_root;
-				Alloc		_alloc;
+				Alloc		_allocPair;
+				Alloc		_allocNode;
 
 				node*	_createNode(T const& val) {
-					node*	newNode = _alloc.allocate(1);
-
-					_alloc.construct(&newNode->data, val);
+//					node*	newNode = _allocNode.allocate(1);
+//
+//					_allocNode.construct(&newNode->data, val);
+					node*	newNode = new node(val);
 					return newNode;
 				}
 
 				void	_deallocateNode(node* n) {
-					_alloc.destroy(&n->data);
-					_alloc.deallocate(n, 1);
+					delete n;
+//					_allocNode.destroy(&n->data);
+//					_allocNode.deallocate(n, 1);
 				}
 
 				int	_getHeight(node* n) {
@@ -148,9 +152,11 @@ namespace ft {
 							// node with two children: Get the inorder
 							// successor (smallest in the right subtree)
 							node* temp = minimum(root->right);
+//							root->data = temp->data;
 							// Destroy and construct for const value
-							_alloc.destroy(&root->data);
-							_alloc.construct(&root->data, temp->data);
+							_allocPair.destroy(&root->data);
+							_allocPair.construct(&root->data, temp->data);
+							root->right = _removeHelper(root->right, temp->data);
 						}
 					}
 					// If the tree had only one node
@@ -181,7 +187,7 @@ namespace ft {
 
 				// Constructor
 				AVLTree()
-				: _root(NULL), _alloc() { }
+				: _root(NULL), _allocPair(), _allocNode() { }
 
 				// Destructor
 				~AVLTree() {
