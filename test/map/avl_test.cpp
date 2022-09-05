@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 17:52:09 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/30 19:21:13 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/05 23:48:15 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,15 @@ void	avl_test() {
 	{
 		ft::AVLTree<int> tree;
 
+		assertEq("size of empty tree", (int) tree.size(), 0);
 		tree.insert(42);
 		tree.insert(4);
 		tree.insert(98);
 		tree.insert(123);
+		assertEq("size of tree", (int) tree.size(), 4);
+		assertEq("root value after 4 insertions", tree.getRoot()->data, 42);
+		tree.remove(42);
+		assertEq("root value after remove root", tree.getRoot()->data, 98);
 		tree.insert(12);
 		tree.insert(10);
 		tree.insert(76);
@@ -54,27 +59,23 @@ void	avl_test() {
 		tree.remove(98);
 		tree.remove(4);
 		assertEq("min after delete min tree", tree.minimum()->data, 10);
-		tree.remove(42);
+		tree.remove(12);
 		assertEq("root value after deleting root", tree.getRoot()->data, 76);
-	}
+  }
 	// test with pair
-	{
-		ft::AVLTree< ft::pair<int, std::string> >	tree;
-
-		tree.insert(ft::pair<int, std::string>(1, "hello"));
-		assertEq("root value of pair", tree.getRoot()->data.second, std::string("hello"));
-		tree.insert(ft::pair<int, std::string>(-12, "begin"));
-		tree.insert(ft::pair<int, std::string>(2, "world"));
-		assertEq("min value", tree.minimum()->data.second, std::string("begin"));
-		assertEq("max value", tree.maximum()->data.second, std::string("world"));
-		tree.remove(ft::pair<int, std::string>(2, "world"));
-		assertEq("search deleted node", (long) tree.searchByKey(ft::pair<int, std::string>(2, "world")), NULL);
-		tree.insert(ft::pair<int, std::string>(2, "WORLD"));
-		assertEq("max value", tree.maximum()->data.second, std::string("WORLD"));
-	}
 	{
 		ft::AVLTree< ft::pair<const int, std::string> >	tree;
 
+		tree.insert(ft::pair<const int, std::string>(1, "hello"));
+		assertEq("root value of pair", tree.getRoot()->data.second, std::string("hello"));
+		tree.insert(ft::pair<const int, std::string>(-12, "begin"));
+		tree.insert(ft::pair<const int, std::string>(2, "world"));
+		assertEq("min value", tree.minimum()->data.second, std::string("begin"));
+		assertEq("max value", tree.maximum()->data.second, std::string("world"));
+		tree.remove(ft::pair<const int, std::string>(2, "world"));
+		assertEq("search deleted node", (long) tree.searchByKey(ft::pair<const int, std::string>(2, "world")), NULL);
+		tree.insert(ft::pair<const int, std::string>(2, "WORLD"));
+		assertEq("max value", tree.maximum()->data.second, std::string("WORLD"));
 	}
 #endif
 }

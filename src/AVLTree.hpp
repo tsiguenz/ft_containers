@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 17:38:11 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/30 19:30:21 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/05 23:47:42 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,20 +24,11 @@ namespace ft {
 			Node*	right;
 			Node*	parent;
 
-			Node(T const& data = T()) {
-				this->data = data;
+			Node(T const& val = T()): data(val) {
 				left = right = parent = NULL;
 			}
 
 			~Node() { }
-
-			Node&	operator=(Node const& rhs) {
-				this->data = rhs.data;
-				this->left = rhs.left;
-				this->right = rhs.right;
-				this->parent = rhs.parent;
-				return *this;
-			}
 		};
 
 	template<typename T, class Alloc = std::allocator<T> >
@@ -55,9 +46,8 @@ namespace ft {
 
 				// Destructor
 				~AVLTree() {
-					while (_root != NULL) {
+					while (_root != NULL)
 						remove(_root->data);
-					}
 				}
 
 				// TODO implement copy constructor and operator=
@@ -79,7 +69,6 @@ namespace ft {
 
 				node*	searchByKey(T const& key) {
 					node*	curr = this->_root;
-
 					while (curr != NULL && curr->data != key)
 						curr = (curr->data < key) ? curr->right : curr->left;
 					return curr;
@@ -105,19 +94,29 @@ namespace ft {
 				node*	maximum()
 				{ return maximum(this->_root); }
 
-				void	inorder(node* _root) const {
+				void	inorder(node* root) const {
 					if (_root == NULL)
-						return;
-					inorder(_root->left);
-					std::cout << _root->data << "  ";
-					inorder(_root->right);
+						return ;
+					inorder(root->left);
+					std::cout << root->data << "  ";
+					inorder(root->right);
 				}
+
+				size_t	size() const
+				{ return _size(this->_root); }
 
 			private:
 
 				Node<T>*	_root;
 				Alloc		_allocPair;
 				AllocNode	_allocNode;
+
+				size_t	_size(node* root) const {
+					if (root == NULL)
+						return 0;
+					else
+						return (_size(root->left) + 1 + _size(root->right));
+				}
 
 				node*	_createNode(T const& val) {
 					node*	newNode = _allocNode.allocate(1);
@@ -129,6 +128,7 @@ namespace ft {
 				void	_deallocateNode(node* n) {
 					_allocNode.destroy(n);
 					_allocNode.deallocate(n, 1);
+					n = NULL;
 				}
 
 				int	_getHeight(node* n) {
@@ -203,28 +203,28 @@ namespace ft {
 
 					if (root == NULL)
 						return root;
-					if ( key < root->data )
+					if (key < root->data)
 						root->left = _removeHelper(root->left, key);
-					else if( key > root->data )
+					else if(key > root->data)
 						root->right = _removeHelper(root->right, key);
 					else {
-						// Node with only one child or no child
-						if( (root->left == NULL) || (root->right == NULL) ) {
-							node* temp = root->left ?
-								root->left :
-								root->right;
-							// No child case
-							if (temp == NULL) {
-								temp = root;
-								root = NULL;
-							}
-							else // One child case
-								*root = *temp;
-							_deallocateNode(temp);
+						// No child case
+						if (root->left == NULL && root->right == NULL) {
+							this->_allocNode.destroy(root);
+							this->_allocNode.deallocate(root, 1);
+							root = NULL;
+							return (root);
 						}
+						// One child case
+						else if (root->left == NULL || root->right == NULL) {
+							node*	temp = root;
+							root = root->left ? root->left : root->right;
+							root->parent = temp->parent;
+							_deallocateNode(temp);
+							return (root);
+						}
+						// Two childs case
 						else {
-							// node with two children: Get the inorder
-							// successor (smallest in the right subtree)
 							node* temp = minimum(root->right);
 							// Destroy and construct for const value
 							_allocPair.destroy(&root->data);
