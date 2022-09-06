@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 19:40:02 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/30 18:57:04 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/06 18:56:21 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ namespace ft {
 					typedef value_type const&									const_reference;
 					typedef typename Alloc::pointer								pointer;
 					typedef typename Alloc::const_pointer						const_pointer;
-					typedef AVLIterator<ft::Node<value_type >, Compare>			iterator;
+					typedef AVLIterator<ft::Node<value_type>, value_type, Compare>	iterator;
 //					typedef BidirectionnalIterator<const AVLTree>				const_iterator;
 //					typedef ft::reverse_iterator<iterator>				reverse_iterator;
 //					typedef ft::reverse_iterator<const iterator>		const_reverse_iterator;
@@ -61,7 +61,7 @@ namespace ft {
 					}
 
 					iterator	begin() {
-						return _tree.minimum();
+						return iterator(_tree.minimum());
 					}
 
 					T&	at(Key const& key) {

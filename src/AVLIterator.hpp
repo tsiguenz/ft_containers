@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 21:42:02 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/29 22:26:23 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/06 18:59:05 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,33 +18,33 @@
 # include "IteratorTraits.hpp"
 
 namespace ft {
-	template < typename T, typename Compare >
+	template < typename _Node, typename _Pair, typename Compare >
 		class AVLIterator { 
 			public:
 				// Types
-				typedef size_t							difference_type;
-				typedef T								value_type;
-				typedef T*								pointer;
-				typedef T&								reference;
+				typedef size_t								difference_type;
+				typedef _Node								value_type;
+				typedef _Node*								pointer;
+				typedef _Node&								reference;
 				typedef std::bidirectional_iterator_tag	iterator_category;
 
 			private:
-				T*	_node;
+				_Node*	_node;
 
 			public:
 				AVLIterator()
 				: _node(NULL) { }
 
-				AVLIterator(T* node)
+				AVLIterator(pointer node)
 				: _node(node) { }
 
 				AVLIterator(AVLIterator const& it)
 				: _node(it._node) { }
 
-				reference	operator*() const
-				{ return this->_node->data; }
+				_Pair&	operator*() const
+				{ return _node->data; }
 
-				pointer	operator->()
+				_Pair*	operator->()
 				{ return &_node->data; }
 
 				~AVLIterator() { }

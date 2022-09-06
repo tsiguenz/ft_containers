@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 17:52:09 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/05 23:48:15 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/06 23:12:03 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,11 @@ void	avl_test() {
 		tree.remove(4);
 		assertEq("min after delete min tree", tree.minimum()->data, 10);
 		tree.remove(12);
+		tree.remove(9999);
 		assertEq("root value after deleting root", tree.getRoot()->data, 76);
-  }
-	// test with pair
+		assertEq("size of tree", (int) tree.size(), 3);
+	}
+	// test with pair like in map
 	{
 		ft::AVLTree< ft::pair<const int, std::string> >	tree;
 

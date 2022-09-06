@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 17:38:11 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/05 23:47:42 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/06 23:10:08 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,18 @@ namespace ft {
 				typedef Node<T>	node;
 				typedef typename Alloc::template rebind<node>::other AllocNode;
 
+				Node<T>*	_root;
+				Node<T>*	_begin;
+				Node<T>*	_end;
+				Alloc		_allocPair;
+				AllocNode	_allocNode;
+				size_t		_size;
+
 			public:
 
 				// Constructor
 				AVLTree()
-				: _root(NULL), _allocPair(), _allocNode() { }
+				: _root(), _begin(), _end(), _allocPair(), _allocNode(), _size(0) { }
 
 				// Destructor
 				~AVLTree() {
@@ -61,10 +68,18 @@ namespace ft {
 						return ;
 					node*	newNode = _createNode(data);
 					_root = _insertHelper(_root, newNode);
+					_size++;
+//					_begin = minimum();
+//					_end = maximum();
 				}
 
 				void	remove(T const& key) {
+					if (searchByKey(key) == NULL)
+						return ;
 					_root = _removeHelper(_root, key);
+					_size--;
+//					_begin = minimum();
+//					_end = maximum();
 				}
 
 				node*	searchByKey(T const& key) {
@@ -103,20 +118,15 @@ namespace ft {
 				}
 
 				size_t	size() const
-				{ return _size(this->_root); }
+				{ return _size; }
+
+				node*	begin()
+				{ return _begin; }
+
+				node*	end()
+				{ return _end; }
 
 			private:
-
-				Node<T>*	_root;
-				Alloc		_allocPair;
-				AllocNode	_allocNode;
-
-				size_t	_size(node* root) const {
-					if (root == NULL)
-						return 0;
-					else
-						return (_size(root->left) + 1 + _size(root->right));
-				}
 
 				node*	_createNode(T const& val) {
 					node*	newNode = _allocNode.allocate(1);

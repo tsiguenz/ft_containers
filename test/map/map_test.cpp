@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 16:27:59 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/05 23:43:39 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/06 23:02:48 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ void	map_test() {
 		m1.insert(ft::pair<int, std::string>(0, "yo"));
 		m1.insert(ft::pair<int, std::string>(2, "world"));
 		FTMAP::iterator	it = m1.begin();
-//		std::cout << it->data.second << std::endl;
-//		*it;
+		std::cout << it->second << std::endl;
+		std::cout << (*it).second << std::endl;
 //		m2.insert(std::pair<int, std::string>(1, "hello"));
 //		m2.insert(std::pair<int, std::string>(0, "yo"));
 //		m2.insert(std::pair<int, std::string>(2, "world"));
