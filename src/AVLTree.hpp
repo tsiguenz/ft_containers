@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 17:38:11 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/06 23:10:08 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/07 19:04:06 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define AVLTREE_HPP
 
 # include "AVLIterator.hpp"
+# include "pair.hpp"
 
 namespace ft {
 
@@ -31,7 +32,7 @@ namespace ft {
 			~Node() { }
 		};
 
-	template<typename T, class Alloc = std::allocator<T> >
+	template<typename T, class Alloc = std::allocator<T>, class Compare = std::less<T> >
 		class AVLTree {
 			private:
 
@@ -44,17 +45,26 @@ namespace ft {
 				Alloc		_allocPair;
 				AllocNode	_allocNode;
 				size_t		_size;
+				Compare		_comp;
 
 			public:
 
 				// Constructor
-				AVLTree()
-				: _root(), _begin(), _end(), _allocPair(), _allocNode(), _size(0) { }
+				AVLTree() {
+					_root = NULL;
+					_begin = NULL;
+					_end = _createNode();
+					_allocPair = Alloc();
+					_allocNode = AllocNode();
+					_size = 0;
+					_comp = Compare();
+				}
 
 				// Destructor
 				~AVLTree() {
 					while (_root != NULL)
 						remove(_root->data);
+					_deallocateNode(_end);
 				}
 
 				// TODO implement copy constructor and operator=
@@ -66,20 +76,22 @@ namespace ft {
 					// Duplicates are not allowed
 					if (searchByKey(data) != NULL)
 						return ;
+					_unsetEnd();
 					node*	newNode = _createNode(data);
 					_root = _insertHelper(_root, newNode);
 					_size++;
-//					_begin = minimum();
-//					_end = maximum();
+					_begin = minimum();
+					_setEnd();
 				}
 
 				void	remove(T const& key) {
 					if (searchByKey(key) == NULL)
 						return ;
+					_unsetEnd();
 					_root = _removeHelper(_root, key);
 					_size--;
-//					_begin = minimum();
-//					_end = maximum();
+					_begin = minimum();
+					_setEnd();
 				}
 
 				node*	searchByKey(T const& key) {
@@ -90,6 +102,8 @@ namespace ft {
 				}
 
 				node*	minimum(node* n) {
+					if (n == NULL)
+						return NULL;
 					node*	current = n;
 					while (current->left != NULL)
 						current = current->left;
@@ -100,8 +114,10 @@ namespace ft {
 				{ return minimum(this->_root); }
 
 				node*	maximum(node* n) {
+					if (n == NULL)
+						return NULL;
 					node*	current = n;
-					while (current->right != NULL)
+					while (current->right != NULL && current->right != _end)
 						current = current->right;
 					return current;
 				}
@@ -128,9 +144,24 @@ namespace ft {
 
 			private:
 
-				node*	_createNode(T const& val) {
-					node*	newNode = _allocNode.allocate(1);
+					
+				void	_unsetEnd(){
+					if (_root == NULL)
+						return ;
+					_end->parent->right = NULL;
+					_end->parent = NULL;
+				}
 
+				void	_setEnd(){
+					if (_root == NULL)
+						return ;
+					node*	tmp = maximum();
+					tmp->right = _end;
+					_end->parent = tmp;
+				}
+
+				node*	_createNode(T const& val = T()) {
+					node*	newNode = _allocNode.allocate(1);
 					_allocNode.construct(newNode, val);
 					return newNode;
 				}
@@ -179,7 +210,8 @@ namespace ft {
 					if (_root == NULL)
 						return n;
 					// Left subtree case
-					if (n->data < _root->data) {
+					// implement value_compare
+					if (_comp(n->data,  _root->data)) {
 						_root->left = _insertHelper(_root->left, n);
 						_root->left->parent = _root;
 					}

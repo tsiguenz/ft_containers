@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 19:40:02 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/06 18:56:21 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/07 19:04:15 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ namespace ft {
 					typedef std::size_t											size_type;
 					typedef ptrdiff_t											difference_type;
 					typedef Compare												key_compare;
+					// implement value_compare
 					typedef Alloc												allocator_type;
 					typedef value_type&											reference;
 					typedef value_type const&									const_reference;
@@ -48,7 +49,7 @@ namespace ft {
 //					typedef ft::reverse_iterator<const iterator>		const_reverse_iterator;
 				private:
 
-					AVLTree<value_type>	_tree;
+					AVLTree<value_type, Alloc, Compare>	_tree;
 
 				public:
 
@@ -60,9 +61,17 @@ namespace ft {
 						_tree.insert(pair);
 					}
 
-					iterator	begin() {
-						return iterator(_tree.minimum());
-					}
+					iterator	begin()
+					{ return iterator(_tree.begin()); }
+
+//					const_iterator	begin()
+//					{ return const_iterator(_tree.begin()); }
+
+					iterator	end()
+					{ return iterator(_tree.end()); }
+
+//					const_iterator	end()
+//					{ return const_iterator(_tree.end()); }
 
 					T&	at(Key const& key) {
 						ft::Node<value_type>*	tmp = _tree.getRoot();

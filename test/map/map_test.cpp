@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 16:27:59 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/06 23:02:48 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/07 18:38:38 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,10 @@
 #include "map.hpp"
 #include "map/pair_test.cpp"
 #include "map/avl_test.cpp"
+#include "avl_iterator_test.cpp"
 
-#define FTMAP ft::map<int, std::string>
-#define STDMAP std::map<int, std::string>
+#define FTMAP ft::map<int, int>
+#define STDMAP std::map<int, int>
 
 void	map_test() {
 # ifdef REAL
@@ -25,29 +26,28 @@ void	map_test() {
 #endif
 	avl_test();// TODO comment this line before push, its an internal test
 	pair_test();
-	// iterators tests :
+
 	{
-		FTMAP	m1;
-		STDMAP	m2;
+		FTMAP	ftM;
+		STDMAP	stdM;
 
-		m1.insert(ft::pair<int, std::string>(1, "hello"));
-		m1.insert(ft::pair<int, std::string>(0, "yo"));
-		m1.insert(ft::pair<int, std::string>(2, "world"));
-		FTMAP::iterator	it = m1.begin();
-		std::cout << it->second << std::endl;
-		std::cout << (*it).second << std::endl;
-//		m2.insert(std::pair<int, std::string>(1, "hello"));
-//		m2.insert(std::pair<int, std::string>(0, "yo"));
-//		m2.insert(std::pair<int, std::string>(2, "world"));
-//		FTMAP::iterator	ftit = m1.begin();
-//		STDMAP::iterator	stdit = m2.begin();
-//		std::cout << ftdit->first << std::endl;
-//		std::cout << stdit->first << std::endl;
+		ftM.insert(ft::pair<int, int>(0, 3));
+		ftM.insert(ft::pair<int, int>(1, 56));
+		ftM.insert(ft::pair<int, int>(2, 50));
+		ftM.insert(ft::pair<int, int>(12, 200));
+		ftM.insert(ft::pair<int, int>(15, 39));
+		ftM.insert(ft::pair<int, int>(30, 12));
+		stdM.insert(std::pair<int, int>(0, 3));
+		stdM.insert(std::pair<int, int>(1, 56));
+		stdM.insert(std::pair<int, int>(2, 50));
+		stdM.insert(std::pair<int, int>(12, 200));
+		stdM.insert(std::pair<int, int>(15, 39));
+		stdM.insert(std::pair<int, int>(30, 12));
 
-//		std::cout << "----------  BidirectionalIterator class : ----------" << std::endl;
-//		mapIteratorTest<int, FTMAP::iterator, 
-//			STDMAP::iterator> (ftV.begin(), stdV.begin());
-//
+		std::cout << "----------  BidirectionalIterator class : ----------" << std::endl;
+		AVLIteratorTest<FTMAP::iterator, STDMAP::iterator>(ftM.begin(), stdM.begin());
+	}
+
 //		std::cout << "----------  ConstRandomAccessIterator class : ----------" << std::endl;
 //		mapIteratorTest<FTMAP::const_iterator,
 //			STDMAP::const_iterator> (ftV.begin(), stdV.begin());
@@ -59,5 +59,4 @@ void	map_test() {
 //		std::cout << "----------  ConstReverseIterator class : ----------" << std::endl;
 //		mapIteratorTest<FTMAP::const_reverse_iterator,
 //			STDMAP::const_reverse_iterator> (ftV.rbegin(), stdV.rbegin());
-	}
 }
