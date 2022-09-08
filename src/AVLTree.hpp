@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 17:38:11 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/08 18:38:10 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/08 23:31:51 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ namespace ft {
 				{ return maximum(this->_root); }
 
 				void	inorder(node* root) const {
-					if (_root == NULL)
+					if (root == NULL || root == _end)
 						return ;
 					inorder(root->left);
 					std::cout << root->data.first << "  ";
@@ -187,60 +187,79 @@ namespace ft {
 				}
 
 				node*	_rightRotate(node* y) {
-					node*	x = y->left;
-					node*	T2 = x->right;
+//					node*	x = y->left;
+//
+//					y->left = x->right;
+//					x->right = y;
+//					return x;
+					node*	left_child = y->left;
+					node*	right_g_child = left_child->right;
 
-					x->right = y;
-					y->left = T2;
-					return x;
+					left_child->right = y;
+					left_child->parent = y->parent;
+					y->left = right_g_child;
+					if (left_child != _end)
+						y->parent = left_child;
+					if (right_g_child != NULL)
+						right_g_child->parent = y;
+					return left_child;
 				}
 
 				node*	_leftRotate(node* x) {
-					node*	y = x->right;
-					node*	T2 = y->left;
+//					node*	y = x->right;
+//
+//					x->right = y->left;
+//					y->left = x;
+//					return y;
+					node*	right_child = x->right;
+					node*	left_g_child = right_child->left;
 
-					y->left = x;
-					x->right = T2;
-					return y;
+					right_child->left = x;
+					right_child->parent = x->parent;
+					x->right = left_g_child;
+					if (right_child != _end)
+						x->parent = right_child;
+					if (left_g_child != NULL)
+						left_g_child->parent = x;
+					return right_child;
 				}
 
-				node*	_insertHelper(node* _root, node* n) {
-					if (_root == NULL)
+				node*	_insertHelper(node* root, node* n) {
+					if (root == NULL)
 						return n;
 					// Left subtree case
 					// implement value_compare
-					if (_comp(n->data,  _root->data)) {
-						_root->left = _insertHelper(_root->left, n);
-						_root->left->parent = _root;
+					if (_comp(n->data,  root->data)) {
+						root->left = _insertHelper(root->left, n);
+						root->left->parent = root;
 					}
 					// Right subtree case
-					else if (_comp(_root->data, n->data)) {
-						_root->right = _insertHelper(_root->right, n);
-						_root->right->parent = _root;
+					else if (_comp(root->data, n->data)) {
+						root->right = _insertHelper(root->right, n);
+						root->right->parent = root;
 					}
 					// Rebalance the tree
-					int	bf = _getBalanceFactor(_root);
+					int	bf = _getBalanceFactor(root);
 					// Left left case
-					if (bf > 1 && _comp(n->data, _root->left->data))
-						return _rightRotate(_root);
+					if (bf > 1 && _comp(n->data, root->left->data))
+						return _rightRotate(root);
 					// Right right case
-					if (bf < -1 &&_comp(_root->data, n->data))
-						return _leftRotate(_root);
+					if (bf < -1 && _comp(root->data, n->data))
+						return _leftRotate(root);
 					// Left right case
-					if (bf > 1 &&_comp(_root->data, n->data)) {
-						_root->left = _leftRotate(_root->left);
-						return _rightRotate(_root);
+					if (bf > 1 && _comp(root->data, n->data)) {
+						root->left = _leftRotate(root->left);
+						return _rightRotate(root);
 					}
 					// Right left case
-					if (bf < -1 && _comp(n->data, _root->right->data)) {
-						_root->right = _rightRotate(_root->right);
-						return _leftRotate(_root);
+					if (bf < -1 && _comp(n->data, root->right->data)) {
+						root->right = _rightRotate(root->right);
+						return _leftRotate(root);
 					}
-					return _root;
+					return root;
 				}
 
 				node*	_removeHelper(node* root, T const& key) {
-
 					if (root == NULL)
 						return root;
 					if (_comp(key, root->data))

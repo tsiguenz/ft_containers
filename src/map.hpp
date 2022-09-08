@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 19:40:02 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/08 18:47:34 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/08 20:35:04 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ namespace ft {
 					}
 
 					// TODO delete this helper function
-					AVLTree<value_type, Alloc, pair_key_less<Compare> >	getData() {
+					AVLTree<value_type, Alloc, pair_key_less<Compare> >&	getData() {
 						return _tree;
 					}
 			};

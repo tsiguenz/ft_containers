@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 15:10:25 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/08 18:25:25 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/08 23:36:52 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ void	AVLIteratorTest(ftIterator ftIt, stdIterator stdIt) {
 	for (int i = 0; i < 6; i++) {
 		ctnEqualFt += (tmpFtIt++ == ftIt++) ? 1 : 0;
 		ctnEqualStd += (tmpStdIt++ == stdIt++) ? 1 : 0;
-		ctnEqualFt += (tmpFtIt++ != ftIt++) ? 1 : 0;
-		ctnEqualStd += (tmpStdIt++ != stdIt++) ? 1 : 0;
+		ctnEqualFt += (tmpFtIt != ftIt) ? 1 : 0;
+		ctnEqualStd += (tmpStdIt != stdIt) ? 1 : 0;
 	}
 	assertEq("compare data in map with ==", ctnEqualFt, ctnEqualStd);
 	assertEq("compare data in map with !=", ctnNotEqualFt, ctnNotEqualStd);
