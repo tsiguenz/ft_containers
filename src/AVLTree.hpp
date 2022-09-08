@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 17:38:11 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/08 17:16:48 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/08 18:38:10 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # include "pair.hpp"
 
 namespace ft {
-
 	template<typename T>
 		struct Node {
 			T		data;
@@ -73,8 +72,8 @@ namespace ft {
 				{ return _root; }
 
 				void	insert(T const& data) {
-					// Duplicates are not allowed
-					if (searchByKey(data) != NULL)
+					// Duplicates are not allowed (don't protect duplicate key in pair)
+					if (searchByData(data) != NULL)
 						return ;
 					_unsetEnd();
 					node*	newNode = _createNode(data);
@@ -85,7 +84,7 @@ namespace ft {
 				}
 
 				void	remove(T const& key) {
-					if (searchByKey(key) == NULL)
+					if (searchByData(key) == NULL)
 						return ;
 					_unsetEnd();
 					_root = _removeHelper(_root, key);
@@ -94,10 +93,10 @@ namespace ft {
 					_setEnd();
 				}
 
-				node*	searchByKey(T const& key) {
+				node*	searchByData(T const& data) {
 					node*	curr = this->_root;
-					while (curr != NULL && !_equal(curr->data, key))
-						curr = (_comp(curr->data, key)) ? curr->right : curr->left;
+					while (curr != NULL && curr->data != data)
+						curr = (_comp(curr->data, data)) ? curr->right : curr->left;
 					return curr;
 				}
 
@@ -129,7 +128,7 @@ namespace ft {
 					if (_root == NULL)
 						return ;
 					inorder(root->left);
-					std::cout << root->data << "  ";
+					std::cout << root->data.first << "  ";
 					inorder(root->right);
 				}
 
@@ -144,10 +143,6 @@ namespace ft {
 
 			private:
 
-				bool	_equal(T const& a, T const& b) {
-					return !(_comp(a, b) || _comp(b, a));
-				}
-					
 				void	_unsetEnd(){
 					if (_root == NULL)
 						return ;

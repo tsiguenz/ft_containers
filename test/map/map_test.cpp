@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 16:27:59 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/07 18:38:38 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/08 18:46:04 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,8 @@ void	map_test() {
 # ifdef REAL
 	namespace ft = std;
 #endif
-	avl_test();// TODO comment this line before push, its an internal test
-	pair_test();
-
+//	avl_test();// TODO comment this line before push, its an internal test
+//	pair_test();
 	{
 		FTMAP	ftM;
 		STDMAP	stdM;
@@ -37,6 +36,8 @@ void	map_test() {
 		ftM.insert(ft::pair<int, int>(12, 200));
 		ftM.insert(ft::pair<int, int>(15, 39));
 		ftM.insert(ft::pair<int, int>(30, 12));
+		std::cout << "wtf\n";
+		ftM.getData().inorder(ftM.getData().getRoot());
 		stdM.insert(std::pair<int, int>(0, 3));
 		stdM.insert(std::pair<int, int>(1, 56));
 		stdM.insert(std::pair<int, int>(2, 50));

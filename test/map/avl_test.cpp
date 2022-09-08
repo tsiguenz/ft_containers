@@ -6,29 +6,14 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 17:52:09 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/07 14:34:14 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/08 18:45:21 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
 #include "AVLTree.hpp"
 #include "pair.hpp"
-
-void printBT(const std::string& prefix, const ft::Node<int>* node, bool isLeft) {
-	if (node != NULL) {
-		std::cout << prefix;
-		std::cout << (isLeft ? "|--" : "L--");
-		// print the value of the node
-		std::cout << node->data << std::endl;
-		// enter the next tree level - left and right branch
-		printBT(prefix + (isLeft ? "|   " : "    "), node->right, true);
-		printBT(prefix + (isLeft ? "|   " : "    "), node->left, false);
-	}
-}
-
-void printBT(const ft::Node<int>* node) {
-	printBT("", node, false);
-}
+#include "printPairBT.cpp"
 
 void	avl_test() {
 #ifdef REAL
@@ -75,9 +60,22 @@ void	avl_test() {
 		assertEq("min value", tree.minimum()->data.second, std::string("begin"));
 		assertEq("max value", tree.maximum()->data.second, std::string("world"));
 		tree.remove(ft::pair<const int, std::string>(2, "world"));
-		assertEq("search deleted node", (long) tree.searchByKey(ft::pair<const int, std::string>(2, "world")), NULL);
+		assertEq("search deleted node", (long) tree.searchByData(ft::pair<const int, std::string>(2, "world")), NULL);
 		tree.insert(ft::pair<const int, std::string>(2, "WORLD"));
 		assertEq("max value", tree.maximum()->data.second, std::string("WORLD"));
+	}
+	// debug
+	{
+		std::cout << "debug\n";
+		ft::AVLTree< ft::pair<const int, int> >	tree;
+
+		tree.insert(ft::pair<int, int>(0, 3));
+		tree.insert(ft::pair<int, int>(1, 56));
+		tree.insert(ft::pair<int, int>(2, 50));
+		tree.insert(ft::pair<int, int>(12, 200));
+		tree.insert(ft::pair<int, int>(15, 39));
+		tree.insert(ft::pair<int, int>(30, 12));
+		printPairBT(tree.getRoot());
 	}
 #endif
 }

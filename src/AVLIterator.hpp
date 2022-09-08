@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 21:42:02 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/07 18:36:27 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/08 18:03:35 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ namespace ft {
 				}
 
 				AVLIterator&	operator++(){
-					std::cout << _node->parent->data.first << std::endl;
 					if (_node->right != NULL) {
 						_node = _node->right;
 						while (_node->left != NULL)
@@ -67,6 +66,8 @@ namespace ft {
 					else {
 						_Node*	tmp;
 						do {
+							std::cout << _node->parent->data.first << std::endl;
+							std::cout << "loop\n";
 							tmp = _node;
 							_node = _node->parent;
 						}

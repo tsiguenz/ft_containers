@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 19:40:02 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/08 16:43:17 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/08 18:47:34 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ namespace ft {
 
 				public:
 
+					// Object managment
+
 					map()
 					: _tree() { }
 
@@ -73,6 +75,8 @@ namespace ft {
 					void	insert(value_type const& pair) {
 						_tree.insert(pair);
 					}
+
+					// Iterators
 
 					iterator	begin()
 					{ return iterator(_tree.begin()); }
@@ -86,10 +90,12 @@ namespace ft {
 //					const_iterator	end()
 //					{ return const_iterator(_tree.end()); }
 
+					// Member functions
+
 					T&	at(Key const& key) {
 						ft::Node<value_type>*	tmp = _tree.getRoot();
 
-						// TODO extract this in another function
+						// TODO extract this in another function ?
 						while (tmp->data.first != key) {
 							if (tmp->data.first < key)
 								tmp = tmp->right;
@@ -130,6 +136,11 @@ namespace ft {
 							}
 						}
 						return tmp->data.second;
+					}
+
+					// TODO delete this helper function
+					AVLTree<value_type, Alloc, pair_key_less<Compare> >	getData() {
+						return _tree;
 					}
 			};
 
