@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 17:38:11 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/07 19:04:06 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/08 17:16:48 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,8 @@ namespace ft {
 
 				node*	searchByKey(T const& key) {
 					node*	curr = this->_root;
-					while (curr != NULL && curr->data != key)
-						curr = (curr->data < key) ? curr->right : curr->left;
+					while (curr != NULL && !_equal(curr->data, key))
+						curr = (_comp(curr->data, key)) ? curr->right : curr->left;
 					return curr;
 				}
 
@@ -144,6 +144,9 @@ namespace ft {
 
 			private:
 
+				bool	_equal(T const& a, T const& b) {
+					return !(_comp(a, b) || _comp(b, a));
+				}
 					
 				void	_unsetEnd(){
 					if (_root == NULL)
@@ -216,25 +219,25 @@ namespace ft {
 						_root->left->parent = _root;
 					}
 					// Right subtree case
-					else if (n->data > _root->data) {
+					else if (_comp(_root->data, n->data)) {
 						_root->right = _insertHelper(_root->right, n);
 						_root->right->parent = _root;
 					}
 					// Rebalance the tree
 					int	bf = _getBalanceFactor(_root);
 					// Left left case
-					if (bf > 1 && n->data < _root->left->data)
+					if (bf > 1 && _comp(n->data, _root->left->data))
 						return _rightRotate(_root);
 					// Right right case
-					if (bf < -1 && n->data > _root->right->data)
+					if (bf < -1 &&_comp(_root->data, n->data))
 						return _leftRotate(_root);
 					// Left right case
-					if (bf > 1 && n->data > _root->left->data) {
+					if (bf > 1 &&_comp(_root->data, n->data)) {
 						_root->left = _leftRotate(_root->left);
 						return _rightRotate(_root);
 					}
 					// Right left case
-					if (bf < -1 && n->data < _root->right->data) {
+					if (bf < -1 && _comp(n->data, _root->right->data)) {
 						_root->right = _rightRotate(_root->right);
 						return _leftRotate(_root);
 					}
@@ -245,9 +248,9 @@ namespace ft {
 
 					if (root == NULL)
 						return root;
-					if (key < root->data)
+					if (_comp(key, root->data))
 						root->left = _removeHelper(root->left, key);
-					else if(key > root->data)
+					else if(_comp(root->data, key))
 						root->right = _removeHelper(root->right, key);
 					else {
 						// No child case

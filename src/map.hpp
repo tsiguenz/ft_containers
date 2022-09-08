@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 19:40:02 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/07 19:04:15 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/08 16:43:17 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,28 +28,41 @@ namespace ft {
 		class Compare = std::less<Key>,
 		class Alloc = std::allocator<ft::pair<const Key,T> > >
 			class map {
+				private:
+
+					template<class CompareKey>
+						struct	pair_key_less {
+							CompareKey	comp;
+
+							pair_key_less(): comp() { }
+							~pair_key_less() { }
+
+							bool	operator()(ft::pair<const Key, T> a, ft::pair<const Key, T> b) const {
+								return comp(a.first, b.first);
+							}
+						};
+
 				public:
 					// Types
-
 					typedef Key													key_type;
 					typedef T													mapped_type;
 					typedef ft::pair<const Key, T>								value_type;
 					typedef std::size_t											size_type;
 					typedef ptrdiff_t											difference_type;
 					typedef Compare												key_compare;
-					// implement value_compare
+//					typedef ????												value_compare;
 					typedef Alloc												allocator_type;
 					typedef value_type&											reference;
 					typedef value_type const&									const_reference;
 					typedef typename Alloc::pointer								pointer;
 					typedef typename Alloc::const_pointer						const_pointer;
-					typedef AVLIterator<ft::Node<value_type>, value_type, Compare>	iterator;
+					typedef AVLIterator<ft::Node<value_type>, value_type, pair_key_less<Compare> >	iterator;
 //					typedef BidirectionnalIterator<const AVLTree>				const_iterator;
 //					typedef ft::reverse_iterator<iterator>				reverse_iterator;
 //					typedef ft::reverse_iterator<const iterator>		const_reverse_iterator;
 				private:
 
-					AVLTree<value_type, Alloc, Compare>	_tree;
+					AVLTree<value_type, Alloc, pair_key_less<Compare> >	_tree;
 
 				public:
 
