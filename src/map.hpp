@@ -6,22 +6,23 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 19:40:02 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/08 20:35:04 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/09 17:54:14 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MAP_HPP
 # define MAP_HPP
 
-#include <iterator> // std::random_access_iterator_tag
-#include <memory> // std::allocator
-#include <cstddef> // std::ptrdiff_t
-#include <stdexcept> // std::out_of_range and std::length_error
-#include "ReverseIterator.hpp"
-#include "Utils.hpp"
-#include "TypeTraits.hpp"
-#include "AVLTree.hpp"
-#include "pair.hpp"
+# include <iterator> // std::random_access_iterator_tag
+# include <memory> // std::allocator
+# include <cstddef> // std::ptrdiff_t
+# include <stdexcept> // std::out_of_range and std::length_error
+# include "Utils.hpp"
+# include "TypeTraits.hpp"
+# include "AVLTree.hpp"
+# include "AVLIterator.hpp"
+# include "ReverseIterator.hpp"
+# include "pair.hpp"
 
 namespace ft {
 	template < class Key, class T,
@@ -56,10 +57,10 @@ namespace ft {
 					typedef value_type const&									const_reference;
 					typedef typename Alloc::pointer								pointer;
 					typedef typename Alloc::const_pointer						const_pointer;
-					typedef AVLIterator<ft::Node<value_type>, value_type, pair_key_less<Compare> >	iterator;
-//					typedef BidirectionnalIterator<const AVLTree>				const_iterator;
-//					typedef ft::reverse_iterator<iterator>				reverse_iterator;
-//					typedef ft::reverse_iterator<const iterator>		const_reverse_iterator;
+					typedef AVLIterator<value_type, ft::Node<value_type>, pair_key_less<Compare> >	iterator;
+//					typedef AVLIterator<value_type const, ft::Node<value_type> const, pair_key_less<Compare> >	const_iterator;
+					typedef ft::ReverseIterator<iterator>						reverse_iterator;
+//					typedef ft::ReverseIterator<const iterator>					const_reverse_iterator;
 				private:
 
 					AVLTree<value_type, Alloc, pair_key_less<Compare> >	_tree;
@@ -81,14 +82,26 @@ namespace ft {
 					iterator	begin()
 					{ return iterator(_tree.begin()); }
 
-//					const_iterator	begin()
+//					const_iterator	begin() const
 //					{ return const_iterator(_tree.begin()); }
+
+					reverse_iterator	rbegin()
+					{ return reverse_iterator(_tree.end()); }
+
+//					const_reverse_iterator	rbegin() const
+//					{ return const_reverse_iterator(_tree.end()); }
 
 					iterator	end()
 					{ return iterator(_tree.end()); }
 
-//					const_iterator	end()
+//					const_iterator	end() const
 //					{ return const_iterator(_tree.end()); }
+
+					reverse_iterator	rend()
+					{ return reverse_iterator(_tree.begin()); }
+
+//					const_reverse_iterator	rend() const
+//					{ return const_reverse_iterator(_tree.begin()); }
 
 					// Member functions
 

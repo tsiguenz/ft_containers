@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 15:10:25 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/08 23:36:52 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/09 18:12:08 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	AVLIteratorTest(ftIterator ftIt, stdIterator stdIt) {
 	// iterators tests :
 	ftIterator	tmpFtIt(ftIt);
 	stdIterator	tmpStdIt(stdIt);
+	int			ctnNotEqualValue = 0;
 	int			ctnEqualFt = 0;
 	int			ctnEqualStd = 0;
 	int			ctnNotEqualFt = 0;
@@ -28,31 +29,21 @@ void	AVLIteratorTest(ftIterator ftIt, stdIterator stdIt) {
 
 	assertEq("Compare iterator value returned by begin()", ftIt->second, stdIt->second);
 	assertEq("(*it++).second", (*ftIt++).second, (*stdIt++).second);
-	std::cout << "error is after this line\n";
 	assertEq("value after post ++", (*ftIt).second, (*stdIt).second);
 	assertEq("(*++it).second", (*++ftIt).second, (*++stdIt).second);
 	assertEq("(*it--).second", (*ftIt--).second, (*stdIt--).second);
 	assertEq("value after post --", (*ftIt).second, (*stdIt).second);
 	assertEq("(*--it).second", (*--ftIt).second, (*--stdIt).second);
 	for (int i = 0; i < 6; i++) {
-		ctnEqualFt += (tmpFtIt++ == ftIt++) ? 1 : 0;
-		ctnEqualStd += (tmpStdIt++ == stdIt++) ? 1 : 0;
-		ctnEqualFt += (tmpFtIt != ftIt) ? 1 : 0;
-		ctnEqualStd += (tmpStdIt != stdIt) ? 1 : 0;
+		ctnNotEqualValue += ftIt->second != stdIt->second;
+		ctnEqualFt += tmpFtIt++ == ftIt++;
+		ctnEqualStd += tmpStdIt++ == stdIt++;
+		ctnEqualFt += tmpFtIt != ftIt;
+		ctnEqualStd += tmpStdIt != stdIt;
 	}
-	assertEq("compare data in map with ==", ctnEqualFt, ctnEqualStd);
-	assertEq("compare data in map with !=", ctnNotEqualFt, ctnNotEqualStd);
-			
-//		assertEq("it + i != tmpIt", ftIt + i != tmpFtIt, stdIt + i != tmpStdIt);
-//		assertEq("*(it + i)", *(ftIt + i), *(stdIt + i));
-//		assertEq("it + i < tmpIt", ftIt + i < tmpFtIt, stdIt + i < tmpStdIt);
-//		assertEq("it + i <= tmpIt", ftIt + i <= tmpFtIt, stdIt + i <= tmpStdIt);
-//		assertEq("it + i > tmpIt", ftIt + i > tmpFtIt, stdIt + i > tmpStdIt);
-//		assertEq("it + i >= tmpIt", ftIt + i >= tmpFtIt, stdIt + i >= tmpStdIt);
-//	}
-//	tmpFtIt = ftIt + 4;
-//	tmpStdIt = stdIt + 4;
-//	assertEq("operator = ", *tmpFtIt, *tmpStdIt);
+	assertEq("Compare data in map with ==", ctnEqualFt, ctnEqualStd);
+	assertEq("Compare data in map with !=", ctnNotEqualFt, ctnNotEqualStd);
+	assertEq("Check if values are same", ctnNotEqualValue, 0);
 }
 
 #endif // AVL_ITERATOR_TEST_HPP

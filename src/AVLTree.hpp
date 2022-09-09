@@ -6,14 +6,13 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 17:38:11 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/08 23:31:51 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/09 18:05:23 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef AVLTREE_HPP
 # define AVLTREE_HPP
 
-# include "AVLIterator.hpp"
 # include "pair.hpp"
 
 namespace ft {
@@ -187,41 +186,29 @@ namespace ft {
 				}
 
 				node*	_rightRotate(node* y) {
-//					node*	x = y->left;
-//
-//					y->left = x->right;
-//					x->right = y;
-//					return x;
-					node*	left_child = y->left;
-					node*	right_g_child = left_child->right;
+					node*	child = y->left;
+					node*	baby = child->right;
 
-					left_child->right = y;
-					left_child->parent = y->parent;
-					y->left = right_g_child;
-					if (left_child != _end)
-						y->parent = left_child;
-					if (right_g_child != NULL)
-						right_g_child->parent = y;
-					return left_child;
+					child->right = y;
+					child->parent = y->parent;
+					y->left = baby;
+					y->parent = child;
+					if (baby != NULL)
+						baby->parent = y;
+					return child;
 				}
 
 				node*	_leftRotate(node* x) {
-//					node*	y = x->right;
-//
-//					x->right = y->left;
-//					y->left = x;
-//					return y;
-					node*	right_child = x->right;
-					node*	left_g_child = right_child->left;
+					node*	child = x->right;
+					node*	baby = child->left;
 
-					right_child->left = x;
-					right_child->parent = x->parent;
-					x->right = left_g_child;
-					if (right_child != _end)
-						x->parent = right_child;
-					if (left_g_child != NULL)
-						left_g_child->parent = x;
-					return right_child;
+					child->left = x;
+					child->parent = x->parent;
+					x->right = baby;
+					x->parent = child;
+					if (baby != NULL)
+						baby->parent = x;
+					return child;
 				}
 
 				node*	_insertHelper(node* root, node* n) {

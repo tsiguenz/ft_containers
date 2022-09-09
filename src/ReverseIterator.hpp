@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/28 11:46:21 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/07/29 18:23:58 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/09 17:46:28 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,16 @@ namespace ft {
 
 			public:
 				// Object managment
+
 				ReverseIterator(): current() { };
+
 				ReverseIterator(iterator it): current(it) { }
+
 				ReverseIterator(ReverseIterator const& it): current(it.current) { }
+
 				template<typename Iter>
 					ReverseIterator(ReverseIterator<Iter> const& it): current(it.base()) { }
+
 				virtual ~ReverseIterator() { }
 
 				iterator	base() const { return this->current; }

@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 16:27:59 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/08 23:32:16 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/09 17:48:24 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,19 +42,18 @@ void	map_test() {
 		stdM.insert(std::pair<int, int>(12, 200));
 		stdM.insert(std::pair<int, int>(15, 39));
 		stdM.insert(std::pair<int, int>(30, 12));
-		printPairBT(ftM.getData().getRoot());
+//		printPairBT(ftM.getData().getRoot());
 
-		std::cout << "----------  BidirectionalIterator class : ----------" << std::endl;
+		std::cout << "----------  AVLIterator test : ----------" << std::endl;
 		AVLIteratorTest<FTMAP::iterator, STDMAP::iterator>(ftM.begin(), stdM.begin());
-	}
 
-//		std::cout << "----------  ConstRandomAccessIterator class : ----------" << std::endl;
-//		mapIteratorTest<FTMAP::const_iterator,
-//			STDMAP::const_iterator> (ftV.begin(), stdV.begin());
-//
-//		std::cout << "----------  ReverseIterator class : ----------" << std::endl;
-//		mapIteratorTest<FTMAP::reverse_iterator,
-//			STDMAP::reverse_iterator> (ftV.rbegin(), stdV.rbegin());
+//		FTMAP::const_iterator	it = ftM.begin();
+//		std::cout << "----------  const AVLIterator tests : ----------" << std::endl;
+//		AVLIteratorTest<FTMAP::const_iterator, STDMAP::const_iterator>(ftM.begin(), stdM.begin());
+
+		std::cout << "----------  ReverseIterator class : ----------" << std::endl;
+		AVLIteratorTest<FTMAP::reverse_iterator, STDMAP::reverse_iterator>(ftM.rbegin(), stdM.rbegin());
+	}
 //
 //		std::cout << "----------  ConstReverseIterator class : ----------" << std::endl;
 //		mapIteratorTest<FTMAP::const_reverse_iterator,
