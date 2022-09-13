@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 17:38:11 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/09 18:05:23 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/13 18:31:22 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,8 @@ namespace ft {
 	template<typename T, class Alloc = std::allocator<T>, class Compare = std::less<T> >
 		class AVLTree {
 			private:
-
-				typedef Node<T>	node;
-				typedef typename Alloc::template rebind<node>::other AllocNode;
+				typedef Node<T>											node;
+				typedef typename Alloc::template rebind<node>::other	AllocNode;
 
 				Node<T>*	_root;
 				Node<T>*	_begin;
@@ -46,16 +45,15 @@ namespace ft {
 				Compare		_comp;
 
 			public:
-
-				// Constructor
-				AVLTree() {
+				// Empty constructor
+				// Initialisation list for _comp bc value_compare don't have default constructor
+				AVLTree(Compare const& comp = Compare()): _comp(comp) {
 					_root = NULL;
 					_begin = NULL;
 					_end = _createNode();
 					_allocPair = Alloc();
 					_allocNode = AllocNode();
 					_size = 0;
-					_comp = Compare();
 				}
 
 				// Destructor
@@ -71,7 +69,7 @@ namespace ft {
 				{ return _root; }
 
 				void	insert(T const& data) {
-					// Duplicates are not allowed (don't protect duplicate key in pair)
+					// Duplicates are not allowed (do not protect duplicate key in pair)
 					if (searchByData(data) != NULL)
 						return ;
 					_unsetEnd();

@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 21:42:02 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/09 17:42:22 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/13 17:25:59 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,11 @@
 # include "IteratorTraits.hpp"
 
 namespace ft {
-	template<typename _Pair, typename _Node, typename Compare>
+	template<typename _Pair, typename _Node>
 		class AVLIterator { 
 			public:
 				// Types
+				typedef _Pair													iterator_type;
 				typedef typename ft::iterator_traits<_Pair*>::difference_type	difference_type;
 				typedef typename ft::iterator_traits<_Pair*>::value_type		value_type;
 				typedef typename ft::iterator_traits<_Pair*>::pointer			pointer;
@@ -30,15 +31,17 @@ namespace ft {
 
 			private:
 				_Node*	_node;
-				Compare	_comp;
 
 			public:
 				// Object managment
-				AVLIterator(): _node(NULL), _comp() { }
+				AVLIterator(): _node(NULL) { }
 
-				AVLIterator(_Node* n): _node(n), _comp() { }
+				AVLIterator(_Node* n): _node(n) { }
 
-				AVLIterator(AVLIterator const& it): _node(it._node), _comp() { }
+				AVLIterator(AVLIterator const& it): _node(it._node) { }
+
+				template<typename Iterator>
+				AVLIterator(Iterator it): _node(it.base()) { }
 
 				virtual ~AVLIterator() { }
 
@@ -47,7 +50,6 @@ namespace ft {
 				// Operators
 				AVLIterator&	operator=(AVLIterator const& it){
 					this->_node = it._node;
-					this->_comp = it._comp;
 					return *this;
 				}
 
@@ -103,19 +105,19 @@ namespace ft {
 				pointer	operator->() const
 				{ return &_node->data; }
 
-				operator AVLIterator<_Pair const, _Node, Compare>() const
-				{ return AVLIterator<_Pair const, _Node, Compare>(this->_node); }
+				operator AVLIterator<_Pair const, _Node>() const
+				{ return AVLIterator<_Pair const, _Node>(this->_node); }
 
 		};
 
-	template<typename T, typename U, typename Node, typename Compare>
-		bool	operator==(AVLIterator<T, Node, Compare> const& it1,
-			AVLIterator<U, Node, Compare> const& it2)
+	template<typename T, typename U, typename Node>
+		bool	operator==(AVLIterator<T, Node> const& it1,
+			AVLIterator<U, Node> const& it2)
 		{ return it1.base() == it2.base(); }
 
-	template<typename T, typename U, typename Node, typename Compare>
-		bool	operator!=(AVLIterator<T, Node, Compare> const& it1,
-			AVLIterator<U, Node, Compare> const& it2)
+	template<typename T, typename U, typename Node>
+		bool	operator!=(AVLIterator<T, Node> const& it1,
+			AVLIterator<U, Node> const& it2)
 		{ return !(it1.base() == it2.base()); }
 }
 #endif // AVL_ITERATOR_HPP

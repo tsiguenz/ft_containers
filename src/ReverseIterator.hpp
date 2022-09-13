@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/28 11:46:21 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/09 17:46:28 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/13 13:37:21 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,68 +28,68 @@ namespace ft {
 				typedef typename Iterator::reference			reference;
 				typedef typename Iterator::iterator_category	iterator_category;
 
-			protected:
-				Iterator	current;
+			private:
+				Iterator	_current;
 
 			public:
 				// Object managment
 
-				ReverseIterator(): current() { };
+				ReverseIterator(): _current() { };
 
-				ReverseIterator(iterator it): current(it) { }
+				ReverseIterator(iterator it): _current(it) { }
 
-				ReverseIterator(ReverseIterator const& it): current(it.current) { }
+				ReverseIterator(ReverseIterator const& it): _current(it._current) { }
 
 				template<typename Iter>
-					ReverseIterator(ReverseIterator<Iter> const& it): current(it.base()) { }
+					ReverseIterator(ReverseIterator<Iter> const& it): _current(it.base()) { }
 
 				virtual ~ReverseIterator() { }
 
-				iterator	base() const { return this->current; }
+				iterator	base() const { return this->_current; }
 
 				operator ReverseIterator<Iterator const>() const
-				{ return ReverseIterator<Iterator const>(this->_ptr); }
+				{ return ReverseIterator<Iterator const>(_current); }
 
 				ReverseIterator&	operator=(ReverseIterator const& it){
-					this->current = it.current;
+					_current = it._current;
 					return *this;
 				}
 
 				ReverseIterator&	operator++(){
-					this->current--;
+					_current--;
 					return *this;
 				}
 
 				ReverseIterator	operator++(int) {
-					ReverseIterator<Iterator>	tmp = *this;
-					this->current--;
+					ReverseIterator	tmp(_current);
+					_current--;
 					return tmp;
 				}
 
 				ReverseIterator&	operator--() {
-					this->current++;
+					_current++;
 					return *this;
 				}
 
 				ReverseIterator	operator--(int) {
-					ReverseIterator<Iterator>	tmp = *this;
-					this->current++;
+					Iterator	tmp = Iterator(_current);
+					_current++;
 					return tmp;
 				}
 
 				ReverseIterator	operator+(difference_type const& n) const
-				{ return ReverseIterator(this->current - n); }
+				{ return ReverseIterator(_current - n); }
 
 				ReverseIterator&	operator+=(difference_type const& n) {
-					this->current -= n;
+					_current -= n;
 					return *this;
 				}
 
 				ReverseIterator	operator-(difference_type const& n) const
-				{ return ReverseIterator(this->current + n); }
+				{ return ReverseIterator(_current + n); }
 
 				ReverseIterator&	operator-=(difference_type const& n) {
-					this->current += n;
+					_current += n;
 					return *this;
 				}
 
@@ -97,7 +97,7 @@ namespace ft {
 				{ return *(*this + n); }
 
 				reference	operator*() const {
-					iterator	tmp = this->current;
+					iterator	tmp = Iterator(_current);
 					return *--tmp;
 				}
 
