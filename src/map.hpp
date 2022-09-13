@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 19:40:02 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/13 18:26:10 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/13 18:45:42 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,12 @@ namespace ft {
 
 			public:
 
-				// Object managment
+			// TODO delete this helper function
+				AVLTree<value_type, Alloc, value_compare >&	getData() {
+					return _tree;
+				}
+
+			// Object managment
 
 				explicit map(key_compare const& comp = key_compare(),
 						allocator_type const& alloc = allocator_type())
@@ -83,7 +88,7 @@ namespace ft {
 					_tree.insert(pair);
 				}
 
-				// Iterators
+			// Iterators
 
 				iterator	begin()
 				{ return iterator(_tree.begin()); }
@@ -109,7 +114,9 @@ namespace ft {
 				const_reverse_iterator	rend() const
 				{ return const_reverse_iterator(_tree.begin()); }
 
-				// Member functions
+			// Member functions
+
+				// Element access
 
 				T&	at(Key const& key) {
 					ft::Node<value_type>*	tmp = _tree.getRoot();
@@ -125,6 +132,7 @@ namespace ft {
 					}
 					return tmp->data.second;
 				}
+
 
 				T const &	at(Key const& key) const {
 					ft::Node<value_type>*	tmp = _tree.getRoot();
@@ -157,10 +165,13 @@ namespace ft {
 					return tmp->data.second;
 				}
 
-				// TODO delete this helper function
-				AVLTree<value_type, Alloc, value_compare >&	getData() {
-					return _tree;
-				}
+				// Observers
+
+				key_compare	key_comp()
+				{ return _comp; }
+
+				value_compare	value_comp()
+				{ return value_compare(_comp); }
 		};
 
 }
