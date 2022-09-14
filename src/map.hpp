@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 19:40:02 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/13 18:45:42 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/14 19:21:10 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,13 +79,65 @@ namespace ft {
 
 			// Object managment
 
+				// Default constructor
 				explicit map(key_compare const& comp = key_compare(),
 						allocator_type const& alloc = allocator_type())
 					: _tree(value_compare(comp)), _comp(comp), _alloc(alloc) { }
 
-				// TODO do it
-				void	insert(value_type const& pair) {
-					_tree.insert(pair);
+				// Range constructor
+				template <class InputIterator>
+					map (InputIterator first, InputIterator last,
+							const key_compare& comp = key_compare(),
+							const allocator_type& alloc = allocator_type())
+					: _tree(value_compare(comp)), _comp(comp), _alloc(alloc) {
+						insert(first, last);
+					}
+
+				// Copy constructor
+				map(map const& x)
+				{ *this = x; }
+
+				// Destructor
+				~map() { }
+
+				map&	operator=(map const& other) {
+					insert(other.begin(), other.end());
+					this->_comp = other._comp;
+					this->_alloc = other._alloc;
+					return *this;
+				}
+
+				allocator_type	get_allocator() const {
+					return _alloc;
+				}
+
+			// Element access
+
+				mapped_type&	at(Key const& key) {
+					ft::Node<value_type>*	tmp = _getPairByKey(key);
+
+					if (tmp == NULL)
+						throw std::out_of_range("map::at : Key is out of range");
+					return tmp->data.second;
+				}
+
+				mapped_type const&	at(Key const& key) const {
+					ft::Node<value_type>*	tmp = _getPairByKey(key);
+
+					if (tmp == NULL)
+						throw std::out_of_range("map::at : Key is out of range");
+					return tmp->data.second;
+				}
+
+				mapped_type&	operator[](key_type const& key) {
+					ft::Node<value_type>*	tmp = _getPairByKey(key);
+
+					if (tmp != NULL)
+						return tmp->data.second;
+					else
+						// return insert(ft::make_pair(key, T())).first->second;
+						insert(ft::make_pair(key, mapped_type()));
+					return (*this)[key];
 				}
 
 			// Iterators
@@ -114,56 +166,45 @@ namespace ft {
 				const_reverse_iterator	rend() const
 				{ return const_reverse_iterator(_tree.begin()); }
 
-			// Member functions
+			// Capacity
 
-				// Element access
+				bool	empty() const
+				{ return _tree.size() == 0; }
 
-				T&	at(Key const& key) {
-					ft::Node<value_type>*	tmp = _tree.getRoot();
+				size_type	size() const
+				{ return _tree.size(); }
 
-					// TODO extract this in another function ?
-					while (tmp->data.first != key) {
-						if (tmp->data.first < key)
-							tmp = tmp->right;
-						else
-							tmp = tmp->left;
-						if (tmp == NULL)
-							throw std::out_of_range("map::at : Key is out of range");
-					}
-					return tmp->data.second;
+				size_type	max_size() const
+				{ return _tree.max_size(); }
+
+			// Modifiers
+
+				void	clear() {
+					// use erase
 				}
 
-
-				T const &	at(Key const& key) const {
-					ft::Node<value_type>*	tmp = _tree.getRoot();
-
-					while (tmp->data.first != key) {
-						if (tmp->data.first < key)
-							tmp = tmp->right;
-						else
-							tmp = tmp->left;
-						if (tmp == NULL)
-							throw std::out_of_range("map::at : Key is out of range");
-					}
-					return tmp->data.second;
+				// insert single value
+				ft::pair<iterator, bool>	insert(const value_type& value) {
+					ft::Node<value_type>*	tmp = _getPairByKey(value.first);
+					
+					if (tmp != NULL)
+						return ft::pair<iterator, bool>(tmp, false);
+					_tree.insert(value);
+					return ft::pair<iterator, bool>(_getPairByKey(value.first), true);
 				}
 
-				// TODO do it
-				mapped_type&	operator[](key_type const& k) {
-					ft::Node<value_type>*	tmp = _tree.getRoot();
+				// insert single value with hint
+//				iterator	insert(iterator hint, const value_type& value) {
+//
+//				}
 
-					while (tmp->data.first != k) {
-						if (tmp->data.first < k)
-							tmp = tmp->right;
-						else
-							tmp = tmp->left;
-						if (tmp == NULL) {
-							insert(ft::make_pair(k, mapped_type()));
-							break ;
+				// insert range
+				template<class InputIt>
+					void	insert(InputIt first, InputIt last) {
+						for (;first != last; first++) {
+							insert(*first);
 						}
 					}
-					return tmp->data.second;
-				}
 
 				// Observers
 
@@ -172,6 +213,21 @@ namespace ft {
 
 				value_compare	value_comp()
 				{ return value_compare(_comp); }
+
+				private:
+
+				ft::Node<value_type>*	_getPairByKey(key_type const& key) const {
+					ft::Node<value_type>*	tmp = _tree.getRoot();
+
+					while (tmp != NULL && tmp->data.first != key) {
+						if (tmp->data.first < key)
+							tmp = tmp->right;
+						else
+							tmp = tmp->left;
+					}
+					// if tmp == NULL return NULL
+					return tmp;
+				}
 		};
 
 }

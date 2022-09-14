@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 17:38:11 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/13 18:31:22 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/14 18:20:48 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ namespace ft {
 
 				// TODO implement copy constructor and operator=
 
-				node*	getRoot()
+				node*	getRoot() const
 				{ return _root; }
 
 				void	insert(T const& data) {
@@ -132,10 +132,19 @@ namespace ft {
 				size_t	size() const
 				{ return _size; }
 
+				size_t	max_size() const
+				{ return _allocNode.max_size(); }
+
 				node*	begin()
 				{ return _begin; }
 
+				node const*	begin() const
+				{ return _begin; }
+
 				node*	end()
+				{ return _end; }
+
+				node const*	end() const
 				{ return _end; }
 
 			private:

@@ -5,45 +5,52 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/26 15:10:25 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/13 13:50:56 by tsiguenz         ###   ########.fr       */
+/*   Created: 2022/09/14 13:35:23 by tsiguenz          #+#    #+#             */
+/*   Updated: 2022/09/14 18:28:12 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef AVL_ITERATOR_TEST_HPP
-# define AVL_ITERATOR_TEST_HPP
+#include <map>
+#include "map.hpp"
+#include "avl_iterator_generic_test.hpp"
 
-template<typename ftIterator, typename stdIterator>
-void	AVLIteratorTest(ftIterator ftIt, stdIterator stdIt) {
+#define FTMAP ft::map<int, int>
+#define STDMAP std::map<int, int>
+
+void	avl_iterator_test() {
 # ifdef REAL
 	namespace ft = std;
 #endif
-	// iterators tests :
-	ftIterator	tmpFtIt(ftIt);
-	stdIterator	tmpStdIt(stdIt);
-	int			ctnNotEqualValue = 0;
-	int			ctnEqualFt = 0;
-	int			ctnEqualStd = 0;
-	int			ctnNotEqualFt = 0;
-	int			ctnNotEqualStd = 0;
+	FTMAP	ftM;
+	STDMAP	stdM;
 
-	assertEq("Compare iterator value returned by begin()", ftIt->second, stdIt->second);
-	assertEq("(*it++).second", (*ftIt++).second, (*stdIt++).second);
-	assertEq("value after post ++", (*ftIt).second, (*stdIt).second);
-	assertEq("(*++it).second", (*++ftIt).second, (*++stdIt).second);
-	assertEq("(*it--).second", (*ftIt--).second, (*stdIt--).second);
-	assertEq("value after post --", (*ftIt).second, (*stdIt).second);
-	assertEq("(*--it).second", (*--ftIt).second, (*--stdIt).second);
-	for (int i = 0; i < 6; i++) {
-		ctnNotEqualValue += ftIt->second != stdIt->second;
-		ctnEqualFt += tmpFtIt++ == ftIt++;
-		ctnEqualStd += tmpStdIt++ == stdIt++;
-		ctnEqualFt += tmpFtIt != ftIt;
-		ctnEqualStd += tmpStdIt != stdIt;
-	}
-	assertEq("Compare data in map with ==", ctnEqualFt, ctnEqualStd);
-	assertEq("Compare data in map with !=", ctnNotEqualFt, ctnNotEqualStd);
-	assertEq("Check if values are different", ctnNotEqualValue, 0);
+	ftM.insert(ft::pair<int, int>(0, 3));
+	ftM.insert(ft::pair<int, int>(1, 56));
+	ftM.insert(ft::pair<int, int>(2, 50));
+	ftM.insert(ft::pair<int, int>(12, 200));
+	ftM.insert(ft::pair<int, int>(15, 39));
+	ftM.insert(ft::pair<int, int>(30, 12));
+	stdM.insert(std::pair<int, int>(0, 3));
+	stdM.insert(std::pair<int, int>(1, 56));
+	stdM.insert(std::pair<int, int>(2, 50));
+	stdM.insert(std::pair<int, int>(12, 200));
+	stdM.insert(std::pair<int, int>(15, 39));
+	stdM.insert(std::pair<int, int>(30, 12));
+
+	
+
+	std::cout << "----------  AVLIterator test : ----------" << std::endl;
+	AVLIteratorTest<FTMAP::iterator, STDMAP::iterator>(ftM.begin(), stdM.begin());
+
+	FTMAP::const_iterator	it = ftM.begin();
+	std::cout << "----------  const AVLIterator tests : ----------" << std::endl;
+	AVLIteratorTest<FTMAP::const_iterator, STDMAP::const_iterator>(ftM.begin(), stdM.begin());
+
+	std::cout << "----------  ReverseIterator class : ----------" << std::endl;
+	AVLIteratorTest<FTMAP::reverse_iterator, STDMAP::reverse_iterator>(ftM.rbegin(), stdM.rbegin());
+
+	std::cout << "----------  const ReverseIterator class : ----------" << std::endl;
+	AVLIteratorTest<FTMAP::const_reverse_iterator, STDMAP::const_reverse_iterator>(ftM.rbegin(), stdM.rbegin());
+
+	// TODO more tests for iterators
 }
-
-#endif // AVL_ITERATOR_TEST_HPP

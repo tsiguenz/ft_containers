@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 12:36:10 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/23 14:21:44 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/14 18:34:11 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,31 @@ void	printVector(T const& a) {
 	std::cout << "a.size() = " << a.size() << std::endl;
 	std::cout << "a.capacity() = " << a.capacity() << std::endl;
 	std::cout << "a.empty() = " << a.empty() << std::endl;
+}
+
+template<typename T, typename U>
+void	assertEqMap(std::string const& str, T& a, U const& b) {
+	if (a.size() != b.size()) {
+		std::cout << RED << "[KO] " << str << ", different size : a.size() = " << a.size() << " b.size() = " << b.size() << DEFAULT << std::endl;
+		return ;
+	}
+	if (a.empty() != b.empty()) {
+		std::cout << RED << "[KO] " << str << ", different empty result : a.empty() = " << a.empty() << " b.empty() = " << b.empty() << DEFAULT << std::endl;
+		return ;
+	}
+// TODO uncomment when default constructor is ok
+//	typename T::iterator	ita = a.begin();
+//	typename U::iterator	itb = b.begin();
+//	while (itb != b.end()) {
+//		std::cout << ita->first << std::endl;
+//		if (ita->first != itb->first || ita->second != itb->second) {
+//			std::cout << RED << "[KO] " << str << ", difference in values : a[" << ita->first << "] = " << ita->second << " b[" << itb->first << "] = " << itb->second << DEFAULT << std::endl;
+//			return ;
+//		}
+//		ita++;
+//		itb++;
+//	}
+	std::cout << GREEN << "[OK] " << str << DEFAULT << std::endl;
 }
 
 #endif // UTILS_TEST_HPP

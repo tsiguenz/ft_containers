@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 17:52:09 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/13 18:29:41 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/14 15:10:28 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ void	avl_test() {
 	namespace ft = std;
 #endif
 #ifndef REAL
-	std::cout << "internal implementation of map can't be tested with real stl" << std::endl;
+	std::cout << "----------  AVLTree test : ----------" << std::endl;
+	std::cout << "Internal implementation of map can't be tested with real stl" << std::endl;
 	{
 		ft::AVLTree<int> tree;
 

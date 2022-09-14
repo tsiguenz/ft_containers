@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 14:01:38 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/24 15:45:44 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/14 15:09:38 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	pair_test() {
 	namespace ft = std;
 #endif
 
+	std::cout << "----------  Pair test : ----------" << std::endl;
 	// object managment
 	ft::pair<int, std::string>		p1;
 	ft::pair<int, std::string>		p2(42, "hello");
