@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 19:40:02 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/14 19:21:10 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/19 18:20:45 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,73 +107,85 @@ namespace ft {
 					return *this;
 				}
 
+				// O(n)
 				allocator_type	get_allocator() const {
 					return _alloc;
 				}
 
 			// Element access
 
+				// O(log(n))
 				mapped_type&	at(Key const& key) {
-					ft::Node<value_type>*	tmp = _getPairByKey(key);
+					ft::Node<value_type>*	tmp = _getNodeByKey(key);
 
 					if (tmp == NULL)
 						throw std::out_of_range("map::at : Key is out of range");
 					return tmp->data.second;
 				}
 
+				// O(log(n))
 				mapped_type const&	at(Key const& key) const {
-					ft::Node<value_type>*	tmp = _getPairByKey(key);
+					ft::Node<value_type>*	tmp = _getNodeByKey(key);
 
 					if (tmp == NULL)
 						throw std::out_of_range("map::at : Key is out of range");
 					return tmp->data.second;
 				}
 
+				// O(log(n))
 				mapped_type&	operator[](key_type const& key) {
-					ft::Node<value_type>*	tmp = _getPairByKey(key);
+					ft::Node<value_type>*	tmp = _getNodeByKey(key);
 
 					if (tmp != NULL)
 						return tmp->data.second;
-					else
-						// return insert(ft::make_pair(key, T())).first->second;
-						insert(ft::make_pair(key, mapped_type()));
-					return (*this)[key];
+					return insert(ft::make_pair(key, T())).first->second;
 				}
 
 			// Iterators
 
+				// O(n)
 				iterator	begin()
 				{ return iterator(_tree.begin()); }
 
+				// O(n)
 				const_iterator	begin() const
 				{ return const_iterator(_tree.begin()); }
 
+				// O(n)
 				reverse_iterator	rbegin()
 				{ return reverse_iterator(_tree.end()); }
 
+				// O(n)
 				const_reverse_iterator	rbegin() const
 				{ return const_reverse_iterator(_tree.end()); }
 
+				// O(n)
 				iterator	end()
 				{ return iterator(_tree.end()); }
 
+				// O(n)
 				const_iterator	end() const
 				{ return const_iterator(_tree.end()); }
 
+				// O(n)
 				reverse_iterator	rend()
 				{ return reverse_iterator(_tree.begin()); }
 
+				// O(n)
 				const_reverse_iterator	rend() const
 				{ return const_reverse_iterator(_tree.begin()); }
 
 			// Capacity
 
+				// O(n)
 				bool	empty() const
 				{ return _tree.size() == 0; }
 
+				// O(n)
 				size_type	size() const
 				{ return _tree.size(); }
 
+				// O(n)
 				size_type	max_size() const
 				{ return _tree.max_size(); }
 
@@ -183,20 +195,21 @@ namespace ft {
 					// use erase
 				}
 
-				// insert single value
+				// insert single value O(log(n))
 				ft::pair<iterator, bool>	insert(const value_type& value) {
-					ft::Node<value_type>*	tmp = _getPairByKey(value.first);
+					ft::Node<value_type>*	tmp = _getNodeByKey(value.first);
 					
 					if (tmp != NULL)
 						return ft::pair<iterator, bool>(tmp, false);
 					_tree.insert(value);
-					return ft::pair<iterator, bool>(_getPairByKey(value.first), true);
+					return ft::pair<iterator, bool>(_getNodeByKey(value.first), true);
 				}
 
-				// insert single value with hint
-//				iterator	insert(iterator hint, const value_type& value) {
-//
-//				}
+				// insert single value with hint O(log(n)) (hint useless)
+				iterator	insert(iterator hint, const value_type& value) {
+					(void) hint;
+					return insert(value).first;
+				}
 
 				// insert range
 				template<class InputIt>
@@ -205,6 +218,24 @@ namespace ft {
 							insert(*first);
 						}
 					}
+
+//				// erase pos O(1)
+//				void	erase(iterator pos) {
+//				}
+
+				// erase key O(log(n))
+				size_type	erase(key_type const& k) {
+					Node<value_type>*	nodeToRemove = _getNodeByKey(k);
+					if (nodeToRemove == NULL)
+						return 0;
+					_tree.remove(nodeToRemove->data);
+					return 1;
+				}
+				// erase range
+				void	erase(iterator first, iterator last) {
+					for (;first != last; first++)
+						erase(first);
+				}
 
 				// Observers
 
@@ -216,7 +247,7 @@ namespace ft {
 
 				private:
 
-				ft::Node<value_type>*	_getPairByKey(key_type const& key) const {
+				ft::Node<value_type>*	_getNodeByKey(key_type const& key) const {
 					ft::Node<value_type>*	tmp = _tree.getRoot();
 
 					while (tmp != NULL && tmp->data.first != key) {

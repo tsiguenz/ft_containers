@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 14:53:51 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/14 19:22:23 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/19 18:09:32 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ void	map_functions_test() {
 	}
 	// insert
 	{
-
 		// single element
 		ft::map<char, int>	m1;
 
@@ -87,6 +86,13 @@ void	map_functions_test() {
 		assertEq("insert second time return value second", res.second, false);
 		assertEq("insert second time return value first", res.first->second, 42);
 
+		// single element with hint
+		ft::map<char, int>::iterator	it;
+		it = m1.insert(m1.begin(), ft::make_pair('y', 14));
+		assertEq("insert hint return value", it->second, 14);
+		it = m1.insert(m1.begin(), ft::make_pair('y', 24));
+		assertEq("insert hint second time return value", it->second, 14);
+		
 		// range
 		ft::map<char, int>	range;
 		range.insert(ft::make_pair('a', 12));
@@ -96,6 +102,19 @@ void	map_functions_test() {
 		assertEq("insert range m1[a]", m1['a'], 12);
 		assertEq("insert range m1[c]", m1['c'], 42);
 		assertEq("insert range m1[z]", m1['z'], -3);
-		assertEq("size after insert range", m1.size(), (size_t) 3);
+		assertEq("size after insert range", m1.size(), (size_t) 4);
+	}
+	// erase
+	{
+		// from iterator
+		// single element
+		ft::map<char, int>	m1;
+
+		m1.insert(ft::make_pair('a', 42));
+		assertEq("erase existing element", m1.erase('a'), (size_t) 1);
+		assertEq("erase non existing element", m1.erase('a'), (size_t) 0);
+		assertEq("size after erase", m1.size(), (size_t) 0);
+		
+		// range
 	}
 }
