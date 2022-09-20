@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 14:53:51 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/19 18:09:32 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/20 15:56:24 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,9 @@ void	map_functions_test() {
 	std::cout << "----------  Map member functions test : ----------" << std::endl;
 	// constructors
 	{
+		ft::map<char, int>	def;
+		assertEq("default constructor size", def.size(), (size_t) 0);
+
 		ft::map<char, int>	range;
 		range.insert(ft::make_pair('a', 12));
 		range.insert(ft::make_pair('c', 42));
@@ -27,7 +30,34 @@ void	map_functions_test() {
 		assertEq("insert range m1[c]", m1['c'], 42);
 		assertEq("insert range m1[z]", m1['z'], -3);
 		assertEq("size after insert range", m1.size(), (size_t) 3);
-		// TODO need more tests
+
+		ft::map<char, int>	eq(m1);
+		assertEq("copy construct eq[a]", m1['a'], 12);
+		assertEq("copy construct eq[c]", m1['c'], 42);
+		assertEq("copy construct eq[z]", m1['z'], -3);
+		assertEq("size after copy construct", m1.size(), (size_t) 3);
+	}
+	// operator=
+	{
+		ft::map<char, int>	m1;
+		m1.insert(ft::make_pair('a', 12));
+		m1.insert(ft::make_pair('c', 42));
+		m1.insert(ft::make_pair('z', -3));
+
+		ft::map<char, int>	m2;
+		m2 = m1;
+		assertEq("size after operator= empty = non empty", m2.size(), (size_t) 3);
+
+		ft::map<char, int>	empty;
+		m1 = empty;
+		assertEq("size after operator= non empty = empty", m1.size(), (size_t) 0);
+
+		m1.insert(ft::make_pair('x', 888));
+		m1.insert(ft::make_pair('y', 88));
+		m1.insert(ft::make_pair('v', 8));
+		m1.insert(ft::make_pair('u', 9));
+		m2 = m1;
+		assertEq("size after operator= non empty = non empty", m2.size(), (size_t) 4);
 	}
 	// at and operator[]
 	{
@@ -71,7 +101,14 @@ void	map_functions_test() {
 	}
 	// clear
 	{
+		ft::map<char, int>	m1;
 
+		m1.insert(ft::make_pair('a', 42));
+		m1.insert(ft::make_pair('b', 14));
+		m1.insert(ft::make_pair('z', 24));
+		assertEq("size before clear", m1.size(), (size_t) 3);
+		m1.clear();
+		assertEq("size after clear", m1.size(), (size_t) 0);
 	}
 	// insert
 	{
@@ -106,15 +143,131 @@ void	map_functions_test() {
 	}
 	// erase
 	{
-		// from iterator
-		// single element
 		ft::map<char, int>	m1;
 
+		// from iterator
 		m1.insert(ft::make_pair('a', 42));
+		m1.insert(ft::make_pair('b', 14));
+		m1.insert(ft::make_pair('z', 24));
+		assertEq("size before erase iterator", m1.size(), (size_t) 3);
+		m1.erase(m1.begin());
+		m1.erase(m1.begin());
+		m1.erase(m1.begin());
+		assertEq("size after erase iterator", m1.size(), (size_t) 0);
+
+		// single element
+		m1.insert(ft::make_pair('a', 42));
+		assertEq("size before erase single element", m1.size(), (size_t) 1);
 		assertEq("erase existing element", m1.erase('a'), (size_t) 1);
 		assertEq("erase non existing element", m1.erase('a'), (size_t) 0);
-		assertEq("size after erase", m1.size(), (size_t) 0);
+		assertEq("size after erase single element", m1.size(), (size_t) 0);
 		
 		// range
+		m1.insert(ft::make_pair('a', 42));
+		m1.insert(ft::make_pair('b', 14));
+		m1.insert(ft::make_pair('z', 24));
+		assertEq("size before erase range", m1.size(), (size_t) 3);
+		m1.erase(m1.begin(), m1.end());
+		assertEq("size after erase range", m1.size(), (size_t) 0);
+	}
+	// swap
+	{
+		ft::map<char, int>	foo, bar;
+
+		foo['x']=100;
+		foo['y']=200;
+
+		bar['a']=11;
+		bar['b']=22;
+		bar['c']=33;
+
+		foo.swap(bar);
+		assertEq("foo[a] contain", foo['a'], 11);
+		assertEq("foo[b] contain", foo['b'], 22);
+		assertEq("foo[c] contain", foo['c'], 33);
+
+		assertEq("bar[x] contain", bar['x'], 100);
+		assertEq("bar[y] contain", bar['y'], 200);
+	}
+	// count
+	{
+		ft::map<char, int>	foo;
+
+		foo['x']=100;
+
+		assertEq("count when key is existing", foo.count('x'), (size_t) 1);
+		assertEq("count when key is not existing", foo.count('y'), (size_t) 0);
+	}
+	// find
+	{
+		ft::map<char, int>	bar;
+
+		bar['a']=11;
+		bar['b']=22;
+		bar['c']=33;
+
+		assertEq("return value of find", bar.find('b')->second, 22);
+		assertEq("return value of find", (--bar.find('z'))->second, 33);
+		ft::map<char, int>::const_iterator	it = bar.find('a');
+		assertEq("return value of const find", it->second, 11);
+	}
+	// equal_range
+	{
+		typedef	ft::map<char, int>::const_iterator	ci;
+		ft::map<char, int>	bar;
+
+		bar['a']=11;
+		bar['b']=22;
+		bar['c']=33;
+		assertEq("equal_range first->second", bar.equal_range('a').first->second, 11);
+		assertEq("equal_range second->second", bar.equal_range('a').second->second, 22);
+		assertEq("equal_range invalid first", bar.equal_range('z').first == bar.end(), true);
+		assertEq("equal_range invalid second", bar.equal_range('z').second == bar.end(), true);
+		ft::pair<ci, ci>	p = bar.equal_range('c');
+		assertEq("const equal_range first", p.first->second, 33);
+		assertEq("const equal_range second", p.second == bar.end(), true);
+	}
+	// lower_bound / upper_bound
+	{
+		ft::map<char, int>	m1;
+		std::map<char, int>	m2;
+		ft::map<char, int>::iterator	it1;
+		std::map<char, int>::iterator	it2;
+		ft::map<char, int>::const_iterator	cit1;
+		std::map<char, int>::const_iterator	cit2;
+
+
+		m1['a']=20;
+		m1['c']=60;
+		m1['d']=80;
+		m2['a']=20;
+		m2['c']=60;
+		m2['d']=80;
+		// lower_bound
+		it1 = m1.lower_bound('b');
+		it2 = m2.lower_bound('b');
+		assertEq("lower_bound nonexistant key", it1->second, it2->second);
+		it1 = m1.lower_bound('d');
+		it2 = m2.lower_bound('d');
+		assertEq("lower_bound existant key", it1->second, it2->second);
+		it1 = m1.lower_bound('z');
+		it2 = m2.lower_bound('z');
+		assertEq("lower_bound return end()", it1 == m1.end(), true);
+		cit1 = m1.lower_bound('b');
+		cit2 = m2.lower_bound('b');
+		assertEq("const lower_bound nonexistant key", cit1->second, cit2->second);
+		// upper_bound
+		it1 = m1.upper_bound('b');
+		it2 = m2.upper_bound('b');
+		assertEq("upper_bound nonexistant key", it1->second, it2->second);
+		it1 = m1.upper_bound('d');
+		it2 = m2.upper_bound('d');
+		assertEq("upper_bound existant key", it1->second, it2->second);
+		it1 = m1.upper_bound('z');
+		it2 = m2.upper_bound('z');
+		assertEq("upper_bound return end()", it1 == m1.end(), true);
+		cit1 = m1.upper_bound('b');
+		cit2 = m2.upper_bound('b');
+		assertEq("const upper_bound nonexistant key", cit1->second, cit2->second);
 	}
 }

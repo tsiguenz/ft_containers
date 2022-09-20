@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 21:42:02 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/14 18:19:06 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/20 14:48:49 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,14 +110,14 @@ namespace ft {
 
 		};
 
-	template<typename T, typename U, typename Node>
-		bool	operator==(AVLIterator<T, Node> const& it1,
-			AVLIterator<U, Node> const& it2)
+	template<typename T, typename U>
+		bool	operator==(T const& it1,
+			U const& it2)
 		{ return it1.base() == it2.base(); }
 
-	template<typename T, typename U, typename Node>
-		bool	operator!=(AVLIterator<T, Node> const& it1,
-			AVLIterator<U, Node> const& it2)
+	template<typename T, typename U>
+		bool	operator!=(T const& it1,
+			U const& it2)
 		{ return !(it1.base() == it2.base()); }
 }
 #endif // AVL_ITERATOR_HPP

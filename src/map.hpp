@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 19:40:02 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/19 18:20:45 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/20 15:49:23 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,19 +72,14 @@ namespace ft {
 
 			public:
 
-			// TODO delete this helper function
-				AVLTree<value_type, Alloc, value_compare >&	getData() {
-					return _tree;
-				}
-
 			// Object managment
 
-				// Default constructor
+				// Default constructor O(1)
 				explicit map(key_compare const& comp = key_compare(),
 						allocator_type const& alloc = allocator_type())
 					: _tree(value_compare(comp)), _comp(comp), _alloc(alloc) { }
 
-				// Range constructor
+				// Range constructor O(n * log(n))
 				template <class InputIterator>
 					map (InputIterator first, InputIterator last,
 							const key_compare& comp = key_compare(),
@@ -93,21 +88,24 @@ namespace ft {
 						insert(first, last);
 					}
 
-				// Copy constructor
-				map(map const& x)
-				{ *this = x; }
+				// Copy constructor O(n * log(n))
+				map(map const& x): _tree(value_compare(x._comp)), _comp(x._comp) {
+					insert(x.begin(), x.end());
+				}
 
-				// Destructor
+				// Destructor O(n)
 				~map() { }
 
+				// operator= O(n * log(n))
 				map&	operator=(map const& other) {
-					insert(other.begin(), other.end());
-					this->_comp = other._comp;
-					this->_alloc = other._alloc;
+					if (empty() == false)
+						clear();
+					if (other.empty() == false)
+						insert(other.begin(), other.end());
 					return *this;
 				}
 
-				// O(n)
+				// O(1)
 				allocator_type	get_allocator() const {
 					return _alloc;
 				}
@@ -143,56 +141,56 @@ namespace ft {
 
 			// Iterators
 
-				// O(n)
+				// O(1)
 				iterator	begin()
 				{ return iterator(_tree.begin()); }
 
-				// O(n)
+				// O(1)
 				const_iterator	begin() const
 				{ return const_iterator(_tree.begin()); }
 
-				// O(n)
+				// O(1)
 				reverse_iterator	rbegin()
 				{ return reverse_iterator(_tree.end()); }
 
-				// O(n)
+				// O(1)
 				const_reverse_iterator	rbegin() const
 				{ return const_reverse_iterator(_tree.end()); }
 
-				// O(n)
+				// O(1)
 				iterator	end()
 				{ return iterator(_tree.end()); }
 
-				// O(n)
+				// O(1)
 				const_iterator	end() const
 				{ return const_iterator(_tree.end()); }
 
-				// O(n)
+				// O(1)
 				reverse_iterator	rend()
 				{ return reverse_iterator(_tree.begin()); }
 
-				// O(n)
+				// O(1)
 				const_reverse_iterator	rend() const
 				{ return const_reverse_iterator(_tree.begin()); }
 
 			// Capacity
 
-				// O(n)
+				// O(1)
 				bool	empty() const
 				{ return _tree.size() == 0; }
 
-				// O(n)
+				// O(1)
 				size_type	size() const
 				{ return _tree.size(); }
 
-				// O(n)
+				// O(1)
 				size_type	max_size() const
 				{ return _tree.max_size(); }
 
 			// Modifiers
 
 				void	clear() {
-					// use erase
+					erase(begin(), end());
 				}
 
 				// insert single value O(log(n))
@@ -205,13 +203,14 @@ namespace ft {
 					return ft::pair<iterator, bool>(_getNodeByKey(value.first), true);
 				}
 
+				// TODO change for respect the complexity ?
 				// insert single value with hint O(log(n)) (hint useless)
 				iterator	insert(iterator hint, const value_type& value) {
 					(void) hint;
 					return insert(value).first;
 				}
 
-				// insert range
+				// insert range O(n * log(n) + n)
 				template<class InputIt>
 					void	insert(InputIt first, InputIt last) {
 						for (;first != last; first++) {
@@ -219,9 +218,11 @@ namespace ft {
 						}
 					}
 
-//				// erase pos O(1)
-//				void	erase(iterator pos) {
-//				}
+				// TODO change for respect the complexity
+				// erase pos O(1)
+				void	erase(iterator pos) {
+					_tree.remove(*pos);
+				}
 
 				// erase key O(log(n))
 				size_type	erase(key_type const& k) {
@@ -231,17 +232,108 @@ namespace ft {
 					_tree.remove(nodeToRemove->data);
 					return 1;
 				}
+
+				// TODO change for respect the complexity
 				// erase range
 				void	erase(iterator first, iterator last) {
-					for (;first != last; first++)
-						erase(first);
+					while (first != last) {
+						erase(first++);
+					}
 				}
 
-				// Observers
+				void	swap(map& x) {
+					map	tmp = *this;
 
+					*this = x;
+					x = tmp;
+				}
+			// Lookup
+
+				size_type	count(key_type const& key) const {
+					return _getNodeByKey(key) != NULL;
+				}
+
+				iterator	find(key_type const& key) {
+					Node<value_type>*	ret = _getNodeByKey(key);
+					return ret == NULL ? end() : ret;
+				}
+
+				const_iterator	find(key_type const& key) const {
+					Node<value_type>*	ret = _getNodeByKey(key);
+					return ret == NULL ? end() : ret;
+				}
+
+				ft::pair<iterator, iterator>	equal_range(Key const& key) {
+					Node<value_type>*	ret = _getNodeByKey(key);
+
+					if (ret == NULL)
+						return ft::make_pair(end(), end());
+					return ft::make_pair(ret, ++iterator(ret));
+				}
+
+				ft::pair<const_iterator, const_iterator>	equal_range(Key const& key) const {
+					Node<value_type>*	ret = _getNodeByKey(key);
+
+					if (ret == NULL)
+						return ft::make_pair(end(), end());
+					return ft::make_pair(ret, ++iterator(ret));
+				}
+
+				iterator	lower_bound(key_type const& key) {
+					iterator	curr = begin();
+
+					while (curr != end()) {
+						if (!_comp(curr->first, key))
+							return iterator(curr);
+						else
+							curr++;
+					}
+					return end();
+				}
+
+				const_iterator	lower_bound(key_type const& key) const {
+					iterator	curr = begin();
+
+					while (curr != end()) {
+						if (!_comp(curr->first, key))
+							return iterator(curr);
+						else
+							curr++;
+					}
+					return end();
+				}
+
+				iterator	upper_bound(key_type const& key) {
+					iterator	curr = begin();
+
+					while (curr != end()) {
+						if (_comp(key, curr->first))
+							return iterator(curr);
+						else
+							curr++;
+					}
+					return end();
+				}
+
+				const_iterator	upper_bound(key_type const& key) const {
+					iterator	curr = begin();
+
+					while (curr != end()) {
+						if (_comp(key, curr->first))
+							return iterator(curr);
+						else
+							curr++;
+					}
+					return end();
+				}
+
+			// Observers
+
+				// O(n)
 				key_compare	key_comp()
 				{ return _comp; }
 
+				// O(n)
 				value_compare	value_comp()
 				{ return value_compare(_comp); }
 
@@ -260,7 +352,6 @@ namespace ft {
 					return tmp;
 				}
 		};
-
 }
 
 #endif // MAP_HPP

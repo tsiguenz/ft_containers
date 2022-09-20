@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 17:38:11 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/14 18:20:48 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/20 15:24:05 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,15 @@ namespace ft {
 						return ;
 					_unsetEnd();
 					_root = _removeHelper(_root, key);
+					_size--;
+					_begin = minimum();
+					_setEnd();
+				}
+
+				// remove for iterator
+				void	removeNode(node* n) {
+					_unsetEnd();
+					_removeHelper(n, n->data);
 					_size--;
 					_begin = minimum();
 					_setEnd();
