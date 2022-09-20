@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 14:53:51 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/20 15:56:24 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/20 16:35:17 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,28 +36,6 @@ void	map_functions_test() {
 		assertEq("copy construct eq[c]", m1['c'], 42);
 		assertEq("copy construct eq[z]", m1['z'], -3);
 		assertEq("size after copy construct", m1.size(), (size_t) 3);
-	}
-	// operator=
-	{
-		ft::map<char, int>	m1;
-		m1.insert(ft::make_pair('a', 12));
-		m1.insert(ft::make_pair('c', 42));
-		m1.insert(ft::make_pair('z', -3));
-
-		ft::map<char, int>	m2;
-		m2 = m1;
-		assertEq("size after operator= empty = non empty", m2.size(), (size_t) 3);
-
-		ft::map<char, int>	empty;
-		m1 = empty;
-		assertEq("size after operator= non empty = empty", m1.size(), (size_t) 0);
-
-		m1.insert(ft::make_pair('x', 888));
-		m1.insert(ft::make_pair('y', 88));
-		m1.insert(ft::make_pair('v', 8));
-		m1.insert(ft::make_pair('u', 9));
-		m2 = m1;
-		assertEq("size after operator= non empty = non empty", m2.size(), (size_t) 4);
 	}
 	// at and operator[]
 	{
@@ -269,5 +247,24 @@ void	map_functions_test() {
 		cit1 = m1.upper_bound('b');
 		cit2 = m2.upper_bound('b');
 		assertEq("const upper_bound nonexistant key", cit1->second, cit2->second);
+	}
+	// non member swap
+	{
+		ft::map<char, int>	foo, bar;
+
+		foo['x']=100;
+		foo['y']=200;
+
+		bar['a']=11;
+		bar['b']=22;
+		bar['c']=33;
+
+		ft::swap(foo, bar);
+		assertEq("foo[a] contain", foo['a'], 11);
+		assertEq("foo[b] contain", foo['b'], 22);
+		assertEq("foo[c] contain", foo['c'], 33);
+
+		assertEq("bar[x] contain", bar['x'], 100);
+		assertEq("bar[y] contain", bar['y'], 200);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 19:40:02 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/20 15:49:23 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/20 16:35:53 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -352,6 +352,51 @@ namespace ft {
 					return tmp;
 				}
 		};
+
+	template<class Key, class T, class Compare, class Alloc>
+		bool	operator==(ft::map<Key, T, Compare, Alloc> const& lhs,
+				ft::map<Key, T, Compare, Alloc> const& rhs) {
+			if (lhs.size() != rhs.size())
+				return false;
+			return ft::equal(lhs.begin(), lhs.end(), rhs.begin());
+		}
+
+	template<class Key, class T, class Compare, class Alloc>
+		bool	operator!=(ft::map<Key, T, Compare, Alloc> const& lhs,
+				ft::map<Key, T, Compare, Alloc> const& rhs) {
+			return !(lhs == rhs);
+		}
+
+	template<class Key, class T, class Compare, class Alloc>
+		bool	operator<(ft::map<Key, T, Compare, Alloc> const& lhs,
+				ft::map<Key, T, Compare, Alloc> const& rhs) {
+			return ft::lexicographical_compare (lhs.begin(), lhs.end(),
+					rhs.begin(), rhs.end());
+		}
+
+	template<class Key, class T, class Compare, class Alloc>
+		bool	operator<=(ft::map<Key, T, Compare, Alloc> const& lhs,
+				ft::map<Key, T, Compare, Alloc> const& rhs) {
+			return !(rhs < lhs);
+		}
+
+	template<class Key, class T, class Compare, class Alloc>
+		bool	operator>(ft::map<Key, T, Compare, Alloc> const& lhs,
+				ft::map<Key, T, Compare, Alloc> const& rhs) {
+			return rhs < lhs;
+		}
+
+	template<class Key, class T, class Compare, class Alloc>
+		bool	operator>=(ft::map<Key, T, Compare, Alloc> const& lhs,
+				ft::map<Key, T, Compare, Alloc> const& rhs) {
+			return !(lhs < rhs);
+		}
+
+	template< class Key, class T, class Compare, class Alloc >
+		void	swap(ft::map<Key, T, Compare, Alloc>& lhs,
+				ft::map<Key, T, Compare, Alloc>& rhs ) {
+			lhs.swap(rhs);
+		}
 }
 
 #endif // MAP_HPP
