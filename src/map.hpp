@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 19:40:02 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/21 16:13:38 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/21 16:55:26 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,9 @@
 # include <cstddef> // std::ptrdiff_t
 # include <stdexcept> // std::out_of_range and std::length_error
 # include <functional> // std::binary_function
-# include "Utils.hpp"
 # include "TypeTraits.hpp"
+# include "IteratorTraits.hpp"
+# include "Utils.hpp"
 # include "AVLTree.hpp"
 # include "MapIterator.hpp"
 # include "ReverseIterator.hpp"
