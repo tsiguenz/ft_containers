@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 12:36:10 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/14 18:34:11 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/21 15:41:34 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ void	assertEqMap(std::string const& str, T& a, U const& b) {
 		std::cout << RED << "[KO] " << str << ", different empty result : a.empty() = " << a.empty() << " b.empty() = " << b.empty() << DEFAULT << std::endl;
 		return ;
 	}
-// TODO uncomment when default constructor is ok
 //	typename T::iterator	ita = a.begin();
 //	typename U::iterator	itb = b.begin();
 //	while (itb != b.end()) {

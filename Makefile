@@ -6,7 +6,7 @@
 #    By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/20 10:45:57 by tsiguenz          #+#    #+#              #
-#    Updated: 2022/09/21 15:35:28 by tsiguenz         ###   ########.fr        #
+#    Updated: 2022/09/21 16:08:09 by tsiguenz         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,11 @@ TEST_NAME = main.cpp \
 			vector/iterator_test.cpp \
 			vector/functions_test.cpp \
 			vector/operators_test.cpp \
+			map/pair_test.cpp \
+			map/avl_test.cpp \
+			map/iterators_test.cpp \
+			map/functions_test.cpp \
+			map/operators_test.cpp \
 
 OBJ_NAME = $(TEST_NAME:.cpp=.o)
 

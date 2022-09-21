@@ -6,12 +6,11 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 14:01:38 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/14 15:09:38 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/21 15:53:20 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <iostream>
-#include "pair.hpp"
+#include "test.h"
 
 void	pair_test() {
 #ifdef REAL

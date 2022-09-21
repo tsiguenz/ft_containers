@@ -1,23 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   avl_iterator_test.cpp                              :+:      :+:    :+:   */
+/*   iterators_test.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 13:35:23 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/21 15:08:01 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/21 16:11:52 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <map>
-#include "map.hpp"
-#include "avl_iterator_generic_test.hpp"
+#include "test.h"
+#include "iterators_generic_test.hpp"
 
 #define FTMAP ft::map<int, int>
 #define STDMAP std::map<int, int>
 
-void	avl_iterator_test() {
+void	map_iterators_test() {
 # ifdef REAL
 	namespace ft = std;
 #endif
@@ -40,16 +39,16 @@ void	avl_iterator_test() {
 	
 
 	std::cout << "----------  AVLIterator test : ----------" << std::endl;
-	AVLIteratorTest<FTMAP::iterator, STDMAP::iterator>(ftM.begin(), stdM.begin());
+	iterators_generic_test<FTMAP::iterator, STDMAP::iterator>(ftM.begin(), stdM.begin());
 
 	std::cout << "----------  const AVLIterator tests : ----------" << std::endl;
-	AVLIteratorTest<FTMAP::const_iterator, STDMAP::const_iterator>(ftM.begin(), stdM.begin());
+	iterators_generic_test<FTMAP::const_iterator, STDMAP::const_iterator>(ftM.begin(), stdM.begin());
 
 	std::cout << "----------  ReverseIterator class : ----------" << std::endl;
-	AVLIteratorTest<FTMAP::reverse_iterator, STDMAP::reverse_iterator>(ftM.rbegin(), stdM.rbegin());
+	iterators_generic_test<FTMAP::reverse_iterator, STDMAP::reverse_iterator>(ftM.rbegin(), stdM.rbegin());
 
 	std::cout << "----------  const ReverseIterator class : ----------" << std::endl;
-	AVLIteratorTest<FTMAP::const_reverse_iterator, STDMAP::const_reverse_iterator>(ftM.rbegin(), stdM.rbegin());
+	iterators_generic_test<FTMAP::const_reverse_iterator, STDMAP::const_reverse_iterator>(ftM.rbegin(), stdM.rbegin());
 
 	// TODO more tests for iterators
 }

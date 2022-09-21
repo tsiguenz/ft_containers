@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   avl_iterator_test.cpp                              :+:      :+:    :+:   */
+/*   avl_iterator_generic_test.hpp                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 15:10:25 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/13 13:50:56 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/21 16:10:29 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define AVL_ITERATOR_TEST_HPP
 
 template<typename ftIterator, typename stdIterator>
-void	AVLIteratorTest(ftIterator ftIt, stdIterator stdIt) {
+void	iterators_generic_test(ftIterator ftIt, stdIterator stdIt) {
 # ifdef REAL
 	namespace ft = std;
 #endif

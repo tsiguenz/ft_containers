@@ -6,9 +6,11 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 14:53:51 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/20 16:35:17 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/21 16:06:59 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "test.h"
 
 void	map_functions_test() {
 # ifdef REAL

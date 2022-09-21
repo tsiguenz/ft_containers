@@ -6,19 +6,29 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 17:52:09 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/14 15:10:28 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/21 16:00:36 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <iostream>
-#include "AVLTree.hpp"
-#include "pair.hpp"
-#include "printPairBT.cpp"
+#include "test.h"
+
+void printPairBT(const std::string& prefix, const ft::Node<ft::pair< const int, int> >* node, bool isLeft) {
+	if (node != NULL) {
+		std::cout << prefix;
+		std::cout << (isLeft ? "|--" : "L--");
+		// print the value of the node
+		std::cout << node->data.first << std::endl;
+		// enter the next tree level - left and right branch
+		printPairBT(prefix + (isLeft ? "|   " : "    "), node->right, true);
+		printPairBT(prefix + (isLeft ? "|   " : "    "), node->left, false);
+	}
+}
+
+void printPairBT(const ft::Node<ft::pair<const int, int> >* node) {
+	printPairBT("", node, false);
+}
 
 void	avl_test() {
-#ifdef REAL
-	namespace ft = std;
-#endif
 #ifndef REAL
 	std::cout << "----------  AVLTree test : ----------" << std::endl;
 	std::cout << "Internal implementation of map can't be tested with real stl" << std::endl;
@@ -65,5 +75,6 @@ void	avl_test() {
 		tree.insert(ft::pair<const int, std::string>(2, "WORLD"));
 		assertEq("max value", tree.maximum()->data.second, std::string("WORLD"));
 	}
+	std::cout << "----------  End of AVLTree test ----------" << std::endl;
 #endif
 }

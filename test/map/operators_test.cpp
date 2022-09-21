@@ -6,11 +6,11 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 16:34:33 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/20 16:49:22 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/21 16:09:58 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//#include "map.h"
+#include "test.h"
 
 void	map_operators_test() {
 # ifdef REAL
