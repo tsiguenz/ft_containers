@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   operators_test.hpp                                 :+:      :+:    :+:   */
+/*   operators_test.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/14 16:07:55 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/04 16:36:38 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/21 15:35:09 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef OPERATORS_TEST_HPP
-# define OPERATORS_TEST_HPP
+#include "test.h"
 
-template<typename T>
-void	operatorsTest() {
+void	vector_operators_test() {
 # ifdef REAL
 	namespace ft = std;
 #endif
 	std::cout << "----------  Operators : ----------" << std::endl;
-	ft::vector<T>	a0, a1, a2, a3, a4, a5;
+	ft::vector<int>	a0, a1, a2, a3, a4, a5;
 
 	a0.push_back(42);
 	a0.push_back(24);
@@ -39,7 +37,7 @@ void	operatorsTest() {
 	a5.push_back(24);
 	a5.push_back(0);
 
-	std::vector<T>	b0, b1, b2, b3, b4, b5;
+	std::vector<int>	b0, b1, b2, b3, b4, b5;
 
 	b0.push_back(42);
 	b0.push_back(24);
@@ -87,5 +85,3 @@ void	operatorsTest() {
 	assertEq("Upper or equal than operator (false)", (a4 >= a3), (b4 >= b3));
 	assertEq("Upper or equal than operator (true)", (a1 >= a0), (b1 >= b0));
 }
-
-#endif // OPERATORS_TEST_HPP

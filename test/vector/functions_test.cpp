@@ -1,35 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   functions_test.hpp                                 :+:      :+:    :+:   */
+/*   functions_test.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/14 16:49:25 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/03 16:22:36 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/21 15:31:35 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FUNCTIONS_TEST_HPP
-# define FUNCTIONS_TEST_HPP
+#include "test.h"
 
-template<class T>
-void	functionsTest() {
+void	vector_functions_test() {
 # ifdef REAL
 	namespace ft = std;
 #endif
 	std::cout << "----------  Functions test : ----------" << std::endl;
 	// swap
 	{
-		ft::vector<T>	a1(5);
-		ft::vector<T>	a2;
+		ft::vector<int>	a1(5);
+		ft::vector<int>	a2;
 
 		for (int i = 0; i < 5; i++)
 			a1[i] = i * 10;
 		ft::swap(a1, a2);
 
-		std::vector<T>	b1(5);
-		std::vector<T>	b2;
+		std::vector<int>	b1(5);
+		std::vector<int>	b2;
 
 		for (int i = 0; i < 5; i++)
 			b1[i] = i * 10;
@@ -39,10 +37,10 @@ void	functionsTest() {
 	}
 	// assign
 	{
-		ft::vector<T>	a1;
-		ft::vector<T>	a2;
-		std::vector<T>	b1;
-		std::vector<T>	b2;
+		ft::vector<int>	a1;
+		ft::vector<int>	a2;
+		std::vector<int>	b1;
+		std::vector<int>	b2;
 
 		a1.assign(4, 42);
 		a2.assign(a1.begin() + 1, a1.end() - 1);
@@ -59,8 +57,8 @@ void	functionsTest() {
 	}
 	// get_allocator
 	{
-		ft::vector<T>	a;
-		std::vector<T>	b;
+		ft::vector<int>	a;
+		std::vector<int>	b;
 
 		assertEq("get_allocator compare allocator", 
 				(a.get_allocator() == b.get_allocator()), true);
@@ -68,8 +66,8 @@ void	functionsTest() {
 	// at
 	{
 		int	nbException = 0;
-		ft::vector<T>	a(3);
-		std::vector<T>	b(3);
+		ft::vector<int>	a(3);
+		std::vector<int>	b(3);
 
 		for (int i = 0; i < 3; i++) {
 			a.at(i) = i * 10;
@@ -80,8 +78,8 @@ void	functionsTest() {
 		try { b.at(5); } catch (std::exception const& e) { nbException++; }
 		try { a.at(-1); } catch (std::exception const& e) { nbException++; }
 		try { b.at(-1); } catch (std::exception const& e) { nbException++; }
-		const ft::vector<T>		c(a);
-		const std::vector<T>	d(b);
+		const ft::vector<int>		c(a);
+		const std::vector<int>	d(b);
 		for (int i = 0; i < 3; i++) {
 			assertEq("at const test value", c.at(i), d.at(i));
 		}
@@ -93,24 +91,24 @@ void	functionsTest() {
 	}
 	// operator []
 	{
-		ft::vector<T>	a(3);
-		std::vector<T>	b(3);
+		ft::vector<int>	a(3);
+		std::vector<int>	b(3);
 
 		for (int i = 0; i < 3; i++) {
 			a[i] = i * 10;
 			b[i] = i * 10;
 			assertEq("operator [] test value", a[i], b[i]);
 		}
-		const ft::vector<T>		c(a);
-		const std::vector<T>	d(b);
+		const ft::vector<int>		c(a);
+		const std::vector<int>	d(b);
 		for (int i = 0; i < 3; i++) {
 			assertEq("operator [] const test value", c[i], d[i]);
 		}
 	}
 	// front / back / data
 	{
-		ft::vector<T>	a(3);
-		std::vector<T>	b(3);
+		ft::vector<int>	a(3);
+		std::vector<int>	b(3);
 
 		for (int i = 0; i < 3; i++) {
 			a[i] = i * 10;
@@ -118,14 +116,14 @@ void	functionsTest() {
 		}
 		assertEq("front value", a.front(), b.front());
 		assertEq("back value", a.back(), b.back());
-		const ft::vector<T>		c(a);
-		const std::vector<T>	d(b);
+		const ft::vector<int>		c(a);
+		const std::vector<int>	d(b);
 		assertEq("front const  value", c.front(), d.front());
 		assertEq("back const value", c.back(), d.back());
-		T*	p1 = a.data();
-		T*	p2 = b.data();
-		T const*	p3 = c.data();
-		T const*	p4 = d.data();
+		int*	p1 = a.data();
+		int*	p2 = b.data();
+		int const*	p3 = c.data();
+		int const*	p4 = d.data();
 		for (int i = 0; i < 3; i++) {
 			assertEq("data compare", p1[i], p2[i]);
 			assertEq("data const compare", p3[i], p4[i]);
@@ -133,10 +131,10 @@ void	functionsTest() {
 	}
 	// empty / size / max_size / capacity
 	{
-		ft::vector<T>	a;
-		std::vector<T>	b;
-		ft::vector<T>	c(3);
-		std::vector<T>	d(3);
+		ft::vector<int>	a;
+		std::vector<int>	b;
+		ft::vector<int>	c(3);
+		std::vector<int>	d(3);
 		assertEq("empty of empty vector", a.empty(), b.empty());
 		a.reserve(10);
 		b.reserve(10);
@@ -149,8 +147,8 @@ void	functionsTest() {
 	}
 	// reserve / clear
 	{
-		ft::vector<T>	a(3, 42);
-		std::vector<T>	b(3, 42);
+		ft::vector<int>	a(3, 42);
+		std::vector<int>	b(3, 42);
 
 		a.reserve(5);
 		b.reserve(5);
@@ -173,8 +171,8 @@ void	functionsTest() {
 	}
 	// insert single element
 	{
-		ft::vector<T>	a;
-		std::vector<T>	b;
+		ft::vector<int>	a;
+		std::vector<int>	b;
 
 		a.push_back(42);
 		a.push_back(24);
@@ -185,16 +183,16 @@ void	functionsTest() {
 		assertEq("insert return value", *a.insert(a.end(), 2), *b.insert(b.end(), 2));
 		assertEqVector("insert single element non empty container", a, b);
 
-		ft::vector<T>	a1;
-		std::vector<T>	b1;
+		ft::vector<int>	a1;
+		std::vector<int>	b1;
 
 		assertEq("insert empty vector return value", *a1.insert(a1.begin(), 42), *b1.insert(b1.begin(), 42));
 		assertEqVector("insert single element range empty container", a1, b1);
 	}
 	// insert fill
 	{
-		ft::vector<T>	a;
-		std::vector<T>	b;
+		ft::vector<int>	a;
+		std::vector<int>	b;
 
 		a.push_back(42);
 		a.push_back(24);
@@ -205,8 +203,8 @@ void	functionsTest() {
 		b.insert(b.begin(), 2, 42);
 		assertEqVector("insert fill non empty container", a, b);
 
-		ft::vector<T>	a1;
-		std::vector<T>	b1;
+		ft::vector<int>	a1;
+		std::vector<int>	b1;
 
 		a1.insert(a1.begin(), 2, 42);
 		b1.insert(b1.begin(), 2, 42);
@@ -214,11 +212,11 @@ void	functionsTest() {
 	}
 	// insert range
 	{
-		std::vector<T>	range;
+		std::vector<int>	range;
 		range.push_back(42);
 		range.push_back(38);
-		ft::vector<T>	a(1, 5);
-		std::vector<T>	b(1, 5);
+		ft::vector<int>	a(1, 5);
+		std::vector<int>	b(1, 5);
 
 		a.insert(a.begin(), range.begin(), range.end());
 		b.insert(b.begin(), range.begin(), range.end());
@@ -227,8 +225,8 @@ void	functionsTest() {
 		b.insert(b.begin(), range.begin(), range.end());
 		assertEqVector("insert range not empty container", a, b);
 
-		ft::vector<T>	a1;
-		std::vector<T>	b1;
+		ft::vector<int>	a1;
+		std::vector<int>	b1;
 
 		a1.insert(a1.begin(), range.begin(), range.end());
 		b1.insert(b1.begin(), range.begin(), range.end());
@@ -236,8 +234,8 @@ void	functionsTest() {
 	}
 	// erase
 	{
-		ft::vector<T>	a;
-		std::vector<T>	b;
+		ft::vector<int>	a;
+		std::vector<int>	b;
 
 		a.push_back(42);
 		a.push_back(32);
@@ -284,8 +282,8 @@ void	functionsTest() {
 	}
 	// push_back
 	{
-		ft::vector<T>	a;
-		std::vector<T>	b;
+		ft::vector<int>	a;
+		std::vector<int>	b;
 
 		a.push_back(42);
 		a.push_back(32);
@@ -295,8 +293,8 @@ void	functionsTest() {
 		b.push_back(32);
 		assertEqVector("push_back on empty container", a, b);
 
-		ft::vector<T>	a1(5);
-		std::vector<T>	b1(5);
+		ft::vector<int>	a1(5);
+		std::vector<int>	b1(5);
 
 		a1.push_back(42);
 		b1.push_back(42);
@@ -304,8 +302,8 @@ void	functionsTest() {
 	}
 	// pop_back
 	{
-		ft::vector<T>	a;
-		std::vector<T>	b;
+		ft::vector<int>	a;
+		std::vector<int>	b;
 
 		a.push_back(42);
 		a.push_back(32);
@@ -320,8 +318,8 @@ void	functionsTest() {
 	}
 	// resize
 	{
-		ft::vector<T>	a;
-		std::vector<T>	b;
+		ft::vector<int>	a;
+		std::vector<int>	b;
 		a.push_back(42);
 		a.push_back(32);
 		b.push_back(42);
@@ -338,15 +336,15 @@ void	functionsTest() {
 	}
 	// swap
 	{
-		ft::vector<T>	a1(5);
-		ft::vector<T>	a2;
+		ft::vector<int>	a1(5);
+		ft::vector<int>	a2;
 
 		for (int i = 0; i < 5; i++)
 			a1[i] = i * 10;
 		a1.swap(a2);
 
-		std::vector<T>	b1(5);
-		std::vector<T>	b2;
+		std::vector<int>	b1(5);
+		std::vector<int>	b2;
 
 		for (int i = 0; i < 5; i++)
 			b1[i] = i * 10;
@@ -355,5 +353,3 @@ void	functionsTest() {
 		assertEqVector("swap compare a2 to b2", a2, b2);
 	}
 }
-
-#endif // FUNCTIONS_TEST_HPP

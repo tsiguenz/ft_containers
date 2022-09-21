@@ -6,16 +6,17 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 13:40:55 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/14 13:43:24 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/21 15:24:27 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "test.h"
 #include "iterator_generic_test.hpp"
 
 #define FTMAP ft::map<int, int>
 #define STDMAP std::map<int, int>
 
-void	iterator_test() {
+void	vector_iterator_test() {
 # ifdef REAL
 	namespace ft = std;
 #endif

@@ -1,19 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   stack_test.hpp                                     :+:      :+:    :+:   */
+/*   stack_test.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/02 23:00:02 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/04 14:10:30 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/21 15:07:32 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include <stack>
+#include <stack>
+#include <vector>
 
-# include "stack.hpp"
-# include <utils_test.hpp>
+#include "stack.hpp"
+#include <utils_test.hpp>
 
 void	stack_test() {
 # ifdef REAL

@@ -6,7 +6,7 @@
 #    By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/20 10:45:57 by tsiguenz          #+#    #+#              #
-#    Updated: 2022/09/21 11:56:20 by tsiguenz         ###   ########.fr        #
+#    Updated: 2022/09/21 15:35:28 by tsiguenz         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,12 @@ TEST_PATH = test/
 OBJ_PATH = obj/
 REAL_PATH = real/
 INC = -Isrc -Itest
-TEST_NAME = main.cpp vector/vector_test.cpp
+TEST_NAME = main.cpp \
+			vector/vector_test.cpp \
+			vector/object_managment_test.cpp \
+			vector/iterator_test.cpp \
+			vector/functions_test.cpp \
+			vector/operators_test.cpp \
 
 OBJ_NAME = $(TEST_NAME:.cpp=.o)
 
@@ -31,7 +36,7 @@ OBJ_REAL = $(addprefix $(REAL_PATH), $(OBJ_NAME))
 # My containers
 
 $(NAME): $(OBJ)
-	$(CC) $(FLAGS) $(INC) $< -o $@
+	$(CC) $(FLAGS) $(INC) $(OBJ) -o $(NAME)
 
 $(OBJ_PATH)%.o: $(TEST_PATH)%.cpp
 	mkdir -p $(@D)
@@ -48,7 +53,7 @@ $(REAL_PATH)%.o: $(TEST_PATH)%.cpp
 -include $(OBJ:%.o=%.d)
 
 $(NAME_REAL): $(OBJ_REAL)
-	$(CC) $(FLAGS) $(FLAGS_REAL) $(INC) $< -o $@
+	$(CC) $(FLAGS) $(FLAGS_REAL) $(INC) $(OBJ_REAL) -o $(NAME_REAL)
 
 real: $(NAME_REAL)
 

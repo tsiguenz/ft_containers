@@ -6,26 +6,18 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 17:14:11 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/14 13:43:50 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/21 15:35:59 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <list>
-#include <vector>
-
-#include "vector.hpp"
-#include "utils_test.hpp"
-#include "vector/iterator_test.cpp"
-#include "vector/object_managment_test.hpp"
-#include "vector/functions_test.hpp"
-#include "vector/operators_test.hpp"
+#include "test.h"
 
 void	vector_test() {
 #ifdef REAL
 	namespace ft = std;
 #endif
-	objectManagmentTest<int>();
-	operatorsTest<int>();
-	iterator_test();
-	functionsTest<int>();
+	vector_object_managment_test();
+	vector_iterator_test();
+	vector_functions_test();
+	vector_operators_test();
 }

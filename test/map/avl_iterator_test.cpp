@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 13:35:23 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/14 18:28:12 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/21 15:08:01 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ void	avl_iterator_test() {
 	std::cout << "----------  AVLIterator test : ----------" << std::endl;
 	AVLIteratorTest<FTMAP::iterator, STDMAP::iterator>(ftM.begin(), stdM.begin());
 
-	FTMAP::const_iterator	it = ftM.begin();
 	std::cout << "----------  const AVLIterator tests : ----------" << std::endl;
 	AVLIteratorTest<FTMAP::const_iterator, STDMAP::const_iterator>(ftM.begin(), stdM.begin());
 
