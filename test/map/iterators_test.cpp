@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 13:35:23 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/21 16:11:52 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/26 14:49:20 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,10 @@ void	map_iterators_test() {
 
 	
 
-	std::cout << "----------  AVLIterator test : ----------" << std::endl;
+	std::cout << "----------  MapIterator test : ----------" << std::endl;
 	iterators_generic_test<FTMAP::iterator, STDMAP::iterator>(ftM.begin(), stdM.begin());
 
-	std::cout << "----------  const AVLIterator tests : ----------" << std::endl;
+	std::cout << "----------  const MapIterator tests : ----------" << std::endl;
 	iterators_generic_test<FTMAP::const_iterator, STDMAP::const_iterator>(ftM.begin(), stdM.begin());
 
 	std::cout << "----------  ReverseIterator class : ----------" << std::endl;

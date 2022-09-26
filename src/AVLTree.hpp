@@ -6,14 +6,12 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 17:38:11 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/20 15:24:05 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/26 19:03:32 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef AVLTREE_HPP
 # define AVLTREE_HPP
-
-# include "pair.hpp"
 
 namespace ft {
 	template<typename T>
@@ -23,9 +21,8 @@ namespace ft {
 			Node*	right;
 			Node*	parent;
 
-			Node(T const& val = T()): data(val) {
-				left = right = parent = NULL;
-			}
+			Node(T const& val = T())
+				: data(val), left(), right(), parent() { }
 
 			~Node() { }
 		};
@@ -147,13 +144,13 @@ namespace ft {
 				node*	begin()
 				{ return _begin; }
 
-				node const*	begin() const
+				node * const	begin() const
 				{ return _begin; }
 
 				node*	end()
 				{ return _end; }
 
-				node const*	end() const
+				node *const	end() const
 				{ return _end; }
 
 			private:
@@ -251,6 +248,7 @@ namespace ft {
 						return _leftRotate(root);
 					// Left right case
 					if (bf > 1 && _comp(root->data, n->data)) {
+						std::cout << "ptr = " << root->left->right << std::endl;
 						root->left = _leftRotate(root->left);
 						return _rightRotate(root);
 					}

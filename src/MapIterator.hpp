@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   AVLIterator.hpp                                    :+:      :+:    :+:   */
+/*   MapIterator.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 21:42:02 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/20 14:48:49 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/26 19:03:53 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,44 +16,40 @@
 # include <typeinfo>
 # include "AVLTree.hpp"
 # include "IteratorTraits.hpp"
+# include "pair.hpp"
+
 
 namespace ft {
 	template<typename _Pair, typename _Node>
-		class AVLIterator { 
+		class MapIterator { 
 			public:
 				// Types
+				typedef std::bidirectional_iterator_tag							iterator_category;
 				typedef _Pair													iterator_type;
 				typedef typename ft::iterator_traits<_Pair*>::difference_type	difference_type;
 				typedef typename ft::iterator_traits<_Pair*>::value_type		value_type;
 				typedef typename ft::iterator_traits<_Pair*>::pointer			pointer;
 				typedef typename ft::iterator_traits<_Pair*>::reference			reference;
-				typedef std::bidirectional_iterator_tag							iterator_category;
 
 			private:
 				_Node*	_node;
 
 			public:
 				// Object managment
-				AVLIterator(): _node(NULL) { }
-
-				AVLIterator(_Node* n): _node(n) { }
-
-				AVLIterator(AVLIterator const& it): _node(it._node) { }
-
-				template<typename Iterator>
-				AVLIterator(Iterator it): _node(it.base()) { }
-
-				virtual ~AVLIterator() { }
+				MapIterator(): _node(NULL) { }
+				MapIterator(_Node* n): _node(n) { }
+				MapIterator(MapIterator const& it): _node(it._node) { }
+				virtual ~MapIterator() { }
 
 				_Node*	base() const { return this->_node; }
 
 				// Operators
-				AVLIterator&	operator=(AVLIterator const& it){
+				MapIterator&	operator=(MapIterator const& it){
 					this->_node = it._node;
 					return *this;
 				}
 
-				AVLIterator&	operator++(){
+				MapIterator&	operator++(){
 					if (_node->right != NULL) {
 						_node = _node->right;
 						while (_node->left != NULL)
@@ -70,13 +66,13 @@ namespace ft {
 					return *this;
 				}
 
-				AVLIterator	operator++(int) {
-					AVLIterator	tmp = *this;
+				MapIterator	operator++(int) {
+					MapIterator	tmp = *this;
 					++(*this);
 					return tmp;
 				}
 
-				AVLIterator&	operator--(){
+				MapIterator&	operator--(){
 					if (_node->left != NULL) {
 						_node = _node->left;
 						while (_node->right != NULL)
@@ -93,8 +89,8 @@ namespace ft {
 					return *this;
 				}
 
-				AVLIterator	operator--(int) {
-					AVLIterator	tmp = *this;
+				MapIterator	operator--(int) {
+					MapIterator	tmp = *this;
 					--(*this);
 					return tmp;
 				}
@@ -105,10 +101,12 @@ namespace ft {
 				pointer	operator->() const
 				{ return &_node->data; }
 
-				operator AVLIterator<_Pair const, _Node>() const
-				{ return AVLIterator<_Pair const, _Node>(this->_node); }
+				operator MapIterator<_Pair const, _Node>() const
+				{ return MapIterator<_Pair const, _Node>(this->_node); }
 
 		};
+
+	// Non member operators
 
 	template<typename T, typename U>
 		bool	operator==(T const& it1,

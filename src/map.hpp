@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 19:40:02 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/21 16:55:26 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/26 18:25:27 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ namespace ft {
 						}
 				};
 
-				typedef AVLIterator<value_type, ft::Node<value_type> >				iterator;
-				typedef AVLIterator<value_type const, ft::Node<value_type> const>	const_iterator;
+				typedef MapIterator<value_type, ft::Node<value_type> >				iterator;
+				typedef MapIterator<value_type const, ft::Node<value_type> >		const_iterator;
 				typedef ft::ReverseIterator<iterator>								reverse_iterator;
 				typedef ft::ReverseIterator<const_iterator>							const_reverse_iterator;
 
@@ -91,7 +91,7 @@ namespace ft {
 
 				// Copy constructor O(n * log(n))
 				map(map const& x): _tree(value_compare(x._comp)), _comp(x._comp) {
-					insert(x.begin(), x.end());
+					*this = x;
 				}
 
 				// Destructor O(n)
@@ -285,7 +285,7 @@ namespace ft {
 
 					while (curr != end()) {
 						if (!_comp(curr->first, key))
-							return iterator(curr);
+							return curr;
 						else
 							curr++;
 					}
@@ -293,11 +293,11 @@ namespace ft {
 				}
 
 				const_iterator	lower_bound(key_type const& key) const {
-					iterator	curr = begin();
+					const_iterator	curr = begin();
 
 					while (curr != end()) {
 						if (!_comp(curr->first, key))
-							return iterator(curr);
+							return curr;
 						else
 							curr++;
 					}
@@ -309,7 +309,7 @@ namespace ft {
 
 					while (curr != end()) {
 						if (_comp(key, curr->first))
-							return iterator(curr);
+							return curr;
 						else
 							curr++;
 					}
@@ -317,11 +317,11 @@ namespace ft {
 				}
 
 				const_iterator	upper_bound(key_type const& key) const {
-					iterator	curr = begin();
+					const_iterator	curr = begin();
 
 					while (curr != end()) {
 						if (_comp(key, curr->first))
-							return iterator(curr);
+							return curr;
 						else
 							curr++;
 					}
@@ -331,11 +331,11 @@ namespace ft {
 			// Observers
 
 				// O(n)
-				key_compare	key_comp()
+				key_compare	key_comp() const
 				{ return _comp; }
 
 				// O(n)
-				value_compare	value_comp()
+				value_compare	value_comp() const
 				{ return value_compare(_comp); }
 
 				private:

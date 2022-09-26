@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/28 11:46:21 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/07 15:37:40 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/26 13:54:25 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ namespace ft {
 				// Object managment
 				RandomAccessIterator(): _ptr() { };
 				RandomAccessIterator(pointer ptr): _ptr(ptr) { }
-				RandomAccessIterator(RandomAccessIterator<T> const& it) { *this = it; }
+				RandomAccessIterator(RandomAccessIterator const& it): _ptr(it.base()) { }
 				virtual ~RandomAccessIterator() { }
 
 				pointer	base() const { return this->_ptr; }

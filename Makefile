@@ -6,7 +6,7 @@
 #    By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/20 10:45:57 by tsiguenz          #+#    #+#              #
-#    Updated: 2022/09/21 17:02:39 by tsiguenz         ###   ########.fr        #
+#    Updated: 2022/09/21 17:04:30 by tsiguenz         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -108,8 +108,8 @@ diff: all
 	diff my_output real_output
 
 subdiff: sub rsub
-	./$(NAME_SUBJECT) 5 > my_output
-	./$(NAME_SUBJECT_REAL) 5 > real_output
+	./$(NAME_SUBJECT) -34993009 > my_output
+	./$(NAME_SUBJECT_REAL) -34993009 > real_output
 	diff my_output real_output
 
 clean:

@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 13:35:44 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/29 22:42:50 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/26 18:58:34 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ namespace ft {
 
 	template<class T1, class T2>
 		bool	operator==(pair<T1, T2> const& lhs, pair<T1, T2> const& rhs)
-		{ return (lhs.first == rhs.first && lhs.second == lhs.second); }
+		{ return (lhs.first == rhs.first && lhs.second == rhs.second); }
 
 	template<class T1, class T2>
 		bool	operator!=(pair<T1, T2> const& lhs, pair<T1, T2> const& rhs)
@@ -77,7 +77,6 @@ namespace ft {
 	template<class T1, class T2>
 		pair<T1, T2>	make_pair(T1 x, T2 y)
 		{ return pair<T1, T2>(x, y); }
-
 }
 
 #endif // PAIR_HPP
