@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 19:40:02 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/27 17:54:57 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/27 22:29:44 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,8 @@ namespace ft {
 						typedef value_type	first_argument_type;
 						typedef value_type	second_argument_type;
 
-						bool	operator() (const value_type& x, const value_type& y) const {
-							return comp(x.first, y.first);
-						}
+						bool	operator() (const value_type& x, const value_type& y) const
+						{ return comp(x.first, y.first); }
 				};
 
 				typedef MapIterator<value_type, ft::Node<value_type> >				iterator;
@@ -137,7 +136,7 @@ namespace ft {
 
 					if (tmp != NULL)
 						return tmp->data.second;
-					return insert(ft::make_pair(key, T())).first->second;
+					return insert(ft::make_pair(key, mapped_type())).first->second;
 				}
 
 			// Iterators
@@ -201,6 +200,7 @@ namespace ft {
 					if (tmp != NULL)
 						return ft::pair<iterator, bool>(tmp, false);
 					_tree.insert(value);
+					tmp = _getNodeByKey(value.first);
 					return ft::pair<iterator, bool>(_getNodeByKey(value.first), true);
 				}
 
@@ -234,25 +234,20 @@ namespace ft {
 					return 1;
 				}
 
-				// TODO change for respect the complexity
 				// erase range
 				void	erase(iterator first, iterator last) {
-					std::cout << "last : " << last->first << std::endl;
-//					while (first != last) {
-//						std::cout << "first : " << first++->first << std::endl;
-//					}
-					while (first != last) {
-						std::cout << "first : " << first->first << std::endl;
+					while (first != last)
 						erase(first++);
-					}
 				}
 
 				void	swap(map& x) {
-					map	tmp = *this;
+					key_compare	tmpComp = this->_comp;
 
-					*this = x;
-					x = tmp;
+					this->_comp = x._comp;
+					x._comp = tmpComp;
+					x._tree.swap(this->_tree);
 				}
+
 			// Lookup
 
 				size_type	count(key_type const& key) const {
@@ -341,7 +336,7 @@ namespace ft {
 					ft::Node<value_type>*	tmp = _tree.getRoot();
 
 					while (tmp != NULL && tmp->data.first != key) {
-						if (tmp->data.first < key)
+						if (_comp(tmp->data.first, key))
 							tmp = tmp->right;
 						else
 							tmp = tmp->left;

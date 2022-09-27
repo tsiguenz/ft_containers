@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 17:38:11 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/27 18:08:25 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/27 22:23:15 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,26 @@ namespace ft {
 					while (_root != NULL)
 						remove(_root->data);
 					_deallocateNode(_end);
+				}
+
+				void	swap(AVLTree& rhs){
+					Node<T>*	tmpRoot = this->_root;
+					Node<T>*	tmpBegin = this->_begin;
+					Node<T>*	tmpEnd = this->_end;
+					size_t		tmpSize = this->_size;
+					Compare		tmpComp = this->_comp;
+
+					this->_root = rhs._root;
+					this->_begin = rhs._begin;
+					this->_end = rhs._end;
+					this->_size = rhs._size;
+					this->_comp = rhs._comp;
+
+					rhs._root = tmpRoot;
+					rhs._begin = tmpBegin;
+					rhs._end = tmpEnd;
+					rhs._size = tmpSize;
+					rhs._comp = tmpComp;
 				}
 
 				node*	getRoot() const
@@ -227,7 +247,6 @@ namespace ft {
 					if (root == NULL)
 						return n;
 					// Left subtree case
-					// implement value_compare
 					if (_comp(n->data,  root->data)) {
 						root->left = _insertHelper(root->left, n);
 						root->left->parent = root;
@@ -271,7 +290,7 @@ namespace ft {
 							this->_allocNode.destroy(root);
 							this->_allocNode.deallocate(root, 1);
 							root = NULL;
-							return (root);
+							return (NULL);
 						}
 						// One child case
 						else if (root->left == NULL || root->right == NULL) {
@@ -283,12 +302,11 @@ namespace ft {
 						}
 						// Two childs case
 						else {
-							std::cout << "invalidated?" << std::endl;
-							node* temp = minimum(root->right);
+							node* temp = maximum(root->left);
 							// Destroy and construct for const value
 							_allocPair.destroy(&root->data);
 							_allocPair.construct(&root->data, temp->data);
-							root->right = _removeHelper(root->right, temp->data);
+							root->left = _removeHelper(root->left, temp->data);
 						}
 					}
 					// If the tree had only one node
