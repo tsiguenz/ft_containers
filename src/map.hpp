@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 19:40:02 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/26 18:25:27 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/27 17:54:57 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,13 +204,13 @@ namespace ft {
 					return ft::pair<iterator, bool>(_getNodeByKey(value.first), true);
 				}
 
-				// TODO change for respect the complexity ?
 				// insert single value with hint O(log(n)) (hint useless)
 				iterator	insert(iterator hint, const value_type& value) {
 					(void) hint;
 					return insert(value).first;
 				}
 
+				// TODO change for respect the complexity
 				// insert range O(n * log(n) + n)
 				template<class InputIt>
 					void	insert(InputIt first, InputIt last) {
@@ -237,7 +237,12 @@ namespace ft {
 				// TODO change for respect the complexity
 				// erase range
 				void	erase(iterator first, iterator last) {
+					std::cout << "last : " << last->first << std::endl;
+//					while (first != last) {
+//						std::cout << "first : " << first++->first << std::endl;
+//					}
 					while (first != last) {
+						std::cout << "first : " << first->first << std::endl;
 						erase(first++);
 					}
 				}
@@ -265,19 +270,11 @@ namespace ft {
 				}
 
 				ft::pair<iterator, iterator>	equal_range(Key const& key) {
-					Node<value_type>*	ret = _getNodeByKey(key);
-
-					if (ret == NULL)
-						return ft::make_pair(end(), end());
-					return ft::make_pair(ret, ++iterator(ret));
+					return ft::make_pair(lower_bound(key), upper_bound(key));
 				}
 
 				ft::pair<const_iterator, const_iterator>	equal_range(Key const& key) const {
-					Node<value_type>*	ret = _getNodeByKey(key);
-
-					if (ret == NULL)
-						return ft::make_pair(end(), end());
-					return ft::make_pair(ret, ++iterator(ret));
+					return ft::make_pair(lower_bound(key), upper_bound(key));
 				}
 
 				iterator	lower_bound(key_type const& key) {

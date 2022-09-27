@@ -6,67 +6,77 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 16:27:59 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/26 19:02:06 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/27 17:42:33 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "test.h"
+#include "src/containers_test/srcs/map/common.hpp"
 
 #define FTMAP ft::map<int, int>
 #define STDMAP std::map<int, int>
 
 #include <list>
 
+#define NS ft
 #define T1 int
-#define T2 foo<int>
+#define T2 std::string
 
-// --- Class foo
-template <typename T>
-class foo {
-public:
-	typedef T	value_type;
+static int iter = 0;
 
-	foo(void) : value(), _verbose(false) { };
-	foo(value_type src, const bool verbose = false) : value(src), _verbose(verbose) { };
-	foo(foo const &src, const bool verbose = false) : value(src.value), _verbose(verbose) { };
-	~foo(void) { if (this->_verbose) std::cout << "~foo::foo()" << std::endl; };
-	void m(void) { std::cout << "foo::m called [" << this->value << "]" << std::endl; };
-	void m(void) const { std::cout << "foo::m const called [" << this->value << "]" << std::endl; };
-	foo &operator=(value_type src) { this->value = src; return *this; };
-	foo &operator=(foo const &src) {
-		if (this->_verbose || src._verbose)
-			std::cout << "foo::operator=(foo) CALLED" << std::endl;
-		this->value = src.value;
-		return *this;
-	};
-	value_type	getValue(void) const { return this->value; };
-	void		switchVerbose(void) { this->_verbose = !(this->_verbose); };
+typedef NS::pair<const T1, T2> T3;
 
-	operator value_type(void) const {
-		return value_type(this->value);
-	}
-private:
-	value_type	value;
-	bool		_verbose;
-};
-
-template <typename T>
-std::ostream	&operator<<(std::ostream &o, foo<T> const &bar) {
-	o << bar.getValue();
-	return o;
+	template <typename MAP, typename U>
+void	ft_erase(MAP &mp, U param)
+{
+	std::cout << "\t-- [" << iter++ << "] --" << std::endl;
+	mp.erase(param);
+	printSize(mp);
 }
-// --- End of class foo
 
+	template <typename MAP, typename U, typename V>
+void	ft_erase(MAP &mp, U param, V param2)
+{
+	std::cout << "\t-- [" << iter++ << "] --" << std::endl;
+	mp.erase(param, param2);
+	printSize(mp);
+}
 
 void	map_test() {
 # ifdef REAL
 	namespace ft = std;
 #endif
-	pair_test();
-	avl_test();
-	map_iterators_test();
-	map_operators_test();
-	map_functions_test();
+//	pair_test();
+//	avl_test();
+//	map_iterators_test();
+//	map_operators_test();
+//	map_functions_test();
 	{
+		std::list<T3> lst;
+		unsigned int lst_size = 10;
+		for (unsigned int i = 0; i < lst_size; ++i)
+			lst.push_back(T3(i, std::string((lst_size - i), i + 65)));
+		NS::map<T1, T2> mp(lst.begin(), lst.end());
+//
+//		ft_erase(mp, ++mp.begin());
+//
+//		ft_erase(mp, mp.begin());
+//		ft_erase(mp, --mp.end());
+
+//		ft_erase(mp, mp.begin(), ++(++(++mp.begin())));
+		ft_erase(mp, --(--(--mp.end())), --mp.end());
+//
+//		mp[10] = "Hello";
+//		mp[11] = "Hi there";
+//		printSize(mp);
+//		ft_erase(mp, --(--(--mp.end())), mp.end());
+//
+//		mp[12] = "ONE";
+//		mp[13] = "TWO";
+//		mp[14] = "THREE";
+//		mp[15] = "FOUR";
+//		printSize(mp);
+//		ft_erase(mp, mp.begin(), mp.end());
+
 	}
 }

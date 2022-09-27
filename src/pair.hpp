@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 13:35:44 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/26 18:58:34 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/26 19:21:45 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ namespace ft {
 		{ return !(lhs < rhs); }
 
 	// Make pair
-
 	template<class T1, class T2>
 		pair<T1, T2>	make_pair(T1 x, T2 y)
 		{ return pair<T1, T2>(x, y); }

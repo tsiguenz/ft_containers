@@ -6,12 +6,14 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 17:38:11 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/26 19:03:32 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/27 18:08:25 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef AVLTREE_HPP
 # define AVLTREE_HPP
+
+# include "pair.hpp"
 
 namespace ft {
 	template<typename T>
@@ -46,8 +48,8 @@ namespace ft {
 				// Initialisation list for _comp bc value_compare don't have default constructor
 				AVLTree(Compare const& comp = Compare()): _comp(comp) {
 					_root = NULL;
-					_begin = NULL;
 					_end = _createNode();
+					_begin = _end;
 					_allocPair = Alloc();
 					_allocNode = AllocNode();
 					_size = 0;
@@ -60,13 +62,11 @@ namespace ft {
 					_deallocateNode(_end);
 				}
 
-				// TODO implement copy constructor and operator=
-
 				node*	getRoot() const
 				{ return _root; }
 
 				void	insert(T const& data) {
-					// Duplicates are not allowed (do not protect duplicate key in pair)
+					// Duplicates are not allowed (this do not protect duplicate key in pair)
 					if (searchByData(data) != NULL)
 						return ;
 					_unsetEnd();
@@ -83,22 +83,22 @@ namespace ft {
 					_unsetEnd();
 					_root = _removeHelper(_root, key);
 					_size--;
-					_begin = minimum();
 					_setEnd();
+					_begin = (_size != 0) ? minimum() : _end;
 				}
 
 				// remove for iterator
 				void	removeNode(node* n) {
 					_unsetEnd();
-					_removeHelper(n, n->data);
+					_removeHelper(n->parent, n->data);
 					_size--;
-					_begin = minimum();
 					_setEnd();
+					_begin = (_size != 0) ? minimum() : _end;
 				}
 
 				node*	searchByData(T const& data) {
 					node*	curr = this->_root;
-					while (curr != NULL && curr->data != data)
+					while (curr != NULL && (_comp(curr->data, data) || _comp(data, curr->data)))
 						curr = (_comp(curr->data, data)) ? curr->right : curr->left;
 					return curr;
 				}
@@ -131,7 +131,6 @@ namespace ft {
 					if (root == NULL || root == _end)
 						return ;
 					inorder(root->left);
-					std::cout << root->data.first << "  ";
 					inorder(root->right);
 				}
 
@@ -248,7 +247,6 @@ namespace ft {
 						return _leftRotate(root);
 					// Left right case
 					if (bf > 1 && _comp(root->data, n->data)) {
-						std::cout << "ptr = " << root->left->right << std::endl;
 						root->left = _leftRotate(root->left);
 						return _rightRotate(root);
 					}
@@ -285,6 +283,7 @@ namespace ft {
 						}
 						// Two childs case
 						else {
+							std::cout << "invalidated?" << std::endl;
 							node* temp = minimum(root->right);
 							// Destroy and construct for const value
 							_allocPair.destroy(&root->data);
