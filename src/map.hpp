@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 19:40:02 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/27 22:29:44 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/27 23:05:56 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,7 +200,6 @@ namespace ft {
 					if (tmp != NULL)
 						return ft::pair<iterator, bool>(tmp, false);
 					_tree.insert(value);
-					tmp = _getNodeByKey(value.first);
 					return ft::pair<iterator, bool>(_getNodeByKey(value.first), true);
 				}
 
@@ -210,17 +209,13 @@ namespace ft {
 					return insert(value).first;
 				}
 
-				// TODO change for respect the complexity
 				// insert range O(n * log(n) + n)
 				template<class InputIt>
 					void	insert(InputIt first, InputIt last) {
-						for (;first != last; first++) {
+						for (;first != last; first++)
 							insert(*first);
-						}
 					}
 
-				// TODO change for respect the complexity
-				// erase pos O(1)
 				void	erase(iterator pos) {
 					_tree.remove(*pos);
 				}
