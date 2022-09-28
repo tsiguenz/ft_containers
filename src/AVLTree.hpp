@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 17:38:11 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/27 23:02:12 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/28 15:31:09 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,10 @@ namespace ft {
 			Node*	left;
 			Node*	right;
 			Node*	parent;
+			size_t	height;
 
 			Node(T const& val = T())
-				: data(val), left(), right(), parent() { }
+				: data(val), left(), right(), parent(), height(1) { }
 
 			~Node() { }
 		};
@@ -44,6 +45,7 @@ namespace ft {
 				Compare		_comp;
 
 			public:
+
 				// Empty constructor
 				// Initialisation list for _comp bc value_compare don't have default constructor
 				AVLTree(Compare const& comp = Compare()): _comp(comp) {
@@ -58,7 +60,7 @@ namespace ft {
 				// Destructor
 				~AVLTree() {
 					while (_root != NULL)
-						remove(_root->data);
+						remove(_begin->data);
 					_deallocateNode(_end);
 				}
 
@@ -165,6 +167,9 @@ namespace ft {
 
 			private:
 
+				size_t	max(size_t a, size_t b) const
+				{ return (a < b) ? b : a; }
+
 				void	_unsetEnd(){
 					if (_root == NULL)
 						return ;
@@ -193,19 +198,11 @@ namespace ft {
 				}
 
 				int	_getHeight(node* n) {
-					if (n == NULL)
-						return -1;
-					else {
-						int	lheight = _getHeight(n->left);
-						int	rheight = _getHeight(n->right);
-						return ((lheight > rheight) ? lheight : rheight) + 1;
-					}
+					return (n == NULL) ? 0 : n->height;
 				}
 
 				int	_getBalanceFactor(node* n) {
-					if (n == NULL)
-						return -1;
-					return _getHeight(n->left) - _getHeight(n->right);
+					return (n == NULL) ? 0 : _getHeight(n->left) - _getHeight(n->right);
 				}
 
 				node*	_rightRotate(node* y) {
@@ -218,6 +215,8 @@ namespace ft {
 					y->parent = child;
 					if (baby != NULL)
 						baby->parent = y;
+					y->height = max(_getHeight(y->left), _getHeight(y->right)) + 1;
+					child->height = max(_getHeight(child->left), _getHeight(child->right)) + 1;
 					return child;
 				}
 
@@ -231,7 +230,31 @@ namespace ft {
 					x->parent = child;
 					if (baby != NULL)
 						baby->parent = x;
+					x->height = max(_getHeight(x->left), _getHeight(x->right)) + 1;
+					child->height = max(_getHeight(child->left), _getHeight(child->right)) + 1;
 					return child;
+				}
+
+				// Rebalance the tree and refresh the height
+				node*	_rebalanceTree(node* root) {
+					root->height = max(_getHeight(root->left), _getHeight(root->right)) + 1;
+					int balanceFactor = _getBalanceFactor(root);
+					if (balanceFactor > 1) {
+						if (_getBalanceFactor(root->left) >= 0) {
+							return _rightRotate(root);
+						} else {
+							root->left = _leftRotate(root->left);
+							return _rightRotate(root);
+						}
+					} else if (balanceFactor < -1) {
+						if (_getBalanceFactor(root->right) <= 0) {
+							return _leftRotate(root);
+						} else {
+							root->right = _rightRotate(root->right);
+							return _leftRotate(root);
+						}
+					}
+					return root;
 				}
 
 				node*	_insertHelper(node* root, node* n) {
@@ -247,25 +270,7 @@ namespace ft {
 						root->right = _insertHelper(root->right, n);
 						root->right->parent = root;
 					}
-					// Rebalance the tree
-					int	bf = _getBalanceFactor(root);
-					// Left left case
-					if (bf > 1 && _comp(n->data, root->left->data))
-						return _rightRotate(root);
-					// Right right case
-					if (bf < -1 && _comp(root->data, n->data))
-						return _leftRotate(root);
-					// Left right case
-					if (bf > 1 && _comp(root->data, n->data)) {
-						root->left = _leftRotate(root->left);
-						return _rightRotate(root);
-					}
-					// Right left case
-					if (bf < -1 && _comp(n->data, root->right->data)) {
-						root->right = _rightRotate(root->right);
-						return _leftRotate(root);
-					}
-					return root;
+					return _rebalanceTree(root);
 				}
 
 				node*	_removeHelper(node* root, T const& key) {
@@ -300,28 +305,7 @@ namespace ft {
 							root->left = _removeHelper(root->left, temp->data);
 						}
 					}
-					// If the tree had only one node
-					if (root == NULL)
-						return root;
-					// Rebalance the tree
-					int	bf = _getBalanceFactor(root);
-					// Left Left Case
-					if (bf > 1 && _getBalanceFactor(root->left) >= 0)
-						return _rightRotate(root);
-					// Left Right Case
-					if (bf > 1 && _getBalanceFactor(root->left) < 0) {
-						root->left = _leftRotate(root->left);
-						return _rightRotate(root);
-					}
-					// Right Right Case
-					if (bf < -1 && _getBalanceFactor(root->right) <= 0)
-						return _leftRotate(root);
-					// Right Left Case
-					if (bf < -1 && _getBalanceFactor(root->right) > 0) {
-						root->right = _rightRotate(root->right);
-						return _leftRotate(root);
-					}
-					return root;
+					return _rebalanceTree(root);
 				}
 		};
 }
