@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 21:42:02 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/27 17:50:00 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/28 16:21:50 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,18 +104,11 @@ namespace ft {
 				operator MapIterator<_Pair const, _Node>() const
 				{ return MapIterator<_Pair const, _Node>(this->_node); }
 
+				bool	operator==(MapIterator const& it)
+				{ return this->_node == it._node; }
+
+				bool	operator!=(MapIterator const& it)
+				{ return !(*this == it); }
 		};
-
-	// Non member operators
-
-	template<typename T, typename U>
-		bool	operator==(T const& it1,
-			U const& it2)
-		{ return it1.base() == it2.base(); }
-
-	template<typename T, typename U>
-		bool	operator!=(T const& it1,
-			U const& it2)
-		{ return !(it1.base() == it2.base()); }
 }
 #endif // AVL_ITERATOR_HPP

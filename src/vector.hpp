@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 10:48:08 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/08/04 13:36:36 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/28 18:51:29 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,7 +254,6 @@ namespace ft {
 						*(pos + i) = value;
 					this->_size = newSize;
 				}
-
 				// range
 				template<class InputIt>
 					typename ft::enable_if<!ft::is_integral<InputIt>::value>::type
@@ -272,7 +271,7 @@ namespace ft {
 						for (size_type i = this->_size; i < this->_size + dist; i++)
 							this->_allocator.construct(this->_p + i, value_type());
 						pos = this->begin() + index_of_pos;
-						_move_range_left(pos, ft::distance(first, last));
+						_move_range_left(pos, dist);
 						for (; first != last; first++) {
 							*pos = *first;
 							pos++;
