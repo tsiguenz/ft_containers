@@ -9,6 +9,8 @@ obj
 real
 container
 container_real
+subject
+subject_real
 my_output
 real_output
 debug

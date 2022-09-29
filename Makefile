@@ -10,13 +10,14 @@
 #                                                                              #
 # **************************************************************************** #
 
-# my tests
+# My tests
 NAME = container
 NAME_REAL = $(NAME)_real
 
-# subject tests
+# Subject tests
 NAME_SUBJECT = subject
 NAME_SUBJECT_REAL = $(NAME_SUBJECT)_real
+SEED=$(shell date +'%s')
 
 CC = c++
 FLAGS = -g3 -Wall -Wextra -Werror -std=c++98
@@ -108,15 +109,16 @@ diff: all
 	diff my_output real_output
 
 subdiff: sub rsub
-	./$(NAME_SUBJECT) 5 > my_output
-	./$(NAME_SUBJECT_REAL) 5 > real_output
+	./$(NAME_SUBJECT) $(SEED) > my_output
+	./$(NAME_SUBJECT_REAL) $(SEED) > real_output
 	diff my_output real_output
 
 time: sub rsub
-	@echo "My container time :"
-	@time ./$(NAME_SUBJECT) 5
-	@echo "Real container time :"
-	@time ./$(NAME_SUBJECT_REAL) 5
+	@echo "My container time (SEED = $(SEED)) :"
+	@bash -lic "time ./$(NAME_SUBJECT) $(SEED)"
+	@echo
+	@echo "Real container time (SEED = $(SEED)) :"
+	@bash -lic "time ./$(NAME_SUBJECT_REAL) $(SEED)"
 
 clean:
 	rm -rf obj
