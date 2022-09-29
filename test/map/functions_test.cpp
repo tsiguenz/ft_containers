@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 14:53:51 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/27 23:05:31 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/29 22:48:15 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,8 +240,8 @@ void	map_functions_test() {
 		it1 = m1.upper_bound('b');
 		it2 = m2.upper_bound('b');
 		assertEq("upper_bound nonexistant key", it1->second, it2->second);
-		it1 = m1.upper_bound('d');
-		it2 = m2.upper_bound('d');
+		it1 = m1.upper_bound('c');
+		it2 = m2.upper_bound('c');
 		assertEq("upper_bound existant key", it1->second, it2->second);
 		it1 = m1.upper_bound('z');
 		it2 = m2.upper_bound('z');

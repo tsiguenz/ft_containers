@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 17:38:11 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/28 15:31:09 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/29 22:49:29 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,13 +156,13 @@ namespace ft {
 				node*	begin()
 				{ return _begin; }
 
-				node * const	begin() const
+				node*	begin() const
 				{ return _begin; }
 
 				node*	end()
 				{ return _end; }
 
-				node *const	end() const
+				node*	end() const
 				{ return _end; }
 
 			private:
