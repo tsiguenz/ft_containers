@@ -1,3 +1,4 @@
+# ft_containers
 In this project, we have to re-implement a few container types of the C++ standard template library.
 
 ### How to compile:
@@ -69,7 +70,7 @@ containers are expected.
 must be justified and will be checked during evaluation.
 
 ---
-### Others
+### Others:
 I used tests of others student in complement of mine:
 - [MLI](https://github.com/mli42/containers_test)
 - [mazoise](https://github.com/Mazoise/42TESTERS-CONTAINERS) one fail because it test the capacity of a vector and it depend of the implementation so I don't fix it ([proof](https://tylerayoung.com/2020/08/20/default-capacity-growth-rate-of-c-stdvector/))
