@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 13:40:55 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/21 15:24:27 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/30 14:40:34 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,4 @@ void	vector_iterator_test() {
 	std::cout << "----------  ConstReverseIterator class : ----------" << std::endl;
 	iteratorTest<ft::vector<int>::const_reverse_iterator,
 		std::vector<int>::const_reverse_iterator> (ftV.rbegin(), stdV.rbegin());
-	// TODO more tests for iterators
 }

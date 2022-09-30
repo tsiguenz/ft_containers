@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 14:53:51 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/29 22:48:15 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/09/30 14:40:24 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ void	map_functions_test() {
 		assertEq("empty on non empty map", m1.empty(), false);
 		assertEq("size after insert", m1.size(), (size_t) 1);
 		assertEqMap("assertEqMap test", m1, m2);
-		// TODO test after delete an element
 	}
 	// clear
 	{

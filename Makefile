@@ -6,7 +6,7 @@
 #    By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/20 10:45:57 by tsiguenz          #+#    #+#              #
-#    Updated: 2022/09/29 22:46:09 by tsiguenz         ###   ########.fr        #
+#    Updated: 2022/09/30 14:40:08 by tsiguenz         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ NAME_SUBJECT_REAL = $(NAME_SUBJECT)_real
 SEED=$(shell date +'%s')
 
 CC = c++
-FLAGS = -g3 -Wall -Wextra -Werror -std=c++98
+FLAGS = -Wall -Wextra -Werror -std=c++98
 FLAGS_REAL = -D REAL
 
 TEST_PATH = test/
