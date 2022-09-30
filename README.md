@@ -3,31 +3,31 @@ In this project, we have to re-implement a few container types of the C++ standa
 ### How to compile:
 
 Compile tests with my containers:
-```bash
+```
 make
 ```
 Compile test with real containers:
-```bash
+```
 make real
 ```
 Print the difference between the output of ./containers and ./containers_real:
-```bash
+```
 make diff
 ```
 Compile the subject main with my containers:
-```bash
+```
 make subject
 ```
 Compile the subject main with real containers:
-```bash
+```
 make subject_real
 ```
 Print the difference between the output of ./subject and ./subject_real:
-```bash
+```
 make subdiff
 ``` 
 Print the time of execution of ./subject and ./subject_real:
-```bash
+```
 make time
 ``` 
 
