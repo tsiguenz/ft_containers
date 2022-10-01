@@ -20,7 +20,7 @@ NAME_SUBJECT_REAL = $(NAME_SUBJECT)_real
 SEED=$(shell date +'%s')
 
 CC = c++
-FLAGS = -g3 -Wall -Wextra -Werror -std=c++98
+FLAGS = -Wall -Wextra -Werror -std=c++98
 FLAGS_REAL = -D REAL
 
 TEST_PATH = test/

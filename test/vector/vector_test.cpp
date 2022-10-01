@@ -16,8 +16,8 @@ void	vector_test() {
 #ifdef REAL
 	namespace ft = std;
 #endif
-//	vector_object_managment_test();
-//	vector_iterator_test();
+	vector_object_managment_test();
+	vector_iterator_test();
 	vector_functions_test();
-//	vector_operators_test();
+	vector_operators_test();
 }

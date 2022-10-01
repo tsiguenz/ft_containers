@@ -26,7 +26,7 @@ namespace ft {
 	template < class T, class Allocator = std::allocator<T> >
 		class vector {
 			public:
-			// Types
+				// Types
 
 				typedef T									value_type;
 				typedef Allocator							allocator_type;
@@ -41,7 +41,7 @@ namespace ft {
 				typedef ft::ReverseIterator<iterator>		reverse_iterator;
 				typedef ft::ReverseIterator<const_iterator>	const_reverse_iterator;
 
-			// Object managment
+				// Object managment
 
 				// Default
 				explicit vector(allocator_type const& alloc = allocator_type())
@@ -75,8 +75,7 @@ namespace ft {
 					_freeAll();
 				}
 
-			// Operators
-
+				// Operators
 				vector&	operator=(vector const& rhs) {
 					_freeAll();
 					this->_allocator = rhs._allocator;
@@ -88,8 +87,7 @@ namespace ft {
 					return *this;
 				}
 
-			// Member functions
-
+				// Member functions
 				void	assign(size_type count, const_reference value) {
 					clear();
 					for (size_type i = 0; i < count; i++)
@@ -99,9 +97,18 @@ namespace ft {
 				template<class InputIt>
 					typename ft::enable_if<!ft::is_integral<InputIt>::value>::type
 					assign(InputIt first, InputIt last) {
-						clear();
-						for (; first != last; first++)
-							push_back(*first);
+						_freeAll();
+						this->_size = ft::distance(first, last);
+						if (this->_capacity == 0)
+							this->_capacity = this->_size;
+						while (this->_capacity < this->_size) {
+							reserve(this->_capacity * 2);
+						}
+						this->_p = this->_allocator.allocate(this->_capacity);
+						for (size_type i = 0; first != last; first++) {
+							this->_allocator.construct(this->_p + i, *first);
+							i++;
+						}
 					}
 
 				allocator_type	get_allocator() { return this->_allocator; }
@@ -202,8 +209,9 @@ namespace ft {
 				{ return this->_capacity; }
 
 				// Modifiers
-
 				void	clear() {
+					if (this->_size == 0 || this->_p == NULL)
+						return ;
 					for (size_type i = 0; i < this->_size; i++)
 						this->_allocator.destroy(this->_p + i);
 					this->_size = 0;
@@ -218,15 +226,10 @@ namespace ft {
 					size_type	newSize = this->_size + 1;
 					// need to store this because reserve change the iterators
 					size_type	index_of_pos = _get_index_of_it(pos);
-//					std::cout << "value = " << value << std::endl;
-					if (this->_capacity < newSize) {
+					if (this->_capacity < newSize)
 						reserve(this->_capacity * 2);
-						pos = this->begin() + index_of_pos;
-//						std::cout << "new pos = " << *pos << std::endl;
-					}
-//					std::cout << "before move pos+1 = " << *(pos+1) << std::endl;
+					pos = this->begin() + index_of_pos;
 					_move_range_left(pos, 1);
-//					std::cout << "after move pos+1 = " << *(pos+1) << std::endl;
 					*pos = value;
 					this->_size++;
 					return pos;
@@ -251,15 +254,29 @@ namespace ft {
 						*(pos + i) = value;
 					this->_size = newSize;
 				}
-
 				// range
 				template<class InputIt>
 					typename ft::enable_if<!ft::is_integral<InputIt>::value>::type
 					insert(iterator pos, InputIt first, InputIt last) {
-						for (; first != last; first++) {
-//							std::cout << "pos = " << *pos << std::endl;
-							pos = insert(pos, *first) + 1;
+						if (this->_size == 0) {
+							assign(first, last);
+							return ;
 						}
+						size_type	dist = ft::distance(first, last);
+						size_type	newSize = this->_size + dist;
+						// need to store the index because reserve change the iterators
+						size_type	index_of_pos = _get_index_of_it(pos);
+						while (this->_capacity < newSize)
+							reserve(this->_capacity * 2);
+						for (size_type i = this->_size; i < this->_size + dist; i++)
+							this->_allocator.construct(this->_p + i, value_type());
+						pos = this->begin() + index_of_pos;
+						_move_range_left(pos, dist);
+						for (; first != last; first++) {
+							*pos = *first;
+							pos++;
+						}
+						this->_size = newSize;
 					}
 
 				iterator	erase(iterator position) {
@@ -329,6 +346,8 @@ namespace ft {
 
 			private:
 
+			// Utils
+
 				void	_freeAll() {
 					clear();
 					this->_allocator.deallocate(this->_p, this->_capacity);
@@ -355,9 +374,9 @@ namespace ft {
 					size_type	ret = 0;
 
 					for (iterator curr = this->begin(); curr != it; curr++) {
-						if (curr == this->end())
-							return -1;
 						ret++;
+						if (curr == this->end())
+							return 0;
 					}
 					return ret;
 				}
