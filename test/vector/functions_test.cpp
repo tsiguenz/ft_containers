@@ -18,219 +18,221 @@ void	vector_functions_test() {
 #endif
 	std::cout << "----------  Functions test : ----------" << std::endl;
 	// swap
-	{
-		ft::vector<int>	a1(5);
-		ft::vector<int>	a2;
-
-		for (int i = 0; i < 5; i++)
-			a1[i] = i * 10;
-		ft::swap(a1, a2);
-
-		std::vector<int>	b1(5);
-		std::vector<int>	b2;
-
-		for (int i = 0; i < 5; i++)
-			b1[i] = i * 10;
-		std::swap(b1, b2);
-		assertEqVector("swap compare a1 to b1", a1, b1);
-		assertEqVector("swap compare a2 to b2", a2, b2);
-	}
-	// assign
-	{
-		ft::vector<int>	a1;
-		ft::vector<int>	a2;
-		std::vector<int>	b1;
-		std::vector<int>	b2;
-
-		a1.assign(4, 42);
-		a2.assign(a1.begin() + 1, a1.end() - 1);
-		b1.assign(4, 42);
-		b2.assign(b1.begin() + 1, b1.end() - 1);
-		assertEqVector("asssign fill overload", a1, b1);
-		assertEqVector("asssign range overload", a2, b2);
-		a1.assign(2, 12);
-		b1.assign(2, 12);
-		a2.assign(a1.begin() + 1, a1.end());
-		b2.assign(b1.begin() + 1, b1.end());
-		assertEqVector("asssign fill overload second time", a1, b1);
-		assertEqVector("asssign range overload second time", a2, b2);
-	}
-	// get_allocator
-	{
-		ft::vector<int>	a;
-		std::vector<int>	b;
-
-		assertEq("get_allocator compare allocator", 
-				(a.get_allocator() == b.get_allocator()), true);
-	}
-	// at
-	{
-		int	nbException = 0;
-		ft::vector<int>	a(3);
-		std::vector<int>	b(3);
-
-		for (int i = 0; i < 3; i++) {
-			a.at(i) = i * 10;
-			b.at(i) = i * 10;
-			assertEq("at test value", a.at(i), b.at(i));
-		}
-		try { a.at(5); } catch (std::exception const& e) { nbException++; }
-		try { b.at(5); } catch (std::exception const& e) { nbException++; }
-		try { a.at(-1); } catch (std::exception const& e) { nbException++; }
-		try { b.at(-1); } catch (std::exception const& e) { nbException++; }
-		const ft::vector<int>		c(a);
-		const std::vector<int>	d(b);
-		for (int i = 0; i < 3; i++) {
-			assertEq("at const test value", c.at(i), d.at(i));
-		}
-		try { c.at(5); } catch (std::exception const& e) { nbException++; }
-		try { d.at(5); } catch (std::exception const& e) { nbException++; }
-		try { c.at(-1); } catch (std::exception const& e) { nbException++; }
-		try { d.at(-1); } catch (std::exception const& e) { nbException++; }
-		assertEq("Exception handling in at and const at", nbException, 8);
-	}
-	// operator []
-	{
-		ft::vector<int>	a(3);
-		std::vector<int>	b(3);
-
-		for (int i = 0; i < 3; i++) {
-			a[i] = i * 10;
-			b[i] = i * 10;
-			assertEq("operator [] test value", a[i], b[i]);
-		}
-		const ft::vector<int>		c(a);
-		const std::vector<int>	d(b);
-		for (int i = 0; i < 3; i++) {
-			assertEq("operator [] const test value", c[i], d[i]);
-		}
-	}
-	// front / back / data
-	{
-		ft::vector<int>	a(3);
-		std::vector<int>	b(3);
-
-		for (int i = 0; i < 3; i++) {
-			a[i] = i * 10;
-			b[i] = i * 10;
-		}
-		assertEq("front value", a.front(), b.front());
-		assertEq("back value", a.back(), b.back());
-		const ft::vector<int>		c(a);
-		const std::vector<int>	d(b);
-		assertEq("front const  value", c.front(), d.front());
-		assertEq("back const value", c.back(), d.back());
-		int*	p1 = a.data();
-		int*	p2 = b.data();
-		int const*	p3 = c.data();
-		int const*	p4 = d.data();
-		for (int i = 0; i < 3; i++) {
-			assertEq("data compare", p1[i], p2[i]);
-			assertEq("data const compare", p3[i], p4[i]);
-		}
-	}
-	// empty / size / max_size / capacity
-	{
-		ft::vector<int>	a;
-		std::vector<int>	b;
-		ft::vector<int>	c(3);
-		std::vector<int>	d(3);
-		assertEq("empty of empty vector", a.empty(), b.empty());
-		a.reserve(10);
-		b.reserve(10);
-		assertEq("empty of empty vector but reserve(10)", a.empty(), b.empty());
-		assertEq("empty of non empty vector", c.empty(), d.empty());
-		assertEq("size of empty vector", a.size(), b.size());
-		assertEq("size of non empty vector", c.size(), d.size());
-		assertEq("max_size", a.max_size(), b.max_size());
-		assertEqVector("compare after reserve", a, b);
-	}
-	// reserve / clear
-	{
-		ft::vector<int>	a(3, 42);
-		std::vector<int>	b(3, 42);
-
-		a.reserve(5);
-		b.reserve(5);
-		assertEqVector("reserve classic", a, b);
-		a.reserve(4);
-		b.reserve(4);
-		assertEqVector("reserve 4 on capacity 5", a, b);
-		a.reserve(1);
-		b.reserve(1);
-		assertEqVector("reserve 1 on capacity 5", a, b);
-		a.clear();
-		b.clear();
-		assertEqVector("clear check vectors", a, b);
-
-		int	nbException = 0;
-
-		try { a.reserve(a.max_size() + 1); } catch (std::exception const& e) { nbException++; }
-		try { b.reserve(b.max_size() + 1); } catch (std::exception const& e) { nbException++; }
-		assertEq("reserve exception test", nbException, 2);
-	}
-	// insert single element
-	{
-		ft::vector<int>	a;
-		std::vector<int>	b;
-
-		a.push_back(42);
-		a.push_back(24);
-		b.push_back(42);
-		b.push_back(24);
-		assertEq("insert return value", *a.insert(a.begin(), 1), *b.insert(b.begin(), 1));
-		assertEq("insert return value", *a.insert(a.begin() + 2, 8), *b.insert(b.begin() + 2, 8));
-		assertEq("insert return value", *a.insert(a.end(), 2), *b.insert(b.end(), 2));
-		assertEqVector("insert single element non empty container", a, b);
-
-		ft::vector<int>	a1;
-		std::vector<int>	b1;
-
-		assertEq("insert empty vector return value", *a1.insert(a1.begin(), 42), *b1.insert(b1.begin(), 42));
-		assertEqVector("insert single element range empty container", a1, b1);
-	}
-	// insert fill
-	{
-		ft::vector<int>	a;
-		std::vector<int>	b;
-
-		a.push_back(42);
-		a.push_back(24);
-		b.push_back(42);
-		b.push_back(24);
-
-		a.insert(a.begin(), 2, 42);
-		b.insert(b.begin(), 2, 42);
-		assertEqVector("insert fill non empty container", a, b);
-
-		ft::vector<int>	a1;
-		std::vector<int>	b1;
-
-		a1.insert(a1.begin(), 2, 42);
-		b1.insert(b1.begin(), 2, 42);
-		assertEqVector("insert fill empty container", a1, b1);
-	}
-	// insert range
+//	{
+//		ft::vector<int>	a1(5);
+//		ft::vector<int>	a2;
+//
+//		for (int i = 0; i < 5; i++)
+//			a1[i] = i * 10;
+//		ft::swap(a1, a2);
+//
+//		std::vector<int>	b1(5);
+//		std::vector<int>	b2;
+//
+//		for (int i = 0; i < 5; i++)
+//			b1[i] = i * 10;
+//		std::swap(b1, b2);
+//		assertEqVector("swap compare a1 to b1", a1, b1);
+//		assertEqVector("swap compare a2 to b2", a2, b2);
+//	}
+//	// assign
+//	{
+//		ft::vector<int>	a1;
+//		ft::vector<int>	a2;
+//		std::vector<int>	b1;
+//		std::vector<int>	b2;
+//
+//		a1.assign(4, 42);
+//		a2.assign(a1.begin() + 1, a1.end() - 1);
+//		b1.assign(4, 42);
+//		b2.assign(b1.begin() + 1, b1.end() - 1);
+//		assertEqVector("asssign fill overload", a1, b1);
+//		assertEqVector("asssign range overload", a2, b2);
+//		a1.assign(2, 12);
+//		b1.assign(2, 12);
+//		a2.assign(a1.begin() + 1, a1.end());
+//		b2.assign(b1.begin() + 1, b1.end());
+//		assertEqVector("asssign fill overload second time", a1, b1);
+//		assertEqVector("asssign range overload second time", a2, b2);
+//	}
+//	// get_allocator
+//	{
+//		ft::vector<int>	a;
+//		std::vector<int>	b;
+//
+//		assertEq("get_allocator compare allocator", 
+//				(a.get_allocator() == b.get_allocator()), true);
+//	}
+//	// at
+//	{
+//		int	nbException = 0;
+//		ft::vector<int>	a(3);
+//		std::vector<int>	b(3);
+//
+//		for (int i = 0; i < 3; i++) {
+//			a.at(i) = i * 10;
+//			b.at(i) = i * 10;
+//			assertEq("at test value", a.at(i), b.at(i));
+//		}
+//		try { a.at(5); } catch (std::exception const& e) { nbException++; }
+//		try { b.at(5); } catch (std::exception const& e) { nbException++; }
+//		try { a.at(-1); } catch (std::exception const& e) { nbException++; }
+//		try { b.at(-1); } catch (std::exception const& e) { nbException++; }
+//		const ft::vector<int>		c(a);
+//		const std::vector<int>	d(b);
+//		for (int i = 0; i < 3; i++) {
+//			assertEq("at const test value", c.at(i), d.at(i));
+//		}
+//		try { c.at(5); } catch (std::exception const& e) { nbException++; }
+//		try { d.at(5); } catch (std::exception const& e) { nbException++; }
+//		try { c.at(-1); } catch (std::exception const& e) { nbException++; }
+//		try { d.at(-1); } catch (std::exception const& e) { nbException++; }
+//		assertEq("Exception handling in at and const at", nbException, 8);
+//	}
+//	// operator []
+//	{
+//		ft::vector<int>	a(3);
+//		std::vector<int>	b(3);
+//
+//		for (int i = 0; i < 3; i++) {
+//			a[i] = i * 10;
+//			b[i] = i * 10;
+//			assertEq("operator [] test value", a[i], b[i]);
+//		}
+//		const ft::vector<int>		c(a);
+//		const std::vector<int>	d(b);
+//		for (int i = 0; i < 3; i++) {
+//			assertEq("operator [] const test value", c[i], d[i]);
+//		}
+//	}
+//	// front / back / data
+//	{
+//		ft::vector<int>	a(3);
+//		std::vector<int>	b(3);
+//
+//		for (int i = 0; i < 3; i++) {
+//			a[i] = i * 10;
+//			b[i] = i * 10;
+//		}
+//		assertEq("front value", a.front(), b.front());
+//		assertEq("back value", a.back(), b.back());
+//		const ft::vector<int>		c(a);
+//		const std::vector<int>	d(b);
+//		assertEq("front const  value", c.front(), d.front());
+//		assertEq("back const value", c.back(), d.back());
+//		int*	p1 = a.data();
+//		int*	p2 = b.data();
+//		int const*	p3 = c.data();
+//		int const*	p4 = d.data();
+//		for (int i = 0; i < 3; i++) {
+//			assertEq("data compare", p1[i], p2[i]);
+//			assertEq("data const compare", p3[i], p4[i]);
+//		}
+//	}
+//	// empty / size / max_size / capacity
+//	{
+//		ft::vector<int>	a;
+//		std::vector<int>	b;
+//		ft::vector<int>	c(3);
+//		std::vector<int>	d(3);
+//		assertEq("empty of empty vector", a.empty(), b.empty());
+//		a.reserve(10);
+//		b.reserve(10);
+//		assertEq("empty of empty vector but reserve(10)", a.empty(), b.empty());
+//		assertEq("empty of non empty vector", c.empty(), d.empty());
+//		assertEq("size of empty vector", a.size(), b.size());
+//		assertEq("size of non empty vector", c.size(), d.size());
+//		assertEq("max_size", a.max_size(), b.max_size());
+//		assertEqVector("compare after reserve", a, b);
+//	}
+//	// reserve / clear
+//	{
+//		ft::vector<int>	a(3, 42);
+//		std::vector<int>	b(3, 42);
+//
+//		a.reserve(5);
+//		b.reserve(5);
+//		assertEqVector("reserve classic", a, b);
+//		a.reserve(4);
+//		b.reserve(4);
+//		assertEqVector("reserve 4 on capacity 5", a, b);
+//		a.reserve(1);
+//		b.reserve(1);
+//		assertEqVector("reserve 1 on capacity 5", a, b);
+//		a.clear();
+//		b.clear();
+//		assertEqVector("clear check vectors", a, b);
+//
+//		int	nbException = 0;
+//
+//		try { a.reserve(a.max_size() + 1); } catch (std::exception const& e) { nbException++; }
+//		try { b.reserve(b.max_size() + 1); } catch (std::exception const& e) { nbException++; }
+//		assertEq("reserve exception test", nbException, 2);
+//	}
+//	// insert single element
+//	{
+//		ft::vector<int>	a;
+//		std::vector<int>	b;
+//
+//		a.push_back(42);
+//		a.push_back(24);
+//		b.push_back(42);
+//		b.push_back(24);
+//		assertEq("insert return value", *a.insert(a.begin(), 1), *b.insert(b.begin(), 1));
+//		assertEq("insert return value", *a.insert(a.begin() + 2, 8), *b.insert(b.begin() + 2, 8));
+//		assertEq("insert return value", *a.insert(a.end(), 2), *b.insert(b.end(), 2));
+//		assertEqVector("insert single element non empty container", a, b);
+//
+//		ft::vector<int>	a1;
+//		std::vector<int>	b1;
+//
+//		assertEq("insert empty vector return value", *a1.insert(a1.begin(), 42), *b1.insert(b1.begin(), 42));
+//		assertEqVector("insert single element range empty container", a1, b1);
+//	}
+//	// insert fill
+//	{
+//		ft::vector<int>	a;
+//		std::vector<int>	b;
+//
+//		a.push_back(42);
+//		a.push_back(24);
+//		b.push_back(42);
+//		b.push_back(24);
+//
+//		a.insert(a.begin(), 2, 42);
+//		b.insert(b.begin(), 2, 42);
+//		assertEqVector("insert fill non empty container", a, b);
+//
+//		ft::vector<int>	a1;
+//		std::vector<int>	b1;
+//
+//		a1.insert(a1.begin(), 2, 42);
+//		b1.insert(b1.begin(), 2, 42);
+//		assertEqVector("insert fill empty container", a1, b1);
+//	}
+//	// insert range
 	{
 		std::vector<int>	range;
 		range.push_back(42);
 		range.push_back(38);
-		ft::vector<int>	a(1, 5);
-		std::vector<int>	b(1, 5);
+//		ft::vector<int>		a(1, 5);
+//		std::vector<int>	b(1, 5);
+//
+//		a.insert(a.begin(), range.begin(), range.end());
+//		b.insert(b.begin(), range.begin(), range.end());
+//
+//		a.insert(a.begin(), range.begin(), range.end());
+//		b.insert(b.begin(), range.begin(), range.end());
+//		assertEqVector("insert range not empty container", a, b);
 
-		a.insert(a.begin(), range.begin(), range.end());
-		b.insert(b.begin(), range.begin(), range.end());
-
-		a.insert(a.begin(), range.begin(), range.end());
-		b.insert(b.begin(), range.begin(), range.end());
-		assertEqVector("insert range not empty container", a, b);
-
-		ft::vector<int>	a1;
+		ft::vector<int>		a1;
 		std::vector<int>	b1;
 
 		a1.insert(a1.begin(), range.begin(), range.end());
 		b1.insert(b1.begin(), range.begin(), range.end());
 		assertEqVector("insert range empty container", a1, b1);
+		printVector(a1);
+		return ;
 	}
 	// erase
 	{
@@ -277,7 +279,7 @@ void	vector_functions_test() {
 		}
 		vct1.erase(vct1.begin(), vct1.begin() + 3);
 		vct2.erase(vct2.begin(), vct2.begin() + 3);
-		assertEqVector("test", vct1, vct2);
+		assertEqVector("after erase", vct1, vct2);
 		
 	}
 	// push_back
