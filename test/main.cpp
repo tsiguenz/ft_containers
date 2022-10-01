@@ -14,12 +14,17 @@
 #include "stack/stack_test.cpp"
 #include "map/map_test.cpp"
 
+#include <stdlib.h>
+#include <set>
+#include <exception>
+#include <iterator>
+
 int	main() {
 	std::cout << RED << VECTOR_ASCII << LINE << DEFAULT << std::endl;
 	vector_test();
-	std::cout << RED << STACK_ASCII << LINE << DEFAULT << std::endl;
-	stack_test();
-	std::cout << RED << MAP_ASCII << LINE << DEFAULT << std::endl;
-	map_test();
+//	std::cout << RED << STACK_ASCII << LINE << DEFAULT << std::endl;
+//	stack_test();
+//	std::cout << RED << MAP_ASCII << LINE << DEFAULT << std::endl;
+//	map_test();
 	return 0;
 }
