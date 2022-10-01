@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/28 11:46:21 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/10/01 23:28:11 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/10/02 01:11:02 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,10 @@ namespace ft {
 				reference	operator[](difference_type const& n)
 				{ return this->_ptr[n]; }
 
-				reference	operator*()
+				reference	operator*() const
 				{ return *(this->_ptr); }
 
-				pointer	operator->()
+				pointer	operator->() const
 				{ return this->_ptr; }
 		};
 
