@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 10:48:08 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/28 18:51:29 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/10/02 18:59:06 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,27 +210,58 @@ namespace ft {
 				}
 
 				// single element
-				iterator	insert(iterator pos, const_reference value) {
-					if (this->_size == 0) {
-						push_back(value);
-						return this->begin();
-					}
-					size_type	newSize = this->_size + 1;
-					// need to store this because reserve change the iterators
-					size_type	index_of_pos = _get_index_of_it(pos);
-//					std::cout << "value = " << value << std::endl;
-					if (this->_capacity < newSize) {
-						reserve(this->_capacity * 2);
-						pos = this->begin() + index_of_pos;
-//						std::cout << "new pos = " << *pos << std::endl;
-					}
-//					std::cout << "before move pos+1 = " << *(pos+1) << std::endl;
-					_move_range_left(pos, 1);
-//					std::cout << "after move pos+1 = " << *(pos+1) << std::endl;
-					*pos = value;
-					this->_size++;
-					return pos;
-				}
+//				iterator	insert(iterator pos, const_reference value) {
+//					size_type	index_of_pos = pos - begin();
+//					if (this->_size == 0) {
+//						push_back(value);
+//						return this->begin();
+//					}
+//					size_type	newSize = this->_size + 1;
+//					if (this->_capacity < newSize) {
+//						// need to store this because reserve change the iterators
+//						reserve(this->_capacity * 2);
+//						pos = this->begin() + index_of_pos;
+//					}
+//					_move_range_left(pos, 1);
+//					this->_allocator.construct(pos.base(), value);
+//					this->_size++;
+//					return pos;
+//				}
+
+	iterator insert( iterator pos, const T& value ) {
+			size_type i = 0;
+			size_type tmp = pos - this->begin();
+			if (this->_size + 1 > this->_capacity)
+			{
+				size_type new_cap = _size + 1;
+				pointer new_data = this->_allocator.allocate(new_cap);
+				for (; i < tmp; i++)
+					this->_allocator.construct(new_data + i, this->_p[i]);
+				this->_allocator.construct(new_data + i, value);
+				++i;
+				for (; i <= this->_size; i++)
+					this->_allocator.construct(new_data + i, this->_p[i - 1]);
+				size_type new_size = _size + 1;
+				_freeAll();
+				this->_p = new_data;
+				this->_size = new_size;
+				this->_capacity = new_cap;
+				return (this->_p + tmp);
+			}
+			i = this->_size;
+			if (i != tmp)
+			{
+				this->_allocator.construct(this->_p + i, this->_p[i - 1]);
+				--i;
+				for (; i > tmp; i--)
+					this->_p[i] = this->_p[i - 1];
+				this->_p[i] = value;
+			}
+			else
+				this->_allocator.construct(this->_p + i, value);
+			this->_size++;
+			return (pos);
+		}
 
 				// fill
 				void	insert(iterator pos, size_type count, const_reference value) {
@@ -240,7 +271,7 @@ namespace ft {
 					}
 					size_type	newSize = this->_size + count;
 					// need to store this because reserve change the iterators
-					size_type	index_of_pos = _get_index_of_it(pos);
+					size_type	index_of_pos = pos - begin();
 					while (this->_capacity < newSize)
 						reserve(this->_capacity * 2);
 					for (size_type i = this->_size; i < this->_size + count; i++)
@@ -248,7 +279,8 @@ namespace ft {
 					pos = this->begin() + index_of_pos;
 					_move_range_left(pos, count);
 					for (size_type i = 0; i < count; i++)
-						*(pos + i) = value;
+						this->_allocator.construct(pos.base() + i, value);
+//						*(pos + i) = value;
 					this->_size = newSize;
 				}
 
@@ -257,8 +289,8 @@ namespace ft {
 					typename ft::enable_if<!ft::is_integral<InputIt>::value>::type
 					insert(iterator pos, InputIt first, InputIt last) {
 						for (; first != last; first++) {
-//							std::cout << "pos = " << *pos << std::endl;
-							pos = insert(pos, *first) + 1;
+							pos = insert(pos, *first);
+							pos++;
 						}
 					}
 
@@ -349,17 +381,6 @@ namespace ft {
 				void	_move_range_right(iterator from, size_type const& offset) {
 					for (; from != (this->end() - offset); from++)
 						*from = *(from + offset);
-				}
-
-				size_type	_get_index_of_it(iterator it) {
-					size_type	ret = 0;
-
-					for (iterator curr = this->begin(); curr != it; curr++) {
-						if (curr == this->end())
-							return -1;
-						ret++;
-					}
-					return ret;
 				}
 		};
 
