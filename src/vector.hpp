@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 10:48:08 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/28 18:51:29 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/10/04 13:15:25 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,7 +230,8 @@ namespace ft {
 						reserve(this->_capacity * 2);
 					pos = this->begin() + index_of_pos;
 					_move_range_left(pos, 1);
-					*pos = value;
+					_allocator.destroy(&(*pos));
+					_allocator.construct(&(*pos), value);
 					this->_size++;
 					return pos;
 				}
@@ -250,8 +251,10 @@ namespace ft {
 						this->_allocator.construct(this->_p + i, value_type());
 					pos = this->begin() + index_of_pos;
 					_move_range_left(pos, count);
-					for (size_type i = 0; i < count; i++)
-						*(pos + i) = value;
+					for (size_type i = 0; i < count; i++) {
+						_allocator.destroy(&(*(pos + i)));
+						_allocator.construct(&(*(pos + i)), value);
+					}
 					this->_size = newSize;
 				}
 				// range
@@ -273,7 +276,8 @@ namespace ft {
 						pos = this->begin() + index_of_pos;
 						_move_range_left(pos, dist);
 						for (; first != last; first++) {
-							*pos = *first;
+							_allocator.destroy(&(*pos));
+							_allocator.construct(&(*pos), *first);
 							pos++;
 						}
 						this->_size = newSize;
@@ -360,14 +364,17 @@ namespace ft {
 					if (from == this->end())
 						return ;
 					for (size_type i = 0; i < this->_size && from != curr; i++) {
-						*curr = *(curr - offset);
+						_allocator.destroy(&(*curr));
+						_allocator.construct(&(*curr), *(curr - offset));
 						curr--;
 					}
 				}
 
 				void	_move_range_right(iterator from, size_type const& offset) {
-					for (; from != (this->end() - offset); from++)
-						*from = *(from + offset);
+					for (; from != (this->end() - offset); from++) {
+						_allocator.destroy(&(*from));
+						_allocator.construct(&(*from), *(from + offset));
+					}
 				}
 
 				size_type	_get_index_of_it(iterator it) {
