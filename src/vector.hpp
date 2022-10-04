@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 10:48:08 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/10/04 13:15:25 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/10/04 14:39:45 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,18 +97,20 @@ namespace ft {
 				template<class InputIt>
 					typename ft::enable_if<!ft::is_integral<InputIt>::value>::type
 					assign(InputIt first, InputIt last) {
-						_freeAll();
-						this->_size = ft::distance(first, last);
-						if (this->_capacity == 0)
-							this->_capacity = this->_size;
-						while (this->_capacity < this->_size) {
-							reserve(this->_capacity * 2);
-						}
-						this->_p = this->_allocator.allocate(this->_capacity);
-						for (size_type i = 0; first != last; first++) {
-							this->_allocator.construct(this->_p + i, *first);
-							i++;
-						}
+						clear();
+						insert(begin(), first, last);
+//						return ;
+//						this->_size = ft::distance(first, last);
+//						if (this->_capacity == 0)
+//							this->_capacity = this->_size;
+//						while (this->_capacity < this->_size) {
+//							reserve(this->_capacity * 2);
+//						}
+//						this->_p = this->_allocator.allocate(this->_capacity);
+//						for (size_type i = 0; first != last; first++) {
+//							this->_allocator.construct(this->_p + i, *first);
+//							i++;
+//						}
 					}
 
 				allocator_type	get_allocator() { return this->_allocator; }
@@ -219,25 +221,35 @@ namespace ft {
 
 				// single element
 				iterator	insert(iterator pos, const_reference value) {
-					if (this->_size == 0) {
+					if (_size == 0 || pos == end()) {
 						push_back(value);
-						return this->begin();
+						return end() - 1;
 					}
-					size_type	newSize = this->_size + 1;
-					// need to store this because reserve change the iterators
+					size_type i = 0;
 					size_type	index_of_pos = _get_index_of_it(pos);
-					if (this->_capacity < newSize)
-						reserve(this->_capacity * 2);
-					pos = this->begin() + index_of_pos;
-					_move_range_left(pos, 1);
-					_allocator.destroy(&(*pos));
-					_allocator.construct(&(*pos), value);
-					this->_size++;
+					if (_capacity < _size + 1) {
+						// need to store this because reserve change the iterators
+						reserve(_capacity * 2);
+						pos = begin() + index_of_pos;
+					}
+					i = _size;
+					if (i != index_of_pos) {
+						_allocator.construct(_p + i, _p[i - 1]);
+						--i;
+						for (; i > index_of_pos; i--)
+							_p[i] = _p[i - 1];
+						_p[i] = value;
+					}
+					else
+						_allocator.construct(_p + i, value);
+					_size++;
 					return pos;
 				}
 
 				// fill
 				void	insert(iterator pos, size_type count, const_reference value) {
+					if (count == 0)
+						return ;
 					if (this->_size == 0) {
 						assign(count, value);
 						return ;
@@ -250,42 +262,25 @@ namespace ft {
 					for (size_type i = this->_size; i < this->_size + count; i++)
 						this->_allocator.construct(this->_p + i, value_type());
 					pos = this->begin() + index_of_pos;
-					_move_range_left(pos, count);
+					_move_range_right(pos, count);
 					for (size_type i = 0; i < count; i++) {
 						_allocator.destroy(&(*(pos + i)));
 						_allocator.construct(&(*(pos + i)), value);
 					}
 					this->_size = newSize;
 				}
+
 				// range
 				template<class InputIt>
 					typename ft::enable_if<!ft::is_integral<InputIt>::value>::type
 					insert(iterator pos, InputIt first, InputIt last) {
-						if (this->_size == 0) {
-							assign(first, last);
-							return ;
-						}
-						size_type	dist = ft::distance(first, last);
-						size_type	newSize = this->_size + dist;
-						// need to store the index because reserve change the iterators
-						size_type	index_of_pos = _get_index_of_it(pos);
-						while (this->_capacity < newSize)
-							reserve(this->_capacity * 2);
-						for (size_type i = this->_size; i < this->_size + dist; i++)
-							this->_allocator.construct(this->_p + i, value_type());
-						pos = this->begin() + index_of_pos;
-						_move_range_left(pos, dist);
-						for (; first != last; first++) {
-							_allocator.destroy(&(*pos));
-							_allocator.construct(&(*pos), *first);
-							pos++;
-						}
-						this->_size = newSize;
+						for (; first != last; first++)
+							pos = insert(pos, *first) + 1;
 					}
 
 				iterator	erase(iterator position) {
 					if (position != (end() - 1))
-						_move_range_right(position, 1);
+						_move_range_left(position, 1);
 					pop_back();
 					return position;
 				}
@@ -358,7 +353,7 @@ namespace ft {
 					this->_capacity = 0;
 				}
 
-				void	_move_range_left(iterator const& from, size_type const& offset) {
+				void	_move_range_right(iterator const& from, size_type const& offset) {
 					iterator	curr = this->end() + offset - 1;
 
 					if (from == this->end())
@@ -370,23 +365,15 @@ namespace ft {
 					}
 				}
 
-				void	_move_range_right(iterator from, size_type const& offset) {
+				void	_move_range_left(iterator from, size_type const& offset) {
 					for (; from != (this->end() - offset); from++) {
 						_allocator.destroy(&(*from));
 						_allocator.construct(&(*from), *(from + offset));
 					}
 				}
 
-				size_type	_get_index_of_it(iterator it) {
-					size_type	ret = 0;
-
-					for (iterator curr = this->begin(); curr != it; curr++) {
-						ret++;
-						if (curr == this->end())
-							return 0;
-					}
-					return ret;
-				}
+				size_type	_get_index_of_it(iterator const& it) const
+				{ return it - begin(); }
 		};
 
 	// Non member functions
