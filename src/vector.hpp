@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 10:48:08 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/10/04 14:39:45 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/10/04 17:14:04 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include <cstddef> // std::ptrdiff_t
 #include <stdexcept> // std::out_of_range and std::length_error
 #include "RandomAccessIterator.hpp"
-#include "ReverseIterator.hpp"
+#include "reverse_iterator.hpp"
 #include "Utils.hpp"
 #include "TypeTraits.hpp"
 
@@ -28,18 +28,18 @@ namespace ft {
 			public:
 				// Types
 
-				typedef T									value_type;
-				typedef Allocator							allocator_type;
-				typedef value_type* 						pointer;
-				typedef value_type const*					const_pointer;
-				typedef value_type&							reference;
-				typedef value_type const&					const_reference;
-				typedef size_t								size_type;
-				typedef std::ptrdiff_t						difference_type;
-				typedef ft::RandomAccessIterator<T>			iterator;
-				typedef ft::RandomAccessIterator<const T>	const_iterator;
-				typedef ft::ReverseIterator<iterator>		reverse_iterator;
-				typedef ft::ReverseIterator<const_iterator>	const_reverse_iterator;
+				typedef T										value_type;
+				typedef Allocator								allocator_type;
+				typedef size_t									size_type;
+				typedef std::ptrdiff_t							difference_type;
+				typedef value_type&								reference;
+				typedef value_type const&						const_reference;
+				typedef typename Allocator::pointer 			pointer;
+				typedef typename Allocator::const_pointer		const_pointer;
+				typedef ft::RandomAccessIterator<T>				iterator;
+				typedef ft::RandomAccessIterator<const T>		const_iterator;
+				typedef ft::reverse_iterator<iterator>			reverse_iterator;
+				typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 
 				// Object managment
 
@@ -50,7 +50,7 @@ namespace ft {
 
 				// Fill
 				explicit vector(size_type count,
-						const_reference value = T(),
+						const_reference value = value_type(),
 						Allocator const& alloc = Allocator())
 					: _p(0), _size(0), _capacity(0), _allocator(alloc) {
 						assign(count, value);
@@ -75,7 +75,6 @@ namespace ft {
 					_freeAll();
 				}
 
-				// Operators
 				vector&	operator=(vector const& rhs) {
 					_freeAll();
 					this->_allocator = rhs._allocator;
@@ -99,41 +98,30 @@ namespace ft {
 					assign(InputIt first, InputIt last) {
 						clear();
 						insert(begin(), first, last);
-//						return ;
-//						this->_size = ft::distance(first, last);
-//						if (this->_capacity == 0)
-//							this->_capacity = this->_size;
-//						while (this->_capacity < this->_size) {
-//							reserve(this->_capacity * 2);
-//						}
-//						this->_p = this->_allocator.allocate(this->_capacity);
-//						for (size_type i = 0; first != last; first++) {
-//							this->_allocator.construct(this->_p + i, *first);
-//							i++;
-//						}
 					}
 
-				allocator_type	get_allocator() { return this->_allocator; }
+				allocator_type	get_allocator() const
+				{ return this->_allocator; }
 
 				// Element acces
 
 				reference	at(size_type pos) {
-					if (pos >= this->_size)
+					if (!(pos < size()))
 						throw std::out_of_range("vector::at");
 					return this->_p[pos];
 				}
 
 				const_reference	at(size_type pos) const {
-					if (pos < 0 || pos >= this->_size)
+					if (!(pos < size()))
 						throw std::out_of_range("vector::at");
 					return this->_p[pos];
 				}
 
-				reference	operator[](size_type const& pos) {
+				reference	operator[](size_type pos) {
 					return this->_p[pos];
 				}
 
-				const_reference	operator[](size_type const& pos) const {
+				const_reference	operator[](size_type pos) const {
 					return this->_p[pos];
 				}
 
@@ -160,11 +148,11 @@ namespace ft {
 				iterator	begin()
 				{ return this->_p; }
 
-				iterator	end()
-				{ return this->_p + this->_size; }
-
 				const_iterator	begin() const
 				{ return this->_p; }
+
+				iterator	end()
+				{ return this->_p + this->_size; }
 
 				const_iterator	end() const
 				{ return this->_p + this->_size; }
@@ -338,12 +326,11 @@ namespace ft {
 				}
 
 			private:
+
 				pointer		_p;
 				size_type	_size;
 				size_type	_capacity;
 				Allocator	_allocator;
-
-			private:
 
 			// Utils
 

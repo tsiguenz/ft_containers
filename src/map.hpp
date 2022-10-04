@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 19:40:02 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/09/27 23:05:56 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/10/04 18:00:29 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@
 # include "Utils.hpp"
 # include "AVLTree.hpp"
 # include "MapIterator.hpp"
-# include "ReverseIterator.hpp"
+# include "reverse_iterator.hpp"
 # include "pair.hpp"
 
 namespace ft {
-	template < class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<ft::pair<const Key,T> > >
+	template < class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<ft::pair<const Key, T> > >
 		class map {
 			public:
 				// Types
@@ -42,27 +42,26 @@ namespace ft {
 				typedef value_type const&							const_reference;
 				typedef typename Alloc::pointer						pointer;
 				typedef typename Alloc::const_pointer				const_pointer;
+				typedef MapIterator<value_type, ft::Node<value_type> >				iterator;
+				typedef MapIterator<value_type const, ft::Node<value_type> >		const_iterator;
+				typedef ft::reverse_iterator<iterator>								reverse_iterator;
+				typedef ft::reverse_iterator<const_iterator>						const_reverse_iterator;
 
 				class value_compare: public std::binary_function<value_type, value_type, bool> {
 					friend class map;
 
 					protected:
 						Compare	comp;
-						value_compare (Compare c) : comp(c) { }
+						value_compare(Compare c) : comp(c) { }
 
 					public:
-						typedef bool	result_type;
+						typedef bool		result_type;
 						typedef value_type	first_argument_type;
 						typedef value_type	second_argument_type;
 
 						bool	operator() (const value_type& x, const value_type& y) const
 						{ return comp(x.first, y.first); }
 				};
-
-				typedef MapIterator<value_type, ft::Node<value_type> >				iterator;
-				typedef MapIterator<value_type const, ft::Node<value_type> >		const_iterator;
-				typedef ft::ReverseIterator<iterator>								reverse_iterator;
-				typedef ft::ReverseIterator<const_iterator>							const_reverse_iterator;
 
 			private:
 
@@ -74,12 +73,12 @@ namespace ft {
 
 			// Object managment
 
-				// Default constructor O(1)
+				// Default constructor
 				explicit map(key_compare const& comp = key_compare(),
 						allocator_type const& alloc = allocator_type())
 					: _tree(value_compare(comp)), _comp(comp), _alloc(alloc) { }
 
-				// Range constructor O(n * log(n))
+				// Range constructor
 				template <class InputIterator>
 					map (InputIterator first, InputIterator last,
 							const key_compare& comp = key_compare(),
@@ -88,15 +87,14 @@ namespace ft {
 						insert(first, last);
 					}
 
-				// Copy constructor O(n * log(n))
+				// Copy constructor
 				map(map const& x): _tree(value_compare(x._comp)), _comp(x._comp) {
 					*this = x;
 				}
 
-				// Destructor O(n)
+				// Destructor
 				~map() { }
 
-				// operator= O(n * log(n))
 				map&	operator=(map const& other) {
 					if (empty() == false)
 						clear();
@@ -105,14 +103,12 @@ namespace ft {
 					return *this;
 				}
 
-				// O(1)
 				allocator_type	get_allocator() const {
 					return _alloc;
 				}
 
 			// Element access
 
-				// O(log(n))
 				mapped_type&	at(Key const& key) {
 					ft::Node<value_type>*	tmp = _getNodeByKey(key);
 
@@ -121,7 +117,6 @@ namespace ft {
 					return tmp->data.second;
 				}
 
-				// O(log(n))
 				mapped_type const&	at(Key const& key) const {
 					ft::Node<value_type>*	tmp = _getNodeByKey(key);
 
@@ -130,7 +125,6 @@ namespace ft {
 					return tmp->data.second;
 				}
 
-				// O(log(n))
 				mapped_type&	operator[](key_type const& key) {
 					ft::Node<value_type>*	tmp = _getNodeByKey(key);
 
@@ -141,49 +135,38 @@ namespace ft {
 
 			// Iterators
 
-				// O(1)
 				iterator	begin()
 				{ return iterator(_tree.begin()); }
 
-				// O(1)
 				const_iterator	begin() const
 				{ return const_iterator(_tree.begin()); }
 
-				// O(1)
-				reverse_iterator	rbegin()
-				{ return reverse_iterator(_tree.end()); }
-
-				// O(1)
-				const_reverse_iterator	rbegin() const
-				{ return const_reverse_iterator(_tree.end()); }
-
-				// O(1)
 				iterator	end()
 				{ return iterator(_tree.end()); }
 
-				// O(1)
 				const_iterator	end() const
 				{ return const_iterator(_tree.end()); }
 
-				// O(1)
+				reverse_iterator	rbegin()
+				{ return reverse_iterator(_tree.end()); }
+
+				const_reverse_iterator	rbegin() const
+				{ return const_reverse_iterator(_tree.end()); }
+
 				reverse_iterator	rend()
 				{ return reverse_iterator(_tree.begin()); }
 
-				// O(1)
 				const_reverse_iterator	rend() const
 				{ return const_reverse_iterator(_tree.begin()); }
 
 			// Capacity
 
-				// O(1)
 				bool	empty() const
 				{ return _tree.size() == 0; }
 
-				// O(1)
 				size_type	size() const
 				{ return _tree.size(); }
 
-				// O(1)
 				size_type	max_size() const
 				{ return _tree.max_size(); }
 
@@ -193,7 +176,7 @@ namespace ft {
 					erase(begin(), end());
 				}
 
-				// insert single value O(log(n))
+				// insert single value
 				ft::pair<iterator, bool>	insert(const value_type& value) {
 					ft::Node<value_type>*	tmp = _getNodeByKey(value.first);
 					
@@ -203,13 +186,13 @@ namespace ft {
 					return ft::pair<iterator, bool>(_getNodeByKey(value.first), true);
 				}
 
-				// insert single value with hint O(log(n)) (hint useless)
+				// insert single value with hint (hint useless)
 				iterator	insert(iterator hint, const value_type& value) {
 					(void) hint;
 					return insert(value).first;
 				}
 
-				// insert range O(n * log(n) + n)
+				// insert range
 				template<class InputIt>
 					void	insert(InputIt first, InputIt last) {
 						for (;first != last; first++)
@@ -220,7 +203,7 @@ namespace ft {
 					_tree.remove(*pos);
 				}
 
-				// erase key O(log(n))
+				// erase key
 				size_type	erase(key_type const& k) {
 					Node<value_type>*	nodeToRemove = _getNodeByKey(k);
 					if (nodeToRemove == NULL)
@@ -317,11 +300,9 @@ namespace ft {
 
 			// Observers
 
-				// O(n)
 				key_compare	key_comp() const
 				{ return _comp; }
 
-				// O(n)
 				value_compare	value_comp() const
 				{ return value_compare(_comp); }
 
