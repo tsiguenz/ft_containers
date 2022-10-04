@@ -6,7 +6,7 @@
 #    By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/20 10:45:57 by tsiguenz          #+#    #+#              #
-#    Updated: 2022/09/30 14:40:08 by tsiguenz         ###   ########.fr        #
+#    Updated: 2022/10/04 18:19:51 by tsiguenz         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -127,6 +127,6 @@ clean:
 fclean: clean
 	rm -rf $(NAME) $(NAME_REAL) $(NAME_SUBJECT) $(NAME_SUBJECT_REAL) my_output real_output
 
-re: fclean all
+re: fclean $(NAME)
 
 .PHONY: all clean fclean re
