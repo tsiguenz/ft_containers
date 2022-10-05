@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 10:48:08 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/10/04 17:14:04 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/10/05 11:01:11 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,26 +236,17 @@ namespace ft {
 
 				// fill
 				void	insert(iterator pos, size_type count, const_reference value) {
-					if (count == 0)
-						return ;
-					if (this->_size == 0) {
-						assign(count, value);
-						return ;
+					if (_size + count > _capacity)
+					{
+						size_type	to_add = pos- begin();
+						if (_size + count > _capacity * 2)
+							reserve(_size + count);
+						else
+							reserve(_size * 2);
+						pos= begin() + to_add;
 					}
-					size_type	newSize = this->_size + count;
-					// need to store this because reserve change the iterators
-					size_type	index_of_pos = _get_index_of_it(pos);
-					while (this->_capacity < newSize)
-						reserve(this->_capacity * 2);
-					for (size_type i = this->_size; i < this->_size + count; i++)
-						this->_allocator.construct(this->_p + i, value_type());
-					pos = this->begin() + index_of_pos;
-					_move_range_right(pos, count);
-					for (size_type i = 0; i < count; i++) {
-						_allocator.destroy(&(*(pos + i)));
-						_allocator.construct(&(*(pos + i)), value);
-					}
-					this->_size = newSize;
+					for (size_type i = 0; i < count; ++i)
+						pos= insert(pos, value) + 1;
 				}
 
 				// range
@@ -338,18 +329,6 @@ namespace ft {
 					clear();
 					this->_allocator.deallocate(this->_p, this->_capacity);
 					this->_capacity = 0;
-				}
-
-				void	_move_range_right(iterator const& from, size_type const& offset) {
-					iterator	curr = this->end() + offset - 1;
-
-					if (from == this->end())
-						return ;
-					for (size_type i = 0; i < this->_size && from != curr; i++) {
-						_allocator.destroy(&(*curr));
-						_allocator.construct(&(*curr), *(curr - offset));
-						curr--;
-					}
 				}
 
 				void	_move_range_left(iterator from, size_type const& offset) {
