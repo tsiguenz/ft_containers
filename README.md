@@ -1,4 +1,4 @@
-# ft_containers
+# ft_containers (42 Project graded 100/100)
 In this project, we have to re-implement a few container types of the C++ standard template library.
 
 ### How to compile:
