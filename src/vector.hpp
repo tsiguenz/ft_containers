@@ -6,7 +6,7 @@
 /*   By: tsiguenz <tsiguenz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 10:48:08 by tsiguenz          #+#    #+#             */
-/*   Updated: 2022/10/05 11:01:11 by tsiguenz         ###   ########.fr       */
+/*   Updated: 2022/10/05 11:25:37 by tsiguenz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,17 +236,16 @@ namespace ft {
 
 				// fill
 				void	insert(iterator pos, size_type count, const_reference value) {
-					if (_size + count > _capacity)
-					{
+					if (_size + count > _capacity) {
 						size_type	to_add = pos- begin();
 						if (_size + count > _capacity * 2)
 							reserve(_size + count);
 						else
 							reserve(_size * 2);
-						pos= begin() + to_add;
+						pos = begin() + to_add;
 					}
 					for (size_type i = 0; i < count; ++i)
-						pos= insert(pos, value) + 1;
+						pos = insert(pos, value) + 1;
 				}
 
 				// range
